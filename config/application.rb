@@ -23,5 +23,6 @@ module SurveyApp
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
 
+    config.filter_parameters += [:password]
   end
 end
