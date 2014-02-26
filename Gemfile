@@ -15,9 +15,12 @@ group :test do
   gem 'factory_girl_rails', '4.1.0'
 end
 
-gem 'bootstrap-sass', '2.3.2.0'
-gem 'sass-rails', '4.0.1'
-gem 'bcrypt-ruby', '3.1.2'
+gem 'bootstrap-sass', '2.3.2.0' # pretty CSS
+gem 'sass-rails', '4.0.1' # More CSS trickery
+gem 'bcrypt-ruby', '3.1.2' # security
+gem 'faker', '1.1.2' # populates db with fake data
+gem 'will_paginate', '3.0.4' # puts long lists onto pages
+gem 'bootstrap-will_paginate', '0.0.9' # pagination with boostrap CSS
 
 gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.0.1'
