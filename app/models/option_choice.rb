@@ -13,5 +13,5 @@ class OptionChoice < ActiveRecord::Base
 	has_many :question_options
 
 	validates :option_group_id, presence: true
-	validates :name, presence: true
+	validates :choice_name, presence: true
 end

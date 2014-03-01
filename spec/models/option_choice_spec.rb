@@ -6,7 +6,7 @@ describe OptionChoice do
 	let(:choice) { FactoryGirl.create(:option_choice, option_group: group) }
 	subject { choice } 
 
-	it { should respond_to(:name) }
+	it { should respond_to(:choice_name) }
 	it { should respond_to(:option_group) }
 
 	# it { should respond_to(:questions) }

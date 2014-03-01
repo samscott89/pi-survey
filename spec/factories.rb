@@ -41,7 +41,7 @@ FactoryGirl.define do
 	end
 
 	factory :option_choice do
-		sequence(:name) { |n| "Option number #{n}"}
+		sequence(:choice_name) { |n| "Option number #{n}"}
 	end
 
 	factory :answer do

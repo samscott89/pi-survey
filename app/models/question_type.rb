@@ -9,5 +9,5 @@
 class QuestionType < ActiveRecord::Base
 	has_many :option_groups, foreign_key: "type_id"
 	
-	validates :name, presence: true
+	validates :name, presence: true, uniqueness: true
 end
