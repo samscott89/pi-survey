@@ -20,6 +20,8 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
 
+  it { should respond_to(:answers)}
+
   it { should be_valid }
   it { should_not be_admin }
 

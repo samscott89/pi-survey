@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe UnitOfMeasurement do
-  pending "add some examples to (or delete) #{__FILE__}"
+	let(:unit) {UnitOfMeasurement.create(name: "m")}
+
+	subject { unit }
+	it { should respond_to(:name) }
+	it { should be_valid}
 end

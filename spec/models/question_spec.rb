@@ -9,18 +9,15 @@ describe Question do
 	it { should respond_to(:name) }
 	it { should respond_to(:subtext) }
 	it { should respond_to(:required) }
-	it { should respond_to(:group_id) }
 	it { should respond_to(:survey_section)}
+
+	it { should respond_to(:option_group)}
+	it { should respond_to(:option_choices)}
 
 	it { should be_valid}
 
-	describe "when section is not present" do
-      before { question.survey_section_id = nil }
-      it { should_not be_valid }
-    end
 
-	describe "survey_tag methods" do
-	    it { should respond_to(:survey_section) }
-	    its(:survey_section) { should eq section }
-	end
+  # Tests missing: validate that all options with the same question have the same group
+  # question.group == question.option_choices.group
+  
 end

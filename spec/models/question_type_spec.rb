@@ -6,7 +6,7 @@ describe QuestionType do
 	subject { type } 
 
 	it { should respond_to(:name) }
-	it { should respond_to(:groups)}
+	it { should respond_to(:option_groups)}
 
 	it { should be_valid}
 

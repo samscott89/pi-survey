@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe OptionGroup do
 	let(:type) { FactoryGirl.create(:question_type) }
-	let(:group) { FactoryGirl.create(:option_group, type_id: type.id) }
+	let(:group) { FactoryGirl.create(:option_group, question_type: type) }
 
 	subject { group } 
 
 	it { should respond_to(:name) }
-	it { should respond_to(:type) }
+	it { should respond_to(:question_type) }
 
-	it { should respond_to(:questions) }
+	# it { should respond_to(:questions) }
 
 	it { should be_valid}
 
