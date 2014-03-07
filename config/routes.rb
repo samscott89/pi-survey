@@ -10,9 +10,15 @@ SurveyApp::Application.routes.draw do
   get "/signin", to: "sessions#new"
   match '/signout', to: 'sessions#destroy', via: 'delete'
 
+  match "/surveys/:survey_id/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
+  get "surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
+
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
 
+  resources :surveys, only: [:index, :show] do
+    get "/:index", to: "survey_sections#show", as: :section
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
