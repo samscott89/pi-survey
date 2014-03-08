@@ -1,0 +1,11 @@
+<%= provide(:title, @survey.name) %>
+
+<div class="center hero-unit">
+
+<h1><%= @survey.name %></h1>
+<h3><%= @survey.description %></h3>
+
+<p>This survey has <%= pluralize(@survey.sections.count, "section") %>.</p>
+
+<%= link_to "Start survey", survey_section_path(@survey, 1), class: "btn btn-large btn-primary" %>
+</div>
