@@ -7,6 +7,10 @@ class Answer < ActiveRecord::Base
 	validates :option_id, presence: true
 	validate :check_answers
 
+	# This allows for multiple options answered simultaneously (e.g. for checkboxes)
+	accepts_nested_attributes_for :question_option
+
+
 	# before_save :check_answers
 
 	# Saves only when at least one value is not blank

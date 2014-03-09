@@ -1,5 +1,23 @@
+<% provide(:title, "Answer Submitted") %>
+
+
 <h1>Answer submitted </h1>
 
 This page is currently here for debugging purposes.
+
+<%= render 'answer_error_messages' %>
+
+
+<br>
+<br>
+<% @questions.each do |q| %>
+<% params.require(:answers).require("q#{q.id}").each do |ans| %>
+	<% ans_params = ActionController::Parameters.new(ans) %>
+	<%=   ans_params.permit(:answer_text, :option_id) %>
+	<% end %>
+<% end %>
+
+<br>
+<br>
 
 <%= link_to "Next Question", session[:next_page] %>

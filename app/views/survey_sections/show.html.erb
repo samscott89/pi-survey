@@ -2,4 +2,83 @@
 
 <h1><%= @survey_section.title %></h1>
 
-<%= render 'questions' %>
+<%= form_tag submit_answer_path(@survey, @survey_section), action: "post", class: "form-horizontal container", role: "form" do %>
+
+	<fieldset>
+
+	  <% @questions.each do |q| %>
+	  <% substring =  "answers[q#{q.id}][]" %>
+		<div class="form-group">		
+		<% case  q.option_group.question_type.name %>
+		<% when "check_box" %>
+		<div class="form-inline">
+			<%= label_tag "#{substring}[]", q.subtext  %><br>
+			<% q.option_choices.each do |opt| %>
+				<%= check_box_tag "#{substring}[option_id]", opt.id	 %>
+				<%= label_tag "#{substring}[answer_text]", opt.choice_name.capitalize  %>
+				<!--%= hidden_field_tag "#{substring}[answer_text]", opt.choice_name.capitalize %-->
+
+			<% end %>
+		</div>
+		<% when "radio_button" %>
+		<div class="form-inline">
+			<%= label_tag "#{substring}[]", q.subtext  %><br>
+			<% q.option_choices.each do |opt| %>
+				<%= radio_button_tag "#{substring}[option_id]", opt.id %>
+				<%= label_tag "#{substring}[option_id]", opt.choice_name.capitalize  %>
+				<!--%= hidden_field_tag "#{substring}[answer_text]", opt.choice_name.capitalize -->
+
+			<% end %>
+		</div>
+		<% when "text_field" %>
+			<% opt = q.option_choices.first %>
+			<%= label_tag "#{substring}[answer_text]", q.subtext, class: "form-control" %>
+			<%= text_field_tag "#{substring}[answer_text]" %>
+			<!--%= hidden_field_tag "#{substring}[option_id]", opt.id %-->
+
+		<% when "text_area" %>
+			<% opt = q.option_choices.first %>
+			<%= label_tag "#{substring}[answer_text]", q.subtext %>
+			<%= text_area_tag "#{substring}[answer_text]" %>
+			<!--%= hidden_field_tag "#{substring}[option_id]", opt.id %-->
+
+		<% when "select" %>
+			<% opt = q.option_choices.map{|opt| [opt.choice_name.capitalize, opt.id]} %>
+			<%= label_tag  "#{substring}[option_id]", q.subtext %>
+			<%= select_tag "#{substring}[option_id]", options_for_select(opt) %>
+
+		<% when "select_multiple" %>
+			<% opt = q.option_choices.map{|opt| [opt.id, opt.choice_name.capitalize]} %>
+			<%= label_tag  "#{substring}[option_id]", q.subtext %>
+			<%= select_tag "#{substring}[option_id]", options_for_select(opt), multiple: true %>
+
+		<% when "collection_select" %>
+			<%# Not yet implemented %>
+
+		<% when "date_field" %>
+			<% opt = q.option_choices.first %>
+			<%= label_tag "#{substring}[answer_text]", q.subtext %>
+			<%= date_field_tag "#{substring}[answer_text]" %>
+			<!--%= hidden_field_tag "#{substring}[option_id]", opt.id %-->
+		
+		<% when "datetime_field" %>
+			<% opt = q.option_choices.first %>
+			<%= label_tag "#{substring}[answer_text]", q.subtext %>
+			<%= datetime_field_tag "#{substring}[answer_text]" %>
+			<!--%= hidden_field_tag "#{substring}[option_id]", opt.id %-->
+		
+		<% when "time_field" %>
+			<% opt = q.option_choices.first %>
+			<%= label_tag "#{substring}[answer_text]", q.subtext %>
+			<%= time_field_tag "#{substring}[answer_text]" %>
+			<!--%= hidden_field_tag "#{substring}[option_id]", opt.id %-->
+		
+		<% end %>
+	</div>
+		<br>
+	<% end %>
+	<br>
+	<br>
+	<%= submit_tag "Submit answer", class: 'btn btn-primary' %>
+</fieldset>
+<% end %>
