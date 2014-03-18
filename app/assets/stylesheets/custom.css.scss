@@ -39,7 +39,7 @@ textarea {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: $white;
+  color: white;
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 0px;
@@ -60,12 +60,12 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
-  color: $grayLight;
+  color: $gray-light;
 
   a {
     color: $gray;
     &:hover {
-     color: $grayDarker;
+     color: $gray-darker;
    }
   }
 
@@ -91,9 +91,9 @@ footer {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
+    border-top: 1px solid $gray-lighter;
     &:last-child {
-      border-bottom: 1px solid $grayLighter;
+      border-bottom: 1px solid $gray-lighter;
     }
   }
 }
