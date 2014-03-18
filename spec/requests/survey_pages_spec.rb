@@ -21,12 +21,43 @@ describe "Survey pages" do
     it { should have_title(full_title(survey.name)) }
 
     it { should have_link('Start survey', href: survey_section_path(survey, survey.sections.first)) }
-
- 
   end
 end
 
-  # describe "signup" do
+
+# describe "SurveySection pages" do
+
+#   subject{ page }
+
+#   describe "show survey_sections" do
+#     let(:survey) { create_survey}
+#     let(:section) { survey.sections.first}
+#     let(:button_text) {"Submit answer"}
+
+#     before { visit survey_section_path(section, 1)}
+
+#     it { should have_selector("h1", section.title) }
+
+#     describe "when user is not logged in" do
+#       before do
+#         within("form") {click_button(button_text)}
+#       end
+#       it {should_not be_valid}
+#     end
+
+#     let(:user) {FactoryGirl.create(:user)}
+#     before {sign_in user}
+
+#     describe "when survey is blank" do
+#       before {click_button button_text}
+
+#       it {should have_content('error')}
+#     end
+#   end
+
+# end
+
+#   # describe "signup" do
 
   #   before { visit signup_path }
 

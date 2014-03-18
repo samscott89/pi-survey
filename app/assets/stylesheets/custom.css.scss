@@ -35,12 +35,12 @@ textarea {
 
 /* header */
 
-#logo {
+.logo {
   float: left;
-  margin-right: 10px;
+  margin-right: 5px;
+  margin-top: 5px;
   font-size: 1.7em;
   color: white;
-  text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 0px;
   font-weight: bold;
@@ -121,8 +121,7 @@ footer {
 }
 
 .field_with_errors {
-  @extend .control-group;
-  @extend .error;
+  @extend .has-error;
 }
 
 /* miscellaneous */

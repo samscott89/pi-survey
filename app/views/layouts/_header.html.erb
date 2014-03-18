@@ -1,9 +1,14 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
-          <%= link_to image_tag("pi.jpg", size: "40x40"), root_path, id: "logo" %> <!-- Image from: http://rlv.zcache.com.au/black_and_white_pi_symbol_coaster-r55ac8eba8cc74b8a88df6ec45e9c6234_ambkq_8byvr_512.jpg -->
+         
+          <!-- Image from: http://rlv.zcache.com.au/black_and_white_pi_symbol_coaster-r55ac8eba8cc74b8a88df6ec45e9c6234_ambkq_8byvr_512.jpg -->
           <nav>
-            <ul class="nav pull-right">
+            <div class="logo">
+            <%= link_to image_tag("pi.jpg", size: "40x40"), root_path, id: "logo" %> 
+              QBase // Psych Initiatives
+            </div>
+            <ul class="nav navbar-nav navbar-right">
               <li><%= link_to "Home",     root_path %></li>
               <li><%= link_to "Help",  help_path %></li>
               <% if signed_in? %>
