@@ -2,6 +2,8 @@
 
 <h1><%= @survey_section.title %></h1>
 
+<%= render "answer_error_messages" %>
+
 <%= form_tag submit_answer_path(@survey, @survey_section), action: "post", class: "form-horizontal container", role: "form" do %>
 
 	<fieldset>

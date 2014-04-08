@@ -26,8 +26,7 @@ class SurveySectionsController < ApplicationController
     answer_params.each do |ans_params|
       ans = Answer.new(user: current_user)
       pending_answers << ans
-     
-
+    
       ans.assign_attributes(ans_params)
 
       if !ans.valid?
@@ -36,7 +35,11 @@ class SurveySectionsController < ApplicationController
       end
     end
 
-    pending_answers.each {|ans| ans.save}
+    if @errors.nil?
+      pending_answers.each {|ans| ans.save}
+    else
+      render 'show'
+    end
 
 
     # This line will go to a holding  page for debugging purposes, unless in production mode.
@@ -52,24 +55,28 @@ class SurveySectionsController < ApplicationController
       all_answers = []
     
       @questions.each do |q|
-        params.require(:answers).require("q#{q.id}").each do |ans|
+        if params[:answers]["q#{q.id}"].nil?
+          all_answers << {}
+        else
+          params.require(:answers).require("q#{q.id}").each do |ans|
 
-          # IF the question option is not selected (i.e. there was only one choice)
-          if ans[:option_id].nil?
-            #TODO: This should return an error if there is more than one option
-            ans[:option_id] = QuestionOption.where(question: q).first.id
-          else
-            # Replace the option_choice with the actual question_option
-            if ans[:answer_text].nil?
-              ans[:answer_text] = OptionChoice.find(ans[:option_id]).choice_name
+            # IF the question option is not selected (i.e. there was only one choice)
+            if ans[:option_id].nil?
+              #TODO: This should return an error if there is more than one option
+              ans[:option_id] = QuestionOption.where(question: q).first.id
+            else
+              # Replace the option_choice with the actual question_option
+              if ans[:answer_text].nil?
+                ans[:answer_text] = OptionChoice.find(ans[:option_id]).choice_name
+              end
+              ans[:option_id] = QuestionOption.where(question: q, option_choice_id: ans[:option_id]).first.id
             end
-            ans[:option_id] = QuestionOption.where(question: q, option_choice_id: ans[:option_id]).first.id
+
+            ans_params = ActionController::Parameters.new(ans)
+
+            # Remove all other parameters passed.
+            all_answers << ans_params.permit(:answer_text, :option_id)
           end
-
-          ans_params = ActionController::Parameters.new(ans)
-
-          # Remove all other parameters passed.
-          all_answers << ans_params.permit(:answer_text, :option_id)
         end
       end
 

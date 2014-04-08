@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
-#ruby-gemset=railstutorial_rails_4_0
 
 gem 'rails', '4.0.3'
 
@@ -16,11 +15,12 @@ group :test do
 end
 
 gem 'bootstrap-sass', '3.1.1' # pretty CSS
-gem 'sass-rails', '4.0.1' # More CSS trickery
+gem 'sass-rails', '4.0.3' # More CSS trickery
 gem 'bcrypt-ruby', '3.1.2' # security
 gem 'faker', '1.1.2' # populates db with fake data
 gem 'will_paginate', '3.0.4' # puts long lists onto pages
 gem 'bootstrap-will_paginate', '0.0.9' # pagination with boostrap CSS
+gem 'sprockets', '2.11.0'
 
 gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.0.1'
