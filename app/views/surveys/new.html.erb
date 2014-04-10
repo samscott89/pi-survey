@@ -1,0 +1,24 @@
+<%= provide(:title, "New Survey") %>
+
+<h1>Create a new Survey</h1>
+
+<div class="col-sm-3" id="survey-options">
+	<%= form_for SurveySection.new do |f| %>
+	<%= fields_for Question.new do |builder| %>
+		<%= builder.label "Question Type", class: "control-label" %>
+		<% types = QuestionType.all.map{|opt| [opt.name.gsub!("_"," ").capitalize, opt.id]} %>
+		<%= builder.select :option_id, options_for_select(types), class: "form-control" %>
+
+		<div id="question-options">
+
+		</div>
+	<% end %>
+	<% end %>
+</div>
+
+<div class="col-sm-6" id="survey-outline">
+
+<h2>Section Title</h2>
+
+
+</div>

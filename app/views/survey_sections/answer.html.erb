@@ -10,11 +10,9 @@ This page is currently here for debugging purposes.
 
 <br>
 <br>
-<% @questions.each do |q| %>
-<% params.require(:answers).require("q#{q.id}").each do |ans| %>
+<% params[:answers].each do |q, ans| %>
 	<% ans_params = ActionController::Parameters.new(ans) %>
 	<%=   ans_params.permit(:answer_text, :option_id) %>
-	<% end %>
 <% end %>
 
 <br>

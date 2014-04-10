@@ -1,6 +1,7 @@
 class SurveySectionsController < ApplicationController
   
   def show
+    @errors = []
   	@survey = Survey.find(params[:survey_id])
   	@survey_section = @survey.sections.find(params[:index])
   	if @survey.sections.where(index: (params[:index].to_i + 1)).count > 0
@@ -24,10 +25,9 @@ class SurveySectionsController < ApplicationController
 
     pending_answers = []
     answer_params.each do |ans_params|
-      ans = Answer.new(user: current_user)
+      ans = Answer.new(ans_params.merge(user: current_user))
       pending_answers << ans
     
-      ans.assign_attributes(ans_params)
 
       if !ans.valid?
         @errors << ans.errors
@@ -35,10 +35,10 @@ class SurveySectionsController < ApplicationController
       end
     end
 
-    if @errors.nil?
-      pending_answers.each {|ans| ans.save}
-    else
+    if @errors.any?
       render 'show'
+    else
+      pending_answers.each {|ans| ans.save}
     end
 
 
@@ -51,33 +51,17 @@ class SurveySectionsController < ApplicationController
     # This method find the parameters for the answer to a specific question, and returns only the permitted variables
     # Note: since question_option can be a list of answers, this is also permitted
     def answer_params
-      
+
       all_answers = []
-    
-      @questions.each do |q|
-        if params[:answers]["q#{q.id}"].nil?
-          all_answers << {}
-        else
-          params.require(:answers).require("q#{q.id}").each do |ans|
 
-            # IF the question option is not selected (i.e. there was only one choice)
-            if ans[:option_id].nil?
-              #TODO: This should return an error if there is more than one option
-              ans[:option_id] = QuestionOption.where(question: q).first.id
-            else
-              # Replace the option_choice with the actual question_option
-              if ans[:answer_text].nil?
-                ans[:answer_text] = OptionChoice.find(ans[:option_id]).choice_name
-              end
-              ans[:option_id] = QuestionOption.where(question: q, option_choice_id: ans[:option_id]).first.id
-            end
-
-            ans_params = ActionController::Parameters.new(ans)
-
-            # Remove all other parameters passed.
-            all_answers << ans_params.permit(:answer_text, :option_id)
-          end
+      params[:answers].each do |q, ans|
+        if ans[:answer_text].nil?
+          ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
         end
+
+        ans_params = ActionController::Parameters.new(ans)
+
+        all_answers << ans_params.permit(:answer_text, :option_id)
       end
 
       return all_answers
