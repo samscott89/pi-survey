@@ -3,7 +3,7 @@ class SurveySectionsController < ApplicationController
   def show
     @errors = []
   	@survey = Survey.find(params[:survey_id])
-  	@survey_section = @survey.sections.find(params[:index])
+  	@survey_section = @survey.sections.where(index: params[:index]).first
   	if @survey.sections.where(index: (params[:index].to_i + 1)).count > 0
   	  session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
 	  else
@@ -13,13 +13,18 @@ class SurveySectionsController < ApplicationController
   	@questions = @survey_section.questions
 
   	@user = current_user
+
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @survey_section}
+    end
   end
 
   
   def answer
     @errors = []
     @survey = Survey.find(params[:survey_id])
-    @survey_section = @survey.sections.find(params[:index])
+    @survey_section = @survey.sections.where(index: params[:index]).first
     @questions = @survey_section.questions
     
 
@@ -46,6 +51,23 @@ class SurveySectionsController < ApplicationController
     redirect_to session[:next_page] if Rails.env.production? 
   end
 
+  def update
+    @survey = Survey.find(params[:survey_id])
+    @survey_section = @survey.sections.where(index: params[:index]).first
+
+    @survey_section.assign_attributes(survey_section_params)
+    if @survey_section.save
+      flash.now[:success] = "Changed"
+    else
+      flash.now[:fail] = "Could not change"
+    end 
+
+
+    respond_to do |format|
+      format.json {render json: @survey_section}
+    end
+  end
+
   private
 
     # This method find the parameters for the answer to a specific question, and returns only the permitted variables
@@ -67,4 +89,7 @@ class SurveySectionsController < ApplicationController
       return all_answers
     end
 
+    def survey_section_params
+      params.require(:survey_section).permit(:name, :title, :required, :index)
+    end
 end

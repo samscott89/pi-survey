@@ -1,7 +1,11 @@
 class SurveysController < ApplicationController
   def show
   	@survey = Survey.find(params[:id])
-  	@first_section = @survey.sections.first
+
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @survey}
+    end
   end
 
   def index
@@ -10,4 +14,21 @@ class SurveysController < ApplicationController
 
   def finish
   end
+
+  def new
+  	@survey = Survey.new(name: "Survey Title", 
+  		instructions: "Write some instructions for your survey here", 
+  		description: "A new survey", live: false)
+
+  	@survey_section = SurveySection.new(name: "New Section", title: "New Survey Section", index: 1)
+  end
+
+  def edit
+  	@survey = Survey.find(params[:id])
+	 @survey_section = @survey.sections.where(index: 1).first
+  end
+
+  private
+
+
 end

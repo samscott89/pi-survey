@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.tabs
+//= require rest_in_place
 //= require bootstrap
 //= require turbolinks
-//= require_tree .
-//= require best_in_place

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140307174611) do
+ActiveRecord::Schema.define(version: 20140410183621) do
 
   create_table "answers", force: true do |t|
     t.integer  "user_id"
@@ -70,8 +70,7 @@ ActiveRecord::Schema.define(version: 20140307174611) do
     t.integer "index"
   end
 
-  add_index "survey_sections", ["index"], name: "index_survey_sections_on_index"
-  add_index "survey_sections", ["survey_id"], name: "index_survey_sections_on_survey_id"
+  add_index "survey_sections", ["survey_id", "index"], name: "index_survey_sections_on_survey_id_and_index", unique: true
 
   create_table "survey_tags", force: true do |t|
     t.integer  "survey_id"
@@ -85,9 +84,10 @@ ActiveRecord::Schema.define(version: 20140307174611) do
   add_index "survey_tags", ["tag_id"], name: "index_survey_tags_on_tag_id"
 
   create_table "surveys", force: true do |t|
-    t.string "name"
-    t.text   "instructions"
-    t.text   "description"
+    t.string  "name"
+    t.text    "instructions"
+    t.text    "description"
+    t.boolean "live"
   end
 
   create_table "tags", force: true do |t|
