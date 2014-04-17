@@ -1,4 +1,3 @@
-alert("Hello!")
 <% flash.each do |key, value| %>
      $("#content").before(" <div class="alert alert-<%= key %>"><%= escape_javascript(value) %></div> " )
 <% end %>

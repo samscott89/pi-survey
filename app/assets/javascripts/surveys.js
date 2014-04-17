@@ -1,4 +1,3 @@
-
 $(function() {
 
 	// When tab changes, it updates the hidden value to the relevant survey section
@@ -7,11 +6,33 @@ $(function() {
 	})
 
 	// Initialises the question type code
-	  $("#question-options").html("The selected question type is: " + $("#question_group_id").val());
+	  // $("#question-options").html("The selected question type is: " + $("#question_group_id").val());
 
 	// Function to change the question type box when value is changed
 	$("#question_group_id").change(function() {
 	  var type = $(this).val();
-	  $("#question-options").html("The selected question type is: " + type);
-	})
+	  var option_types = ["3", "4", "5"];
+	  if(option_types.indexOf(type) > -1 ){
+	  	$("#question-options").show();
+	  } else {
+	  	$("#question-options").hide();
+	  }
+	  // $("#option_choice_option_group_id").attr("value", type);
+	});
+	$("#question-option input").attr("name", "option_choice[0][choice_name]");
+	var qc = 1;
+
+	$("#add-question-option").click(function(e){
+		console.log(e)
+		e.preventDefault();
+		var opt = $("#question-option").clone();
+		opt.find("input").attr("name",  "option_choice[" + qc + "][choice_name]");
+		opt.find("input").val("");
+		opt.appendTo("#question-options");
+		qc++;
+	});
 });
+
+var getQuestionCount = function(){
+	return $("#question-options").children().length;
+}

@@ -24,8 +24,14 @@ class SurveysController < ApplicationController
   end
 
   def edit
-  	@survey = Survey.find(params[:id])
-	 @survey_section = @survey.sections.where(index: 1).first
+    id = params[:survey_id]
+    id ||= params[:id]
+  	@survey = Survey.find(id)
+    if params[:index].nil?
+  	 @survey_section = @survey.sections.where(index: 1).first
+    else
+      @survey_section = @survey.sections.where(index: params[:index]).first
+    end
   end
 
   private

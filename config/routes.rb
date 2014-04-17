@@ -22,6 +22,7 @@ SurveyApp::Application.routes.draw do
     # a survey. E.g. survey_section_path(@survey, :index)
     get "/sec/:index", to: "survey_sections#show", as: :section
     match "/sec/:index", to: "survey_sections#update", via: 'put', as: :update_section
+    get "/edit/:index", to: "surveys#edit", as: :edit_section
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

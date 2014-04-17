@@ -7,8 +7,8 @@
 <div class="row">
 <div class="col-sm-3" id="survey-options">
 	<legend>Add Components</legend>
-	<%= form_for Question.new, remote: true, role: "form" do |f| %>
-		<%= hidden_field_tag :survey_section, 0 %>
+	<%= form_for Question.new, role: "form" do |f| %>
+		<%= hidden_field_tag :survey_section, 1 %>
 		<%= f.label "Question Type", class: "control-label" %>
 		<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
 		<%= f.select :group_id, options_for_select(types, types[0]), {}, {class: "form-control"} %>
@@ -17,7 +17,16 @@
 		<%= f.text_area :subtext, class: "form-control" %>
 		<div id="question-options">
 			<!-- This gets filled automatically -->
+			<div id="question-option">
+			<%= fields_for OptionChoice.new, role: "form" do |f2| %>
+				<%= f2.label "Answer Option", class: "control-label" %>
+				<%= f2.text_field :choice_name, class: "form-control" %>
+			<% end %>
+			</div>
+			
 		</div>
+		<%= link_to "Add", "#", id: "add-question-option" %>
+		<br>
 		<%= f.button "Add question", class: "btn" %>
 	<% end %>
 </div>
@@ -31,7 +40,7 @@
 
 	<div class="tab-content">
 	<% @survey.sections.each do |sec| %>
-	<div id="tabs-<%= sec.index %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.index %>" class="tab-pane well <%= "active" if @survey_section == sec %>">
+	<div id="tabs-<%= sec.index %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.index %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
 
 	<fieldset>
 	<legend><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></legend>
