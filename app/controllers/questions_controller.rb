@@ -3,8 +3,10 @@ class QuestionsController < ApplicationController
 
 	def create
 		@errors = []
-		@question = Question.new(question_params)  			  		
-		@question.survey_section = SurveySection.find(params[:survey_section])
+		@question = Question.new(question_params)
+		@survey_section = SurveySection.find(params[:survey_section])
+		@survey = @survey_section.survey  		
+		@question.survey_section = @survey_section
 		puts params
 
 	    pending_opt_choices = []
@@ -17,7 +19,7 @@ class QuestionsController < ApplicationController
 
 		      if !opt_choice.valid?
 		        @errors << opt_choice.errors
-		        flash.now[:fail] = "There were errors with your answers: #{option_params}"
+		        flash[:warning] = "There were errors with your answers: #{option_params}" unless Rails.env.development?
 		      end
 		    end
 		else
@@ -25,26 +27,27 @@ class QuestionsController < ApplicationController
 			pending_opt_choices << opt_choice
 			if !opt_choice.valid?
 		      @errors << opt_choice.errors
-		      flash.now[:fail] = "There were errors with your answers: #{option_params}"
+		      flash[:warning] = "There were errors with your answers: #{option_params}" unless Rails.env.development?
 		    end
 		end
 
 	    if !@question.valid?
 	    	@errors << @question.errors
-	    	flash.now[:fail] = "There were errors with your question: #{question_params}"
+	    	flash[:warning] = "There were errors with your question: #{question_params}" unless Rails.env.development?
 	    end
-
 
 	    if @errors.any?
 	      # render 'show'
-	      redirect_to survey_edit_section_path(@question.survey_section.survey, @question.survey_section), notice: "Errors with adding question."
+	      flash[:danger] = "Errors with adding question."
+	      redirect_to :back
 	    else
 	      @question.save
 	      pending_opt_choices.each do |opt| 
 	      	opt.save
 	      	@question.question_options.create(option_choice: opt)
 	      end
-	      redirect_to survey_edit_section_path(@question.survey_section.survey, @question.survey_section), notice: "Question added."
+	      flash[:success] = "Question added."
+	      redirect_to survey_edit_section_path(@survey, @survey_section)
 	    end
 	end
 

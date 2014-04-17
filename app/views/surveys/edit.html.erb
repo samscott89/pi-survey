@@ -7,7 +7,7 @@
 <div class="row">
 <div class="col-sm-3" id="survey-options">
 	<legend>Add Components</legend>
-	<%= form_for Question.new, role: "form" do |f| %>
+	<%= form_for Question.new, role: "form", method: "post" do |f| %>
 		<%= hidden_field_tag :survey_section, 1 %>
 		<%= f.label "Question Type", class: "control-label" %>
 		<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
@@ -24,8 +24,8 @@
 			<% end %>
 			</div>
 			
-		</div>
 		<%= link_to "Add", "#", id: "add-question-option" %>
+		</div>
 		<br>
 		<%= f.button "Add question", class: "btn" %>
 	<% end %>

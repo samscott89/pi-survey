@@ -28,7 +28,7 @@ $(function() {
 		var opt = $("#question-option").clone();
 		opt.find("input").attr("name",  "option_choice[" + qc + "][choice_name]");
 		opt.find("input").val("");
-		opt.appendTo("#question-options");
+		$("#add-question-option").before(opt)
 		qc++;
 	});
 });

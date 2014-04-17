@@ -34,11 +34,11 @@ class SurveysController < ApplicationController
   def edit
     id = params[:survey_id]
     id ||= params[:id]
-  	@survey = Survey.find(id)
+  	@survey ||= Survey.find(id)
     if params[:index].nil?
-  	 @survey_section = @survey.sections.where(index: 1).first
+  	 @survey_section ||= @survey.sections.where(index: 1).first
     else
-      @survey_section = @survey.sections.where(index: params[:index]).first
+      @survey_section ||= @survey.sections.where(index: params[:index]).first
     end
   end
 
