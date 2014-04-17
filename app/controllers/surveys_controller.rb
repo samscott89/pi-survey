@@ -16,11 +16,19 @@ class SurveysController < ApplicationController
   end
 
   def new
-  	@survey = Survey.new(name: "Survey Title", 
-  		instructions: "Write some instructions for your survey here", 
-  		description: "A new survey", live: false)
+    @survey = Survey.new
+  end
 
-  	@survey_section = SurveySection.new(name: "New Section", title: "New Survey Section", index: 1)
+  def create
+  	@survey = Survey.new(survey_params)
+    if @survey.save
+      flash[:success] = "Survey Created"
+       @survey.sections.create(name: "Section 1", title: "New Section", index: 1)
+       redirect_to edit_survey_path @survey
+    else
+      flash.now[:fail] = "Error creating survey"
+      render 'new'
+    end
   end
 
   def edit
@@ -35,6 +43,10 @@ class SurveysController < ApplicationController
   end
 
   private
+
+  def survey_params
+    params.require(:survey).permit(:name, :description)
+  end
 
 
 end
