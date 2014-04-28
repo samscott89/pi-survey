@@ -46,9 +46,7 @@ class SurveySectionsController < ApplicationController
       pending_answers.each {|ans| ans.save}
     end
 
-
-    # This line will go to a holding  page for debugging purposes, unless in production mode.
-    redirect_to session[:next_page] if Rails.env.production? 
+    redirect_to session[:next_page]
   end
 
   def update

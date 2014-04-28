@@ -5,9 +5,6 @@ $(function() {
 	  $('input[name="survey_section').attr("value", e.target.getAttribute("sec")) 
 	})
 
-	// Initialises the question type code
-	  // $("#question-options").html("The selected question type is: " + $("#question_group_id").val());
-
 	// Function to change the question type box when value is changed
 	$("#question_group_id").change(function() {
 	  var type = $(this).val();
@@ -32,7 +29,3 @@ $(function() {
 		qc++;
 	});
 });
-
-var getQuestionCount = function(){
-	return $("#question-options").children().length;
-}
