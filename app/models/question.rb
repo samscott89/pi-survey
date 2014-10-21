@@ -8,4 +8,6 @@ class Question < ActiveRecord::Base
 	validates :survey_section_id, presence: true
 	validates :subtext, presence: true
 
+	accepts_nested_attributes_for :option_choices
+
 end

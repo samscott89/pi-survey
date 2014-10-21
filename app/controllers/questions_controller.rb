@@ -51,6 +51,15 @@ class QuestionsController < ApplicationController
 	    end
 	end
 
+	def update
+		@question = params[:question_id]
+		@survey_section = SurveySection.find(params[:survey_section])
+		@survey = @survey_section.survey  		
+
+		flash[:notice] = params
+	    redirect_to survey_edit_section_path(@survey, @survey_section)
+	end
+
 	private
 	  	  def question_params
 	  	  	params.require(:question).permit(:name, :subtext, :required, :group_id)

@@ -15,7 +15,7 @@ SurveyApp::Application.routes.draw do
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :questions, only: [:create, :update, :destroy]
+  resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
   resources :surveys do
     #This allows survey sections to be called relative to 
