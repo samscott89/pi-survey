@@ -13,4 +13,8 @@ class OptionGroup < ActiveRecord::Base
 	has_many :option_choices
 	
 	validates :type_id, presence: true
+
+	def multiple?
+		[1, 2, 5, 6].include? self.type_id
+	end 
 end

@@ -1,0 +1,75 @@
+<%= provide(:title, @survey.name) %>
+
+<%= javascript_include_tag "surveys" %>
+
+<h1>Edit Survey</h1>
+
+<div class="row">
+<div class="col-sm-3" id="survey-options">
+	<legend>Add Components</legend>
+	<%= form_for Question.new, role: "form", method: "post" do |f| %>
+		<%= hidden_field_tag :survey_section, 1 %>
+		<%= f.label "Question Type", class: "control-label" %>
+		<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
+		<%= f.select :group_id, options_for_select(types, types[0]), {}, {class: "form-control"} %>
+		
+		<%= f.label "Question Text", class: "control-label"  %>
+		<%= f.text_area :subtext, class: "form-control" %>
+		<div id="question-options">
+			<!-- This gets filled automatically -->
+			<div id="question-option">
+			<%= fields_for OptionChoice.new, role: "form" do |f2| %>
+				<%= f2.label "Answer Option", class: "control-label" %>
+				<%= f2.text_field :choice_name, class: "form-control" %>
+			<% end %>
+			</div>
+			
+		<%= link_to "Add", "#", id: "add-question-option" %>
+		</div>
+		<br>
+		<%= f.button "Add question", class: "btn" %>
+	<% end %>
+</div>
+
+<div id="tabs" class="col-sm-6">
+	<ul class="nav nav-tabs">
+		<% @survey.sections.each do |sec| %>
+		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.index %>" sec="<%= sec.id %>"><%= sec.index %></a></li>
+		<% end %>
+	</ul>
+
+	<div class="tab-content">
+	<% @survey.sections.each do |sec| %>
+	<div id="tabs-<%= sec.index %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.index %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
+
+	<fieldset>
+	<legend><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></legend>
+		<div class="row">
+		<% sec.questions.each do |q| %>
+		<div class="col-sm-8">
+			<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
+				<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q}, layout: "survey_sections/question_types/question"  %>
+			<% end %>
+		</div>
+		<div class="col-sm-1">
+			<%= render partial: "questions/edit", locals: {q: q} %>
+		</div>
+		<% end %>
+		
+		</div>
+	
+		<div class="form-actions">
+		<%= submit_tag "Submit answer", name: nil, class: 'btn btn-primary', disabled: true %>
+		</div>
+	</fieldset>	
+	</div>
+	<% end %>
+	</div>
+
+</div>
+
+<div class="col-sm-3">
+
+</div>
+
+</div>

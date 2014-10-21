@@ -1,0 +1,42 @@
+<!-- Link to modal -->
+<%= link_to "Edit", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
+
+<!-- Modal -->
+<div class="modal fade" id= <%= "myModal#{q.id}" %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Question</h4>
+      </div>
+
+
+      <%= form_for q, role: "form", method: "put" do |f| %>
+      <div class="modal-body">
+        <%= hidden_field_tag :survey_section, q.survey_section_id %>
+
+		<%= f.label "Question Type", class: "control-label" %>
+		<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
+		<%= f.select :group_id, options_for_select(types, q.group_id), {}, {class: "form-control"} %>
+		
+		<%= f.label "Question Text", class: "control-label"  %>
+		<%= f.text_area :subtext, class: "form-control" %>
+
+		<% if [3, 4, 5].include? q.group_id %>
+			<div id="question-options">
+				<%= f.fields_for :option_choices, role: "form" do |f2| %>
+					<%= f2.label "Answer Option", class: "control-label" %>
+					<%= f2.text_field :choice_name, class: "form-control"%>	
+				<% end %>
+			</div>
+		<% end %>
+		<%= link_to "Add", "#", id: "add-question-option" %>
+		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.button "Save Changes", class: "btn btn-primary" %>
+      </div>
+	<% end %>
+    </div>
+  </div>
+</div>

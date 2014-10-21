@@ -9,9 +9,12 @@
 </head>
 <body>
     <%= render 'layouts/header' %>
-    <div class="container">
+    <div class="container" id="content">
      <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key %>"><%= value %></div>
+        <div class="row alert alert-<%= key %> alert-block">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          <%= value %>
+        </div>
       <% end %>
       <%= yield %>
 	  <%= render 'layouts/footer' %>

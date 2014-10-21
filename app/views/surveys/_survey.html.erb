@@ -1,4 +1,11 @@
-<li>
-<%= link_to survey.name, survey %>
-<p><%= survey.description %></p>
-</li>
+<div class=row>
+	<%= link_to survey, class: "list-group-item col-sm-6" do %>
+	<h4 class="list-group-item-header">
+		<%= survey.name %>
+	</h4	>
+	<p class="list-group-item-text">
+	<%= survey.description%>	
+	</p>
+<% end %>
+<span class="col-sm-2"><%= link_to "edit", edit_survey_path(survey) %></span>
+</div>

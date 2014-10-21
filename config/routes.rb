@@ -10,14 +10,19 @@ SurveyApp::Application.routes.draw do
   get "/signin", to: "sessions#new"
   match '/signout', to: 'sessions#destroy', via: 'delete'
 
-  match "/surveys/:survey_id/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
+  match "/surveys/:survey_id/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
   get "surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
+  resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
-  resources :surveys, only: [:index, :show] do
-    get "/:index", to: "survey_sections#show", as: :section
+  resources :surveys do
+    #This allows survey sections to be called relative to 
+    # a survey. E.g. survey_section_path(@survey, :index)
+    get "/sec/:index", to: "survey_sections#show", as: :section
+    match "/sec/:index", to: "survey_sections#update", via: 'put', as: :update_section
+    get "/edit/:index", to: "surveys#edit", as: :edit_section
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
