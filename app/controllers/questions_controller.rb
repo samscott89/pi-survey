@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
 		@survey_section = SurveySection.find(params[:survey_section])
 		@survey = @survey_section.survey  		
 		@question.survey_section = @survey_section
-		puts params
+		#puts params
 
 	    pending_opt_choices = []
 

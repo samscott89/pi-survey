@@ -11,4 +11,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) << :name
   end
 
+  # called (once) when the user logs in, insert any code your application needs
+    # to hand off from guest_user to current_user.
+    def logging_in
+    	#This needs to associate all previously answered questions
+    	#with the new account
+    end
+
 end

@@ -23,6 +23,7 @@ class SurveySectionsController < ApplicationController
   
   def answer
     @errors = []
+    @user = current_user
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(index: params[:index]).first
     @questions = @survey_section.questions
@@ -30,13 +31,13 @@ class SurveySectionsController < ApplicationController
     if @user.nil?
       @user = User.create(temporary: true)
       @user.save!(validate: false)
-      session[:guest_user_id] = u.id
-      flash.now[:info] = "You are not logged in. Answers will be stored temporarily until you log in."
+      session[:guest_user_id] = @user.id
+      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in."
     end
 
     pending_answers = []
     answer_params.each do |ans_params|
-      ans = Answer.new(ans_params.merge(user: current_user))
+      ans = Answer.new(ans_params.merge(user: @user))
       pending_answers << ans
     
 
@@ -80,9 +81,12 @@ class SurveySectionsController < ApplicationController
 
       all_answers = []
 
+      #For each answer, if there is no answer text (missing as opposed to blank), then try and find
+      # a matching multiple choice answer.
+      # If this is also missing, try to submit a nil value for this question. 
       params[:answers].each do |q, ans|
         if ans[:answer_text].nil?
-          ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
+          ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name unless ans[:option_id].blank?
         end
 
         ans_params = ActionController::Parameters.new(ans)

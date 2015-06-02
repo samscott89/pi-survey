@@ -1,4 +1,5 @@
 <%= f.label q.subtext, class: "control-label" %>
+<%= f.hidden_field :option_id%>
 <% q.question_options.each do |opt| %>
 <div class="checkbox">
 	<%= f.check_box :option_id, {}, opt.id, nil %>
