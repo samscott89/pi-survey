@@ -19,8 +19,6 @@ gem 'bootstrap-sass', '3.2.0' # pretty CSS
 gem 'sass-rails', '4.0.3' # More CSS trickery
 gem 'bcrypt-ruby', '3.1.2' # security
 gem 'faker', '1.1.2' # populates db with fake data
-gem 'will_paginate', '3.0.4' # puts long lists onto pages
-gem 'bootstrap-will_paginate', '0.0.9' # pagination with boostrap CSS
 gem 'sprockets', '2.11.0'
 
 gem 'uglifier', '2.1.1'
@@ -30,6 +28,9 @@ gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
 
 gem 'rest_in_place'
+
+gem 'devise' # Password authentication stuff
+gem 'kaminari'
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false

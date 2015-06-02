@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user, only: [:edit, :update, :index, :destroy]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:edit, :update, :index, :destroy]
+
+#  before_action :signed_in_user, only: [:edit, :update, :index, :destroy]
+#  before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
 
 
@@ -9,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.order(:name).page params[:page]
   end
   
   def new
@@ -30,6 +32,7 @@ class UsersController < ApplicationController
 
 
   def edit
+    @user = current_user
   end
 
   def update

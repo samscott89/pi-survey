@@ -1,20 +1,20 @@
 SurveyApp::Application.routes.draw do
-
   root to: 'static_pages#home'
 
   get "/help", to: "static_pages#help"
   get "/about", to: "static_pages#about"
   get "/contact", to: "static_pages#contact"
-  get "/signup", to: "users#new"
+#  get "/signup", to: "users#new"
 
-  get "/signin", to: "sessions#new"
-  match '/signout', to: 'sessions#destroy', via: 'delete'
+#  get "/signin", to: "sessions#new"
+#  match '/signout', to: 'sessions#destroy', via: 'delete'
 
   match "/surveys/:survey_id/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
   get "surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
 
+  devise_for :users
   resources :users
-  resources :sessions, only: [:new, :create, :destroy]
+  
   resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
   resources :surveys do

@@ -26,7 +26,13 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(index: params[:index]).first
     @questions = @survey_section.questions
-    
+
+    if @user.nil?
+      @user = User.create(temporary: true)
+      @user.save!(validate: false)
+      session[:guest_user_id] = u.id
+      flash.now[:info] = "You are not logged in. Answers will be stored temporarily until you log in."
+    end
 
     pending_answers = []
     answer_params.each do |ans_params|
