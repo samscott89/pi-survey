@@ -15,9 +15,14 @@ class Answer < ActiveRecord::Base
 
 	# Saves only when at least one value is not blank
 	def check_answers
-		answer_valid = false
-		[:answer_numeric, :answer_text, :answer_boolean].each do |a|
-			answer_valid = true unless self[a].blank?
+		question = self.question_option.question
+		if question.required?
+			answer_valid = false
+			[:answer_numeric, :answer_text, :answer_boolean].each do |a|
+				answer_valid = true unless self[a].blank?
+			end
+		else
+			answer_valid = true
 		end
 
 		errors.add(:answer_text, "At least one answer value must not be blank") unless answer_valid

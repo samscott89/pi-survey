@@ -36,7 +36,7 @@ class SurveySectionsController < ApplicationController
 
       if !ans.valid?
         @errors << ans.errors
-        flash.now[:fail] = "There were errors with your answers: #{ans_params}"
+        flash.now[:danger] = "There were errors with your answers: #{ans_params}"
       end
     end
 
@@ -57,7 +57,7 @@ class SurveySectionsController < ApplicationController
     if @survey_section.save
       flash.now[:success] = "Changed"
     else
-      flash.now[:fail] = "Could not change"
+      flash.now[:danger] = "Could not change"
     end 
 
 

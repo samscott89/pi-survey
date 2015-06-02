@@ -14,6 +14,9 @@ class OptionGroup < ActiveRecord::Base
 	
 	validates :type_id, presence: true
 
+	/
+	Helper function to determine if OptionGroup expects multiple responses
+	/
 	def multiple?
 		[1, 2, 5, 6].include? self.type_id
 	end 
