@@ -44,9 +44,9 @@ class SurveySectionsController < ApplicationController
       render 'show'
     else
       pending_answers.each {|ans| ans.save}
+      redirect_to session[:next_page]
     end
 
-    redirect_to session[:next_page]
   end
 
   def update
