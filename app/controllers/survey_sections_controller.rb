@@ -86,7 +86,13 @@ class SurveySectionsController < ApplicationController
       # If this is also missing, try to submit a nil value for this question. 
       params[:answers].each do |q, ans|
         if ans[:answer_text].nil?
-          ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name unless ans[:option_id].blank?
+          ans[:option_id] = ans[:option_id].reject {|opt| opt.empty?} if ans[:option_id].kind_of? Array
+          if ans[:option_id].empty?
+            ans[:option_id] = QuestionOption.where(option_choice_id: 54, question_id: q).first
+            ans[:answer_text] = ""
+          else
+            ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
+          end        
         end
 
         ans_params = ActionController::Parameters.new(ans)
