@@ -9,7 +9,7 @@ class SurveysController < ApplicationController
   end
 
   def index
-  	@surveys = Survey.paginate(page: params[:page])
+  	@surveys = Survey.page params[:page]
   end
 
   def finish

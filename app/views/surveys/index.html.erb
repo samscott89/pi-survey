@@ -1,10 +1,10 @@
 <% provide(:title, 'All surveys') %>
 <h1>All surveys</h1>
 
-<%= will_paginate @surveys %>
+<%= paginate @surveys %>
 
 <div class="list-group">
   <%= render @surveys %>
 </div>
 
-<%= will_paginate %>
+<%= paginate @surveys %>
