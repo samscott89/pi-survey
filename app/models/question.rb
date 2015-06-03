@@ -11,4 +11,12 @@ class Question < ActiveRecord::Base
 
 	accepts_nested_attributes_for :option_choices
 
+	after_create :add_blank
+
+	def add_blank
+		qid = self.option_group.question_type.id
+		if [1,2].include? qid  # multiple choice type
+			self.question_options.create(option_choice_id: (51 + qid*3)) # Blank answers for these questions
+		end
+	end
 end
