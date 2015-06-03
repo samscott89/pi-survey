@@ -14,6 +14,12 @@ class SurveySectionsController < ApplicationController
 
   	@user = current_user
 
+    if @user.nil? and !session[:guest_user_id].nil?
+        @user = User.find(session[:guest_user_id])
+      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
+      "You are currently logged in as guest #{@user.id}"
+    end
+    
     respond_to do |format|
       format.html {}
       format.json {render json: @survey_section}
@@ -29,10 +35,15 @@ class SurveySectionsController < ApplicationController
     @questions = @survey_section.questions
 
     if @user.nil?
-      @user = User.create(temporary: true)
-      @user.save!(validate: false)
-      session[:guest_user_id] = @user.id
-      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in."
+      if session[:guest_user_id].nil?
+        @user = User.create(temporary: true)
+        @user.save!(validate: false)
+        session[:guest_user_id] = @user.id
+      else
+        @user = User.find(session[:guest_user_id])
+      end
+      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
+      "You are currently logged in as guest #{@user.id}"
     end
 
     pending_answers = []
