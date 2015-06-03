@@ -102,14 +102,13 @@ class SurveySectionsController < ApplicationController
             else # Multiple answers (4)
               all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text:QuestionOption.find(x).option_choice.choice_name }}
             end
-          end
           else # Single option chosen in multiple choice element (3)
             all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
           end
         else # Simple response (1)
           all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
+        end
       end
-
       return all_answers
     end
 
