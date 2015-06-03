@@ -84,17 +84,30 @@ class SurveySectionsController < ApplicationController
       #For each answer, if there is no answer text (missing as opposed to blank), then try and find
       # a matching multiple choice answer.
       # If this is also missing, try to submit a nil value for this question. 
+
+      #The different cases:
+      # 1. The simplest: we have an option_id and a answer_text.
+      # 2. Nothing chosen: we have a missing answer_text (i.e. nil) and option_ids are empty.
+      # 3. Single option: we have an option_id and no answer_text
+      # 4. Multiple options: we have multiple option_ids and no answer text.
+
       params[:answers].each do |q, ans|
-        if ans[:answer_text].nil?
-          ans[:option_id] = ans[:option_id].reject {|opt| opt.empty?} if ans[:option_id].kind_of? Array
-          if ans[:option_id].empty?
-            ans[:option_id] = QuestionOption.where(option_choice_id: 54, question_id: q).first.id
-            ans[:answer_text] = ""
+        if ans[:answer_text].nil? #Multiple choice element (2,3,4)
+          if ans[:option_id].kind_of? Array
+            ans[:option_id] = ans[:option_id].reject {|opt| opt.empty?} 
+            if ans[:option_id].empty? # No answer given (2)
+              ans[:option_id] = QuestionOption.where(option_choice_id: 54, question_id: q).first.id
+              ans[:answer_text] = ""
+              all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
+            else # Multiple answers (4)
+              all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text:QuestionOption.find(x).option_choice.choice_name }}
+            end
+          end
+          else # Single option chosen in multiple choice element (3)
             all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
-          else
-            all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text:QuestionOption.find(x).option_choice.choice_name }}
-          end        
-        end
+          end
+        else # Simple response (1)
+          all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
       end
 
       return all_answers
