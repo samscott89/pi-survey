@@ -88,16 +88,13 @@ class SurveySectionsController < ApplicationController
         if ans[:answer_text].nil?
           ans[:option_id] = ans[:option_id].reject {|opt| opt.empty?} if ans[:option_id].kind_of? Array
           if ans[:option_id].empty?
-            ans[:option_id] = QuestionOption.where(option_choice_id: 54, question_id: q).first
+            ans[:option_id] = QuestionOption.where(option_choice_id: 54, question_id: q).first.id
             ans[:answer_text] = ""
+            all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
           else
-            ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
+            all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text:QuestionOption.find(x).option_choice.choice_name }}
           end        
         end
-
-        ans_params = ActionController::Parameters.new(ans)
-
-        all_answers << ans_params.permit(:answer_text, :option_id)
       end
 
       return all_answers
