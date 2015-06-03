@@ -7,7 +7,11 @@ class UsersController < ApplicationController
 
 
   def show
-  	@user = User.find(params[:id])
+    @user = current_user
+
+    if @user.nil? and !session[:guest_user_id].nil?
+        @user = User.find(session[:guest_user_id])
+    end
   end
 
   def index

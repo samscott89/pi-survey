@@ -1,3 +1,7 @@
-<%= provide(:title, @user.name) %>
-<h1><%= @user.name %></h1>
-<h3><%= @user.email %></h3>
+TODO: This should show the list of current surveys (whether for logged in user or guest).
+
+If not logged in, show a simple message.
+
+<% if !@user.nil? %>
+Current user: <%= @user.id %>
+<% end %>

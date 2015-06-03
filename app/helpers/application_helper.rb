@@ -9,4 +9,14 @@ module ApplicationHelper
       "#{page_title} | #{base_title} "
     end
   end
+
+  def current_or_guest_user
+  	  @user = current_user
+
+  	  if @user.nil? and !session[:guest_user_id].nil?
+  	      @user = User.find(session[:guest_user_id])
+  	  end
+
+  	  @user
+  end
 end

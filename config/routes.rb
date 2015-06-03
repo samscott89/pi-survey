@@ -14,7 +14,8 @@ SurveyApp::Application.routes.draw do
 
   devise_for :users
   resources :users
-  
+  get "/mysurveys", to: "users#show", as: "user_surveys"
+
   resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
   resources :surveys do
