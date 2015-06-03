@@ -1,7 +1,14 @@
 TODO: This should show the list of current surveys (whether for logged in user or guest).
-
+<br>
 If not logged in, show a simple message.
-
+<br>
+<br>
 <% if !@user.nil? %>
+<% if @user.temporary? %>
+<b>You are currently viewing this page as a Guest.<br> Log in to save current survey responses.</b>
+<% end %>
+<br>
 Current user: <%= @user.id %>
+<% else %>
+You are not currently logged in.
 <% end %>
