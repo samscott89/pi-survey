@@ -19,7 +19,7 @@ class SurveySectionsController < ApplicationController
       flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
       "You are currently logged in as guest #{@user.id}"
     end
-    
+
     respond_to do |format|
       format.html {}
       format.json {render json: @survey_section}
@@ -99,7 +99,8 @@ class SurveySectionsController < ApplicationController
       #The different cases:
       # 1. The simplest: we have an option_id and a answer_text.
       # 2. Nothing chosen: we have a missing answer_text (i.e. nil) and option_ids are empty.
-      # 3. Single option: we have an option_id and no answer_text
+      # 3a. Single option: we have an option_id and no answer_text
+      # 3b. Single option, no answer: no option_id and no answer_text
       # 4. Multiple options: we have multiple option_ids and no answer text.
 
       params[:answers].each do |q, ans|
@@ -113,7 +114,13 @@ class SurveySectionsController < ApplicationController
             else # Multiple answers (4)
               all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text:QuestionOption.find(x).option_choice.choice_name }}
             end
-          else # Single option chosen in multiple choice element (3)
+          else # Single option chosen in multiple choice element (3a,b)
+            if ans[:option_id].empty?
+              ans[:option_id] = QuestionOption.where(option_choice_id: 57, question_id: q).first.id
+              ans[:answer_text] = ""
+            else 
+              ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
+            end
             all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
           end
         else # Simple response (1)
