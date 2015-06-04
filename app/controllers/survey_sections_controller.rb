@@ -100,17 +100,17 @@ class SurveySectionsController < ApplicationController
             @errors << err
             next
           else
-            ans = {answer_text: q.blank.value, option_id: q.blank.id}
+            ans = {answer_text: q.blank.value, option_id: q.blank.id, question_id: q.id}
           end
         end
 
         if ans[:option_id].kind_of? Array # handle multiple answers
-          all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text: QuestionOption.find(x).option_choice.choice_name }}
+          all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text: QuestionOption.find(x).option_choice.choice_name, question_id: q.id}}
         else # handle single answer
           if ans[:answer_text].nil? #No answer text for radio buttons etc.
             ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
           end
-          all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id] }
+          all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id], question_id: q.id }
         end
 
       end #questions.each

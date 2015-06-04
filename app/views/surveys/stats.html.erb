@@ -6,17 +6,22 @@
 	<div class="table-responsive">
 	  <table class="table table-hover">
 	    <thead>
-	    	<%= @questions.each do |q| %>
-	    		<th><%= q.subtext %></th>
-	    	<%= end %>
+	    <tr>
+	    	<th>User</th>
+	    	<% @questions.each do |q| %>
+	    		<th><%= q.id %> <%= q.subtext %></th>
+	    	<% end %>
+	    </tr
 	    </thead>
 	    <tbody>
-	    	<%= @users.each do |u| %>
+	    	<% @users.each do |u| %>
+	    	<tr>
 	    		<th> <%= u.id %> </th>
-	    		<%= @questions.each do |q| %>
-	    			<tr><%= @answers[u.id][q.id].join(" ") %></tr>
-	    		<%= end %>
-	    	<%= end %>
+	    		<% @questions.each do |q| %>
+	    			<td><%= @answers[u.id][q.id].join(" ") unless @answers[u.id][q.id].nil? %></td>
+	    		<% end %>
+	    	</tr>
+	    	<% end %>
 	    </tbody>
 	  </table>
 	</div>

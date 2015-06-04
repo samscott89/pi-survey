@@ -43,20 +43,21 @@ class SurveysController < ApplicationController
   end
 
   def stats
-    @survey = params[:survey_id]
-    @questions = Questions.where(survey_section_id: @survey.sections.ids)
+    @survey = Survey.find(params[:survey_id])
+    @questions = Question.where(survey_section_id: @survey.sections.ids)
     @answers = {}
 
     # Return all question ids for survey:
-    qs.ids
+    qs = @questions.ids
     # Return all user ids who have answered those questions:
-    us = Answer.joins(:question_option).where("question_options.question_id" => qs).distinct.pluck(:user_id)
+    us = Answer.where(question_id: qs).distinct.pluck(:user_id)
+    @users = User.find(us)
 
     #Initialise hash
     us.each {|u| @answers[u] = {}}
 
     #Get all answers
-    ans_query = Answer.joins(:question_option).where(user_id: us).select("answers.user_id, question_options.question_id, answers.answer_text")
+    ans_query = Answer.where(user_id: us, question_id: qs).select(:user_id, :question_id, :answer_text)
 
     #Map answers to array
     ans_query.map do |ans|
@@ -79,9 +80,8 @@ class SurveysController < ApplicationController
   def answers_to_csv(answers, qs, options = {})
     CSV.generate(options) do |csv|
       csv << qs
-      answers.each do |ans|
-        ans.each do |uid, questions|
-        csv << [uid].concat qs.map {|qid| questions[qid].join(' ')}
+      answers.each do |uid, questions|
+        csv << [uid].concat(qs.map {|qid| questions[qid].join(' ')})
       end
     end
   end

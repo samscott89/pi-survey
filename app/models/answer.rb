@@ -2,6 +2,7 @@ class Answer < ActiveRecord::Base
 	belongs_to :question_option, foreign_key: "option_id"
 	belongs_to :user
 	belongs_to :unit, class_name:"UnitOfMeasurement"
+	belongs_to :question
 
 	validates :user_id, presence: true
 	validates :option_id, presence: true
