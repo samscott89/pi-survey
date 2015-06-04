@@ -1,0 +1,23 @@
+<%= provide(:title, @survey.name) %>
+
+<div class="center hero-unit">
+
+<h1><%= @survey.name %></h1>
+	<div class="table-responsive">
+	  <table class="table table-hover">
+	    <thead>
+	    	<%= @questions.each do |q| %>
+	    		<th><%= q.subtext %></th>
+	    	<%= end %>
+	    </thead>
+	    <tbody>
+	    	<%= @users.each do |u| %>
+	    		<th> <%= u.id %> </th>
+	    		<%= @questions.each do |q| %>
+	    			<tr><%= @answers[u.id][q.id].join(" ") %></tr>
+	    		<%= end %>
+	    	<%= end %>
+	    </tbody>
+	  </table>
+	</div>
+</div>
