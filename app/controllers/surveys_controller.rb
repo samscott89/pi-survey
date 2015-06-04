@@ -60,8 +60,13 @@ class SurveysController < ApplicationController
 
     #Map answers to array
     ans_query.map do |ans|
-      @answers[ans.user_id][ans.question_id] =|| []
+      @answers[ans.user_id][ans.question_id] ||= []
       @answers[ans.user_id][ans.question_id] << ans.answer_text
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data answers_to_csv(@answers, qs)}
     end
   end
 
@@ -69,6 +74,16 @@ class SurveysController < ApplicationController
 
   def survey_params
     params.require(:survey).permit(:name, :description)
+  end
+
+  def answers_to_csv(answers, qs, options = {})
+    CSV.generate(options) do |csv|
+      csv << qs
+      answers.each do |ans|
+        ans.each do |uid, questions|
+        csv << [uid].concat qs.map {|qid| questions[qid].join(' ')}
+      end
+    end
   end
 
 
