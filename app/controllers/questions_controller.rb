@@ -56,8 +56,8 @@ class QuestionsController < ApplicationController
 		@survey_section = SurveySection.find(params[:survey_section])
 		@survey = @survey_section.survey  		
 
-		flash[:notice] = params
-	    redirect_to survey_edit_section_path(@survey, @survey_section)
+		flash[:info] = params
+	    redirect_to survey_edit_section_path(@survey, @survey_section.index)
 	end
 
 	private
