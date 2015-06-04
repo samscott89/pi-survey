@@ -79,9 +79,9 @@ class SurveysController < ApplicationController
 
   def answers_to_csv(answers, qs, options = {})
     CSV.generate(options) do |csv|
-      csv << qs
+      csv << ["User"].concat(qs)
       answers.each do |uid, questions|
-        csv << [uid].concat(qs.map {|qid| questions[qid].join(' ')})
+        csv << [uid].concat(qs.map {|qid| questions[qid].join(' ') unless questions[qid].nil?})
       end
     end
   end
