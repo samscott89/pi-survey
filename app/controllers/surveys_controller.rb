@@ -42,6 +42,29 @@ class SurveysController < ApplicationController
     end
   end
 
+  def stats
+    @survey = params[:survey_id]
+    @questions = Questions.where(survey_section_id: @survey.sections.ids)
+    @answers = {}
+
+    # Return all question ids for survey:
+    qs.ids
+    # Return all user ids who have answered those questions:
+    us = Answer.joins(:question_option).where("question_options.question_id" => qs).distinct.pluck(:user_id)
+
+    #Initialise hash
+    us.each {|u| @answers[u] = {}}
+
+    #Get all answers
+    ans_query = Answer.joins(:question_option).where(user_id: us).select("answers.user_id, question_options.question_id, answers.answer_text")
+
+    #Map answers to array
+    ans_query.map do |ans|
+      @answers[ans.user_id][ans.question_id] =|| []
+      @answers[ans.user_id][ans.question_id] << ans.answer_text
+    end
+  end
+
   private
 
   def survey_params
