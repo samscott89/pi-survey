@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602133230) do
+ActiveRecord::Schema.define(version: 20150604120242) do
 
   create_table "answers", force: true do |t|
     t.integer  "user_id"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 20150602133230) do
   end
 
   add_index "option_groups", ["type_id"], name: "index_option_groups_on_type_id"
+
+  create_table "question_blanks", force: true do |t|
+    t.string   "value"
+    t.integer  "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "question_blanks", ["question_id"], name: "index_question_blanks_on_question_id"
 
   create_table "question_options", force: true do |t|
     t.integer "question_id"
