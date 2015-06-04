@@ -18,6 +18,8 @@ SurveyApp::Application.routes.draw do
 
   resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
+  get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
+
   resources :surveys do
     #This allows survey sections to be called relative to 
     # a survey. E.g. survey_section_path(@survey, :index)
