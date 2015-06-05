@@ -8,8 +8,13 @@ class UsersController < ApplicationController
   def show
     @user = current_user
 
-    if @user.nil? and !session[:guest_user_id].nil?
+    if @user.nil?
+      if !session[:guest_user_id].nil?
         @user = User.find(session[:guest_user_id])
+      else
+        flash[:alert] = "You need to be signed in to view surveys."
+        redirect_to new_user_session_path
+      end
     end
   end
 
