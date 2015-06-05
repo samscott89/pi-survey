@@ -3,4 +3,5 @@ class Survey < ActiveRecord::Base
 	has_many :survey_tags, dependent: :destroy
 	has_many :tags, through: :survey_tags
 	has_many :sections, class_name: "SurveySection", dependent: :destroy
+	belongs_to :owner, class_name: "User"
 end
