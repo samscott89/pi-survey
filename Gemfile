@@ -22,6 +22,9 @@ gem 'faker', '1.1.2' # populates db with fake data
 gem 'sprockets', '2.11.0'
 
 gem 'uglifier', '2.1.1'
+gem 'coffee-rails', '4.0.1'
+gem 'coffee-script-source', '1.8.0'
+
 gem 'jquery-rails', '3.0.4'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
