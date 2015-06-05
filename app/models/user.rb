@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
   before_create :create_remember_token
 
   has_many :answers
-  has_many :active_surveys
+  has_many :active_surveys # surveys in progress/completed
+  has_many :surveys, foreign_key: :owner_id # surveys owned by this user
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   with_options unless: :temporary do |user|

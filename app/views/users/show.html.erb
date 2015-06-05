@@ -1,14 +1,83 @@
-TODO: This should show the list of current surveys (whether for logged in user or guest).
-<br>
-If not logged in, show a simple message.
-<br>
-<br>
-<% if !@user.nil? %>
-<% if @user.temporary? %>
-<b>You are currently viewing this page as a Guest.<br> Log in to save current survey responses.</b>
+<%= provide(:title, full_title("User Profile")) %>
+
+<div class="jumbotron">
+
+<h1>My Surveys</h1>
+
+<div class="row">
+
+<% if @user.surveys.empty? %>
+<div class="list-group col-lg-8">
+	<div class="list-group-item center">
+			<div class="list-group-item-header">
+			<h2>
+				You haven't created any surveys yet.
+			</h2>
+			</div>
+			<div class="list-group-item-text">
+			<br>
+			<%= link_to "Create a new survey", new_survey_path, class: "btn btn-large btn-primary"  %>	
+			<br>
+			</div>
+	</div>
+</div>
+
 <% end %>
-<br>
-Current user: <%= @user.id %>
-<% else %>
-You are not currently logged in.
+
+<div class="list-group col-lg-8">
+	<% @user.surveys.each do |survey| %>
+		<%= link_to survey_stats_path(survey), class: "list-group-item" do %>
+		<div class="list-group-item-header">
+			<h2>
+				<%= survey.name %>
+			</h2>
+		</div>
+		<p class="list-group-item-text">
+		Number of responses: <%= ActiveSurvey.where(survey_id: survey.id, completed: true).count %>	
+		</p>
+		<% end %>
+	<% end %>
+</div>
+</div>
+
+<h1>My Survey Answers</h1>
+
+<div class="row">
+
+<% if @user.active_surveys.empty? %>
+<div class="list-group col-lg-8">
+	<div class="list-group-item center">
+			<div class="list-group-item-header">
+			<h2>
+				You haven't answered any surveys yet.
+			</h2>
+			</div>
+			<div class="list-group-item-text">
+			<br>
+			<%= link_to "Find a survey", surveys_path, class: "btn btn-large btn-primary"  %>	
+			<br>
+			</div>
+	</div>
+</div>
+
 <% end %>
+
+<div class="list-group col-lg-8">
+	<% @user.active_surveys.order(updated_at: :desc).each do |active_survey| %>
+		<% survey = active_survey.survey %>
+		<%= link_to survey_path(survey), class: "list-group-item list-group-item-#{active_survey.completed ? "success" : "info"}" do %>
+		<div class="list-group-item-header">
+			<h2>
+				<%= survey.name %>
+			</h2>
+		</div>
+		<p class="list-group-item-text">
+			Completed: <%= t active_survey.completed.class %>
+		</p>
+		<% end %>
+	<% end %>
+</div>
+</div>
+
+
+</div>

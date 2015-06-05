@@ -72,6 +72,8 @@ class SurveySectionsController < ApplicationController
       pending_answers.each {|ans| ans.save}
       if @active_survey.nil?
         @user.active_surveys.create(survey: @survey, completed: false)
+      else
+        @active_survey.touch # this updates the "updated_at" column... pretty cool!
       end
       redirect_to session[:next_page]
     end
