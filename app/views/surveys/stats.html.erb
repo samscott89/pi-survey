@@ -9,7 +9,7 @@
 	    <tr>
 	    	<th>User</th>
 	    	<% @questions.each do |q| %>
-	    		<th><%= q.id %> <%= q.subtext %></th>
+	    			<th><%= render partial: "questions/display", locals: {q: q} %></th>
 	    	<% end %>
 	    </tr
 	    </thead>

@@ -1,0 +1,24 @@
+<!-- Link to modal -->
+<%= link_to "#{q.id}. #{q.subtext}", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %> <!--please check this bit sam as I am not sure if the myModal#q.id needs to be unique as this is copied from the _edit partial.
+
+<!-- Modal -->
+<div class="modal fade" id= <%= "myModal#{q.id}" %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Question View</h4>
+      </div>
+      <div class="modal-body">
+	      <div class="col-sm-8">
+	      	<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
+	      		<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q}, layout: "survey_sections/question_types/question"  %>
+	      	<% end %>
+	      </div> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
