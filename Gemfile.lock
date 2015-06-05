@@ -188,7 +188,6 @@ DEPENDENCIES
   better_errors
   bootstrap-sass (= 3.2.0)
   capybara (= 2.1.0)
-  coffee-rails (= 4.0.1)
   devise
   factory_girl_rails (= 4.1.0)
   faker (= 1.1.2)
