@@ -1,4 +1,6 @@
 class SurveysController < ApplicationController
+
+
   def show
   	@survey = Survey.find(params[:id])
 
@@ -13,6 +15,12 @@ class SurveysController < ApplicationController
   end
 
   def finish
+    @user = view_context.current_or_guest_user
+    if @user.nil?
+      flash.now[:danger] = "No user found"
+    end
+    @active_survey = ActiveSurvey.where(user_id: @user, survey_id: params[:survey_id]).first
+    @active_survey.update(completed: true)
   end
 
   def new

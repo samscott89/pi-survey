@@ -17,7 +17,7 @@
 
 	
 	<div class="form-actions">
-	<%= submit_tag "Submit answer", class: 'btn btn-primary' %>
+	<%= submit_tag "Submit answer", class: 'btn btn-primary', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
 	</div>
 <% end %>
 </fieldset>

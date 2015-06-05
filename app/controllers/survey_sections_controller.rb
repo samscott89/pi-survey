@@ -4,20 +4,26 @@ class SurveySectionsController < ApplicationController
     @errors = []
   	@survey = Survey.find(params[:survey_id])
   	@survey_section = @survey.sections.where(index: params[:index]).first
-  	if @survey.sections.where(index: (params[:index].to_i + 1)).count > 0
-  	  session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
-	  else
-	    session[:next_page] = survey_completed_path(@survey)
-	  end
+    if @survey.sections.where(index: (params[:index].to_i + 1)).count > 0
+      session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
+    else
+      session[:next_page] = survey_completed_path(@survey)
+    end
 
-  	@questions = @survey_section.questions
+    @questions = @survey_section.questions
 
-  	@user = current_user
+    @user = current_user
 
     if @user.nil? and !session[:guest_user_id].nil?
-        @user = User.find(session[:guest_user_id])
+      @user = User.find(session[:guest_user_id])
       flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
       "You are currently logged in as guest #{@user.id}"
+    end
+
+    @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
+
+    if !@active_survey.nil? and @active_survey.completed?
+      flash[:warning] = "This survey has been submitted and cannot be changed."
     end
 
     respond_to do |format|
@@ -46,6 +52,10 @@ class SurveySectionsController < ApplicationController
       "You are currently logged in as guest #{@user.id}"
     end
 
+
+    @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
+
+
     pending_answers = []
     answer_params.each do |ans_params|
       ans = Answer.new(ans_params.merge(user: @user))
@@ -60,6 +70,9 @@ class SurveySectionsController < ApplicationController
       render 'show'
     else
       pending_answers.each {|ans| ans.save}
+      if @active_survey.nil?
+        @user.active_surveys.create(survey: @survey, completed: false)
+      end
       redirect_to session[:next_page]
     end
 
