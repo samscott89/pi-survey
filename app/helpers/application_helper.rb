@@ -19,4 +19,15 @@ module ApplicationHelper
 
   	  @user
   end
+
+  def bootstrap_alert(type)
+    case type
+    when "notice" 
+      "success"
+    when "alert"
+      "warning"
+    else
+      "info"
+    end
+  end
 end

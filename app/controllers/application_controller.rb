@@ -7,15 +7,18 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Add name to the parameters used as sign up information.
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
   end
 
-  # called (once) when the user logs in, insert any code your application needs
-    # to hand off from guest_user to current_user.
-    def logging_in
-    	#This needs to associate all previously answered questions
-    	#with the new account
+  # Go to the user page on log in.
+  def after_sign_in_path_for(resource)
+    puts "Current session: #{session} with guest_user_id: #{session[:guest_user_id]}"
+    if session[:guest_user_id].nil? or User.find(session[:guest_user_id]).active_surveys.empty?
+      user_surveys_path
+    else
+      review_surveys_path
     end
-
+  end
 end

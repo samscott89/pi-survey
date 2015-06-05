@@ -1,0 +1,33 @@
+ <% provide(:title, "Review Surveys") %>
+
+ <h3> You have unsaved surveys. Would you like to keep them? </h3>
+
+ <%= form_tag "/save_surveys", action: "post", role: "form" do %>
+ <fieldset>
+ 	
+<% @guest_user.active_surveys.order(updated_at: :desc).each do |active_survey| %>
+<ul class="list-group col-lg-8">
+		<% survey = active_survey.survey %>
+		<li class="list-group-item list-group-item-#{active_survey.completed ? "success" : "info"}">
+		<div class="list-group-item-header">
+			<h2>
+				<%= survey.name %>
+			</h2>
+		</div>
+		<p class="list-group-item-text col-lg-7">
+			Completed: <%= t active_survey.completed.class %>
+		</p>
+		<div clas="col-lg-1">
+			<%= label_tag  "survey[#{active_survey.id}]", "Save survey to user account?" %>
+			<%= check_box_tag "survey[#{active_survey.id}]"%>
+		</div>
+		</li>
+</ul>
+<% end %>
+
+ </fieldset>
+
+ <%= submit_tag "Continue", class: "btn btn-large btn-primary" %>
+
+
+<% end %>

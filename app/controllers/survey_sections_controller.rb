@@ -23,7 +23,7 @@ class SurveySectionsController < ApplicationController
     @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
 
     if !@active_survey.nil? and @active_survey.completed?
-      flash[:warning] = "This survey has been submitted and cannot be changed."
+      flash[:alert] = "This survey has been submitted and cannot be changed."
     end
 
     respond_to do |format|
@@ -66,7 +66,7 @@ class SurveySectionsController < ApplicationController
     end
 
     if @errors.any?
-      flash.now[:danger] = "There were errors with your answers: #{ans_params}"
+      flash.now[:alert] = "There were errors with your answers: #{ans_params}"
       render 'show'
     else
       pending_answers.each {|ans| ans.save}

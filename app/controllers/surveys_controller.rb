@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
   def finish
     @user = view_context.current_or_guest_user
     if @user.nil?
-      flash.now[:danger] = "No user found"
+      flash.now[:alert] = "No user found"
     end
     @active_survey = ActiveSurvey.where(user_id: @user, survey_id: params[:survey_id]).first
     @active_survey.update(completed: true)
@@ -30,7 +30,7 @@ class SurveysController < ApplicationController
   def create
   	@survey = Survey.new(survey_params)
     if @survey.save
-      flash[:success] = "Survey Created"
+      flash[:notice] = "Survey Created"
        @survey.sections.create(name: "Section 1", title: "New Section", index: 1)
        redirect_to edit_survey_path @survey
     else

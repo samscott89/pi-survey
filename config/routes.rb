@@ -10,7 +10,7 @@ SurveyApp::Application.routes.draw do
 #  match '/signout', to: 'sessions#destroy', via: 'delete'
 
   match "/surveys/:survey_id/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
-  get "surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
+  get "/surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
 
   devise_for :users
   resources :users
@@ -19,6 +19,10 @@ SurveyApp::Application.routes.draw do
   resources :questions, only: [:create, :update, :destroy, :edit, :delete]
 
   get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
+
+  # Used for reviewing and saving surveys done by guest accounts
+  get "/review_surveys", to: "users#review_surveys", as: "review_surveys"
+  match "/save_surveys", to: "users#save_surveys", as: "save_surveys", via: 'post'
 
   resources :surveys do
     #This allows survey sections to be called relative to 
