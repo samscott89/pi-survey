@@ -1,0 +1,43 @@
+<div class="form-body">
+<%= form_for q, role: "form", method: "post" do |f| %>
+<fieldset>
+	<% if q.survey_section.nil? %>
+	<%= hidden_field_tag :survey_section, @survey.sections.first.id %>
+	<% else %>
+	<%= hidden_field_tag :survey_section, q.survey_section_id %>
+	<% end %>
+
+	<%= f.label "Question Type", class: "control-label" %>
+	<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
+	<%= f.select :group_id, options_for_select(types, q.group_id), {}, {class: "form-control", id: "question_group_id#{q.id}"} %>
+	
+	<%= f.label "Question Text", class: "control-label"  %>
+	<%= f.text_area :subtext, class: "form-control" %>
+
+	<div id="question-options<%= q.id %>">
+		<% if [3, 4, 5].include? q.group_id %>
+				<%= f.fields_for :option_choices, role: "form" do |f2| %>
+					<%= f2.label "Answer Option", class: "control-label" %>
+					<%= f2.text_field :choice_name, class: "form-control"%>	
+				<% end %>
+		<% end %>
+
+		<!-- This gets filled automatically -->
+		
+		<div id="question-option<%= q.id %>">
+		<%= fields_for OptionChoice.new, role: "form" do |f2| %>
+			<%= f2.label "Answer Option", class: "control-label" %>
+			<%= f2.text_field :choice_name, class: "form-control" %>
+		<% end %>
+		</div>
+
+		
+	<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
+	</div>
+
+	</fieldset>
+	</div>
+	<div class="form-submit">
+	<%= f.button "Save Question", class: "btn" %>
+	</div>
+<% end %>

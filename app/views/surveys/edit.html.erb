@@ -6,29 +6,8 @@
 
 <div class="row">
 <div class="col-sm-3" id="survey-options">
-	<legend>Add Components</legend>
-	<%= form_for Question.new, role: "form", method: "post" do |f| %>
-		<%= hidden_field_tag :survey_section, @survey.sections.first.id %>
-		<%= f.label "Question Type", class: "control-label" %>
-		<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
-		<%= f.select :group_id, options_for_select(types, types[0]), {}, {class: "form-control"} %>
-		
-		<%= f.label "Question Text", class: "control-label"  %>
-		<%= f.text_area :subtext, class: "form-control" %>
-		<div id="question-options">
-			<!-- This gets filled automatically -->
-			<div id="question-option">
-			<%= fields_for OptionChoice.new, role: "form" do |f2| %>
-				<%= f2.label "Answer Option", class: "control-label" %>
-				<%= f2.text_field :choice_name, class: "form-control" %>
-			<% end %>
-			</div>
-			
-		<%= link_to "Add", "#", id: "add-question-option" %>
-		</div>
-		<br>
-		<%= f.button "Add question", class: "btn" %>
-	<% end %>
+<legend>Add Components</legend>
+<%= render partial: "questions/edit_question", locals: {q: Question.new} %>
 </div>
 
 <div id="tabs" class="col-sm-6">

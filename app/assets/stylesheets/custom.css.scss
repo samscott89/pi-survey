@@ -134,3 +134,16 @@ footer {
   @include box_sizing;
 }
 
+/**
+  Makes modal content tags automatically applied
+  for forms within modals.
+*/
+
+.modal-content{
+  .form-body {
+    @extend .modal-body;
+  }
+  .form-submit {
+    @extend .modal-footer;
+  }
+}

@@ -6,26 +6,28 @@ $(function() {
 	})
 
 	// Function to change the question type box when value is changed
-	$("#question_group_id").change(function() {
+	$('[id^=question_group_id]').change(function() {
 	  var type = $(this).val();
 	  var option_types = ["3", "4", "5"];
+	  var idx = $(this).attr('id').substr(17)
 	  if(option_types.indexOf(type) > -1 ){
-	  	$("#question-options").show();
+	  	$("#question-options" + idx).show();
 	  } else {
-	  	$("#question-options").hide();
+	  	$("#question-options" + idx).hide();
 	  }
 	  // $("#option_choice_option_group_id").attr("value", type);
 	});
 	$("#question-option input").attr("name", "option_choice[0][choice_name]");
 	var qc = 1;
 
-	$("#add-question-option").click(function(e){
+	$("[id^=add-question-option]").click(function(e){
 		console.log(e)
+		var idx = $(this).attr('id').substr(19)
 		e.preventDefault();
-		var opt = $("#question-option").clone();
+		var opt = $("#question-option" + idx).clone();
 		opt.find("input").attr("name",  "option_choice[" + qc + "][choice_name]");
 		opt.find("input").val("");
-		$("#add-question-option").before(opt)
+		$("#add-question-option" + idx).before(opt)
 		qc++;
 	});
 });
