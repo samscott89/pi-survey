@@ -1,7 +1,8 @@
 <%= f.label q.subtext, class: "control-label" %>
 <% q.question_options.each do |opt| %>
 <div class="radio">
-	<%= f.radio_button :option_id, opt.id	 %>
-	<%= f.label opt.option_choice.choice_name.capitalize  %>
+	<%= f.label "option_id_#{opt.id}"  do %>
+	<%= f.radio_button :option_id, opt.id %> <%= opt.option_choice.choice_name.capitalize %>
+	<% end %>
 </div>
 <% end %>
