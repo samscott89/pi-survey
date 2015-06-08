@@ -1,6 +1,6 @@
 class Question < ActiveRecord::Base
 
-	belongs_to :survey_section, dependent: :destroy
+	belongs_to :survey_section
 	belongs_to :option_group, foreign_key: "group_id"
 	
 	has_one :blank, class_name: "QuestionBlank"

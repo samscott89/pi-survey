@@ -1,5 +1,9 @@
 <div class="form-body">
-<%= form_for q, role: "form", method: "post" do |f| %>
+
+<%# Note: this will automatically choose POST => question#create if q is Question.new
+and PATCH => question#update if q exists in DB. Cool! %>
+
+<%= form_for q, role: "form" do |f| %>
 <fieldset>
 	<% if q.survey_section.nil? %>
 	<%= hidden_field_tag :survey_section, @survey.sections.first.id %>
@@ -15,29 +19,27 @@
 	<%= f.text_area :subtext, class: "form-control" %>
 
 	<div id="question-options<%= q.id %>">
-		<% if [3, 4, 5].include? q.group_id %>
+		<% if OptionGroup.multiples.include? q.group_id %>
 				<%= f.fields_for :option_choices, role: "form" do |f2| %>
-					<%= f2.label "Answer Option", class: "control-label" %>
+					<%= f2.label :choice_name, "Answer Option", class: "control-label" %>
 					<%= f2.text_field :choice_name, class: "form-control"%>	
 				<% end %>
 		<% end %>
 
-		<!-- This gets filled automatically -->
-		
+		<%# This is essentially a dummy template for adding new options.
+		Javascript handles cloning this for new entries.  %>		
 		<div id="question-option<%= q.id %>">
-		<%= fields_for OptionChoice.new, role: "form" do |f2| %>
-			<%= f2.label "Answer Option", class: "control-label" %>
+		<%= fields_for "option_choice[0]", OptionChoice.new, role: "form" do |f2| %>
+			<%= f2.label :choice_name, "Answer Option", class: "control-label" %>
 			<%= f2.text_field :choice_name, class: "form-control" %>
 		<% end %>
-		</div>
-
-		
+		</div>	
 	<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
 	</div>
 
 	</fieldset>
 	</div>
 	<div class="form-submit">
-	<%= f.button "Save Question", class: "btn" %>
+	<%= f.button "Save Question", class: "btn btn-primary btn-large" %>
 	</div>
 <% end %>

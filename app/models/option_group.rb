@@ -7,17 +7,23 @@
 
 /
 class OptionGroup < ActiveRecord::Base
-	has_many :option_choices, dependent: :destroy
+	has_many :option_choices
 	belongs_to :question_type, foreign_key: "type_id"
 
 	has_many :option_choices
 	
 	validates :type_id, presence: true
 
+	@@multiple_types = [1,2,5,6]
+
 	/
 	Helper function to determine if OptionGroup expects multiple responses
 	/
 	def multiple?
-		[1, 2, 5, 6].include? self.type_id
+		@@multiple_types.include? self.type_id
 	end 
+
+	def self.multiples
+		OptionGroup.where(type_id: @@multiple_types).ids
+	end
 end

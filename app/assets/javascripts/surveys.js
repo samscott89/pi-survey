@@ -17,17 +17,24 @@ $(function() {
 	  }
 	  // $("#option_choice_option_group_id").attr("value", type);
 	});
-	$("#question-option input").attr("name", "option_choice[0][choice_name]");
-	var qc = 1;
+	// $("[id^=question-option] input").attr("name", "option_choice[0][choice_name]");
+	var qc = []
+	$("[id^=question-option]").each(function(e){
+		var idx = $(this).attr('id').substr(19)
+		qc[idx] = 1;
+	})
+	
 
 	$("[id^=add-question-option]").click(function(e){
 		console.log(e)
-		var idx = $(this).attr('id').substr(19)
 		e.preventDefault();
+		var idx = $(this).attr('id').substr(19)
 		var opt = $("#question-option" + idx).clone();
-		opt.find("input").attr("name",  "option_choice[" + qc + "][choice_name]");
+		opt.find("input").attr("name",  "option_choice[" + qc[idx] + "][choice_name]");
 		opt.find("input").val("");
 		$("#add-question-option" + idx).before(opt)
-		qc++;
+		qc[idx]++;
+		console.log("idx: " + idx)
+		console.log(opt.find("input"))
 	});
 });
