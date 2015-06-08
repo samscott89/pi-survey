@@ -119,8 +119,10 @@ class QuestionsController < ApplicationController
 		  	opt.save
 		  	@question.question_options.create(option_choice: opt)
 		  end
-		  params[:delete].each do |idx, opt|
-		  	QuestionOption.where(question_id: @question.id, option_choice_id: idx).destroy_all
+		  if params.has_key? :delete
+		    params[:delete].each do |idx, opt|
+		      QuestionOption.where(question_id: @question.id, option_choice_id: idx).destroy_all
+		    end
 		  end
 		  flash[:success] = "Question updated."
 		  redirect_to survey_edit_section_path(@survey, @survey_section.index)
