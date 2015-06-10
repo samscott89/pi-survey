@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
 
 	has_many :question_options
 	has_many :option_choices, through: :question_options
-	has_many :answers, through: :option_choices
+	has_many :answers
 
 	validates :survey_section_id, presence: true
 	validates :subtext, presence: true

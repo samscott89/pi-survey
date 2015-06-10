@@ -10,7 +10,9 @@
 <%= form_tag submit_answer_path(@survey, @survey_section.index), action: "post", role: "form" do %>
 
 	<% @questions.each do |q| %>
-		<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
+		<% ans = @answers[q.id] %>
+		<% ans ||= Answer.new %>
+		<%= fields_for "answers[#{q.id}]", ans do |f| %>
 			<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q}, layout: "survey_sections/question_types/question"  %>
 		<% end %>
 	<% end %>

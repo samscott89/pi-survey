@@ -21,9 +21,10 @@ class SurveySectionsController < ApplicationController
     end
 
     @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
-
-    if !@active_survey.nil? and @active_survey.completed?
-      flash[:alert] = "This survey has been submitted and cannot be changed."
+    @answers = []
+    if !@active_survey.nil?
+      flash[:alert] = "This survey has been submitted and cannot be changed." if @active_survey.completed?
+      @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
     end
 
     respond_to do |format|
