@@ -20,6 +20,7 @@ SurveyApp::Application.routes.draw do
   # match "/questions/:question_id", to: "questions#update", via: 'post', as: "edit_question"
 
   get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
+  match "/surveys/:survey_id/new_section", to: "survey_sections#new", as: :new_survey_section, via: "post"
 
   # Used for reviewing and saving surveys done by guest accounts
   get "/review_surveys", to: "users#review_surveys", as: "review_surveys"

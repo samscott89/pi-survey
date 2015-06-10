@@ -97,6 +97,15 @@ class SurveySectionsController < ApplicationController
     end
   end
 
+  def new
+    @survey = Survey.find(params[:survey_id])
+    idx = (@survey.sections.pluck(:index) << 0).max + 1
+    @section = @survey.sections.create(name: "Section #{idx}", title: "New Section", index: idx)
+    flash[:success] = "Section added."
+
+    redirect_to edit_survey_path(@survey, index: idx)
+  end
+
   private
 
     # This method find the parameters for the answer to a specific question, and returns only the permitted variables

@@ -15,9 +15,15 @@
 		<% @survey.sections.each do |sec| %>
 		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.index %>" sec="<%= sec.id %>"><%= sec.index %></a></li>
 		<% end %>
+		<li role="presentation"> 
+		<%= link_to new_survey_section_path(@survey), class: "btn", id: "add-section-tab", method: :post do %>
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		<% end %>
+		</li>
 	</ul>
 
 	<div class="tab-content">
+
 	<% @survey.sections.each do |sec| %>
 	<div id="tabs-<%= sec.index %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.index %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
 
