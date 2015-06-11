@@ -1,3 +1,6 @@
 <%= f.label :answer_text, q.subtext, class: "control-label" %>
-<%= f.hidden_field :option_id, value: q.question_options.first.id %>
 <%= f.text_field :answer_text, class: "form-control" %>
+
+<%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
+	<%= f2.hidden_field :option_id, value: q.question_options.first.id %>
+<% end %>

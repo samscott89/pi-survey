@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150611084313) do
+ActiveRecord::Schema.define(version: 20150611111812) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -21,9 +21,15 @@ ActiveRecord::Schema.define(version: 20150611084313) do
     t.datetime "updated_at"
   end
 
+  create_table "answer_options", force: true do |t|
+    t.integer  "answer_id"
+    t.integer  "option_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "answers", force: true do |t|
     t.integer  "user_id"
-    t.integer  "option_id"
     t.integer  "answer_numeric"
     t.text     "answer_text"
     t.boolean  "answer_boolean"
@@ -32,8 +38,6 @@ ActiveRecord::Schema.define(version: 20150611084313) do
     t.datetime "updated_at"
     t.integer  "question_id"
   end
-
-  add_index "answers", ["user_id", "option_id"], name: "index_answers_on_user_id_and_option_id", unique: true
 
   create_table "option_choices", force: true do |t|
     t.integer "option_group_id"

@@ -58,6 +58,16 @@ class SurveySectionsController < ApplicationController
     @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
 
     pending_answers = []
+
+    answer_params(@questions, @user).each do |ans|
+      a = Answer.new(ans)
+      if !a.valid?
+        @errors << ans_builder.errors
+      end
+      pending_answers << a
+    end
+    
+=begin
     answer_params.each do |qid, ans_params|
       if @answers[qid.to_i].nil?
         ans = Answer.new(ans_params.merge(user: @user))
@@ -71,12 +81,14 @@ class SurveySectionsController < ApplicationController
         @errors << ans.errors
       end
     end
+=end
+    
 
     if @errors.any?
       flash.now[:alert] = "There were errors with your answers: #{ans_params}"
       render 'show'
     else
-      pending_answers.each {|ans| ans.save}
+      pending_answers.each {|a| a.save}
       if @active_survey.nil?
         @user.active_surveys.create(survey: @survey, completed: false)
       else
@@ -131,14 +143,44 @@ class SurveySectionsController < ApplicationController
 
   private
 
+    def answer_params(questions, user)
+      params[:answers] ||= {} # Initialise if not set (i.e. no answers given)
+
+      questions.each do |q|
+        ans = params[:answers][q.id.to_s]
+        if ans.nil?
+          if q.required?
+            err = ActiveModel::Errors(self)
+            err.add(:question, "is required")
+            @errors << err
+            next
+          else
+            ans = Answer.new(question_id: q.id, answer_text: q.blank.value)
+            ans.answer_options.build(option_id: q.blank.id)
+          end
+        end
+      end
+
+      answer_params = []
+      params.require(:answers).each do |qid, pa|
+        answer_params << pa.permit(:answer_text, answer_options_attributes: [:option_id]).merge(question_id: qid, user_id: user.id)
+      end
+
+      answer_params
+    end
+
+
+
+
+=begin
     # This method find the parameters for the answer to a specific question, and returns only the permitted variables
     # Note: since question_option can be a list of answers, this is also permitted
     def answer_params
 
       # all_answers = []
 
+      params[:answers] ||= {} # No answers at all
       @questions.each do |q|
-        params[:answers] ||= {} # No answers at all
         ans = params[:answers][q.id.to_s]
         if ans.nil? # handle no answers
           if q.required?
@@ -164,6 +206,7 @@ class SurveySectionsController < ApplicationController
 
         return params[:answers]
     end
+=end
 
     def survey_section_params
       params.require(:survey_section).permit(:name, :title, :required, :index)

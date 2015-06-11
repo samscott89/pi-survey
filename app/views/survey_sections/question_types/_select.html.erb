@@ -1,3 +1,5 @@
-<%= f.label :option_id, q.subtext, class: "control-label" %>
+<%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
+<%= f2.label :option_id, q.subtext, class: "control-label" %>
 <% opt = q.question_options.map{|opt| [opt.option_choice.choice_name.capitalize, opt.id]} %>
-<%= f.select :option_id, options_for_select(opt, f.object.option_id), {}, {class: "form-control"} %>
+<%= f2.select :option_id, options_for_select(opt, f.object.answer_options.pluck(:option_id)), {}, {class: "form-control"} %>
+<% end %>
