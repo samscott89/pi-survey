@@ -47,7 +47,7 @@ class QuestionsController < ApplicationController
 	      	@question.question_options.create(option_choice: opt)
 	      end
 	      flash[:success] = "Question added."
-	      redirect_to survey_edit_section_path(@survey, @survey_section.index)
+	      redirect_to survey_edit_section_path(@survey, @survey_section.idx)
 	    end
 	end
 
@@ -125,7 +125,7 @@ class QuestionsController < ApplicationController
 		    end
 		  end
 		  flash[:success] = "Question updated."
-		  redirect_to survey_edit_section_path(@survey, @survey_section.index)
+		  redirect_to survey_edit_section_path(@survey, @survey_section.idx)
 		end
 	end
 

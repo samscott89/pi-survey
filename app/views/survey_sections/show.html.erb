@@ -7,7 +7,7 @@
 
 <fieldset>
 <legend><%= "Section #{@survey_section.id}: " + @survey_section.title %></legend>
-<%= form_tag submit_answer_path(@survey, @survey_section.index), action: "post", role: "form" do %>
+<%= form_tag submit_answer_path(@survey, @survey_section.idx), action: "post", role: "form" do %>
 
 	<% @questions.each do |q| %>
 		<% ans = @answers[q.id] %>

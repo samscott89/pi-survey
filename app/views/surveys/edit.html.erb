@@ -13,16 +13,25 @@
 <div id="tabs" class="col-sm-6">
 	<ul class="nav nav-tabs">
 		<% @survey.sections.each do |sec| %>
-		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.index %>" sec="<%= sec.id %>"><%= sec.index %></a></li>
+		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.idx %>" sec="<%= sec.id %>"><%= sec.idx %></a></li>
 		<% end %>
+		<li role="presentation"> 
+		<%= link_to new_survey_section_path(@survey), class: "btn", id: "add-section-tab", method: :post do %>
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		<% end %>
+		</li>
 	</ul>
 
 	<div class="tab-content">
-	<% @survey.sections.each do |sec| %>
-	<div id="tabs-<%= sec.index %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.index %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
 
+	<% @survey.sections.each do |sec| %>
+	<div id="tabs-<%= sec.idx %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.idx %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
+
+	<legend>
+	<div class="row">
+	<div class="col-sm-9"><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></div>
+	<div class="col-sm-3"><%= link_to "Delete", survey_delete_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
 	<fieldset>
-	<legend><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></legend>
 		<div class="row">
 		<% sec.questions.each do |q| %>
 		<div class="col-sm-8">
@@ -38,7 +47,7 @@
 		</div>
 	
 		<div class="form-actions">
-		<%= submit_tag "Submit answer", name: nil, class: 'btn btn-primary', disabled: true, title: "This is a preview."%>
+		<%#= submit_tag "Submit answer", name: nil, class: 'btn btn-primary', disabled: true, title: "This is a preview."%>
 		</div>
 	</fieldset>	
 	</div>

@@ -3,7 +3,11 @@ $(function() {
 	// When tab changes, it updates the hidden value to the relevant survey section
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	  $('input[name="survey_section').attr("value", e.target.getAttribute("sec")) 
-	})
+	});
+
+	$("#add-section-tab").click(function(e){
+		console.log("Add section - Click!");
+	});
 
 	// Function to change the question type box when value is changed
 	$('[id^=question_group_id]').change(function() {

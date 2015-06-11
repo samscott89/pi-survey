@@ -20,6 +20,7 @@ SurveyApp::Application.routes.draw do
   # match "/questions/:question_id", to: "questions#update", via: 'post', as: "edit_question"
 
   get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
+  match "/surveys/:survey_id/new_section", to: "survey_sections#new", as: :new_survey_section, via: "post"
 
   # Used for reviewing and saving surveys done by guest accounts
   get "/review_surveys", to: "users#review_surveys", as: "review_surveys"
@@ -31,6 +32,7 @@ SurveyApp::Application.routes.draw do
     get "/sec/:index", to: "survey_sections#show", as: :section
     match "/sec/:index", to: "survey_sections#update", via: 'put', as: :update_section
     get "/edit/:index", to: "surveys#edit", as: :edit_section
+    match "/sec/:index", to: "survey_sections#delete", as: :delete_section, via: 'delete'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
