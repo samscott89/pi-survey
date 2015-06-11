@@ -6,7 +6,7 @@
 <%= render "answer_error_messages" %>
 
 <fieldset>
-<legend><%= "Section #{@survey_section.id}: " + @survey_section.title %></legend>
+<legend><%= "Section #{@survey_section.idx}: " + @survey_section.title %></legend>
 <%= form_tag submit_answer_path(@survey, @survey_section.idx), action: "post", role: "form" do %>
 
 	<% @questions.each do |q| %>
