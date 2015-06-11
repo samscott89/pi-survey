@@ -61,31 +61,17 @@ class SurveySectionsController < ApplicationController
 
     answer_params(@questions, @user).each do |ans|
       a = Answer.new(ans)
+      puts ans
+      puts a.to_json
+      puts a.answer_options.to_json
       if !a.valid?
-        @errors << ans_builder.errors
+        @errors << a.errors
       end
       pending_answers << a
     end
     
-=begin
-    answer_params.each do |qid, ans_params|
-      if @answers[qid.to_i].nil?
-        ans = Answer.new(ans_params.merge(user: @user))
-      else
-        ans = @answers[qid.to_i]
-        # This doesn't quite work due to... multiple choice answers as usual :(
-        #ans.assign_attributes(answer_text: ans_params[:answer_text], option_id: ans_params[:option_id])
-      end
-      pending_answers << ans
-      if !ans.valid?
-        @errors << ans.errors
-      end
-    end
-=end
-    
-
     if @errors.any?
-      flash.now[:alert] = "There were errors with your answers: #{ans_params}"
+      flash.now[:alert] = "There were errors with your answers: #{pending_answers}"
       render 'show'
     else
       pending_answers.each {|a| a.save}
@@ -148,13 +134,13 @@ class SurveySectionsController < ApplicationController
 
       questions.each do |q|
         ans = params[:answers][q.id.to_s]
-        if ans.nil?
+        if ans.nil? # Nothing was answered for this question
           if q.required?
             err = ActiveModel::Errors(self)
             err.add(:question, "is required")
             @errors << err
             next
-          else
+          else # Question not required => set to default blank value.
             ans = Answer.new(question_id: q.id, answer_text: q.blank.value)
             ans.answer_options.build(option_id: q.blank.id)
           end
@@ -164,49 +150,12 @@ class SurveySectionsController < ApplicationController
       answer_params = []
       params.require(:answers).each do |qid, pa|
         answer_params << pa.permit(:answer_text, answer_options_attributes: [:option_id]).merge(question_id: qid, user_id: user.id)
+        puts pa
       end
 
       answer_params
     end
 
-
-
-
-=begin
-    # This method find the parameters for the answer to a specific question, and returns only the permitted variables
-    # Note: since question_option can be a list of answers, this is also permitted
-    def answer_params
-
-      # all_answers = []
-
-      params[:answers] ||= {} # No answers at all
-      @questions.each do |q|
-        ans = params[:answers][q.id.to_s]
-        if ans.nil? # handle no answers
-          if q.required?
-            err = ActiveModel::Errors(@survey_section)
-            err.add(:option_id, "Question is required")
-            @errors << err
-            next
-          else
-            ans = {answer_text: q.blank.value, option_id: q.blank.id, question_id: q.id}
-          end
-        end
-
-        if ans[:option_id].kind_of? Array # handle multiple answers
-          ans = ans[:option_id].map {|x| {option_id: x, answer_text: QuestionOption.find(x).option_choice.choice_name, question_id: q.id}}
-        else # handle single answer
-          if ans[:answer_text].nil? #No answer text for radio buttons etc.
-            ans = {option_id: ans[:option_id], answer_text: QuestionOption.find(ans[:option_id]).option_choice.choice_name}
-          end
-          # all_answers << {q.id => {answer_text: ans[:answer_text],option_id: ans[:option_id]} }
-        end
-
-      end #questions.each
-
-        return params[:answers]
-    end
-=end
 
     def survey_section_params
       params.require(:survey_section).permit(:name, :title, :required, :index)

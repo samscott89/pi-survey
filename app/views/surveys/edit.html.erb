@@ -7,7 +7,7 @@
 <div class="row">
 <div class="col-sm-3" id="survey-options">
 <legend>Add Components</legend>
-<%= render partial: "questions/edit_question", locals: {q: Question.new} %>
+<%= render partial: "questions/edit_question", locals: {q: Question.new(survey_section: @survey_section)} %>
 </div>
 
 <div id="tabs" class="col-sm-6">
@@ -36,7 +36,7 @@
 		<% sec.questions.each do |q| %>
 		<div class="col-sm-8">
 			<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
-				<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q}, layout: "survey_sections/question_types/question"  %>
+				<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q, ans_options: AnswerOption.new}, layout: "survey_sections/question_types/question"  %>
 			<% end %>
 		</div>
 		<div class="col-sm-1">

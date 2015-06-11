@@ -1,9 +1,10 @@
 <%= f.label q.subtext, class: "control-label" %>
-<%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
 <% q.question_options.each do |opt| %>
+<%= f.fields_for :answer_options do |f2| %>
+<% next if f2.object.option_id != opt.id %>
 <div class="checkbox">
 	<%= f2.label :option_id do %>
-	<%= f2.check_box :option_id, {multiple: true}, opt.id, nil %> <%= opt.option_choice.choice_name.capitalize %>
+	<%= f2.check_box :option_id, {multiple: false}, opt.id, nil %> <%= opt.option_choice.choice_name.capitalize %>
 	<% end %>
 </div>
 <% end %>
