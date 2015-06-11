@@ -3,8 +3,8 @@ class SurveySectionsController < ApplicationController
   def show
     @errors = []
   	@survey = Survey.find(params[:survey_id])
-  	@survey_section = @survey.sections.where(index: params[:index]).first
-    if @survey.sections.where(index: (params[:index].to_i + 1)).count > 0
+  	@survey_section = @survey.sections.where(idx: params[:index]).first
+    if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
       session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
     else
       session[:next_page] = survey_completed_path(@survey)
@@ -37,7 +37,7 @@ class SurveySectionsController < ApplicationController
     @errors = []
     @user = current_user
     @survey = Survey.find(params[:survey_id])
-    @survey_section = @survey.sections.where(index: params[:index]).first
+    @survey_section = @survey.sections.where(idx: params[:index]).first
     @questions = @survey_section.questions
 
     if @user.nil?
@@ -82,7 +82,7 @@ class SurveySectionsController < ApplicationController
 
   def update
     @survey = Survey.find(params[:survey_id])
-    @survey_section = @survey.sections.where(index: params[:index]).first
+    @survey_section = @survey.sections.where(ixd: params[:index]).first
 
     @survey_section.assign_attributes(survey_section_params)
     if @survey_section.save
@@ -99,11 +99,27 @@ class SurveySectionsController < ApplicationController
 
   def new
     @survey = Survey.find(params[:survey_id])
-    idx = (@survey.sections.pluck(:index) << 0).max + 1
-    @section = @survey.sections.create(name: "Section #{idx}", title: "New Section", index: idx)
+    idx = (@survey.sections.pluck(:idx) << 0).max + 1
+    @section = @survey.sections.create(name: "Section #{idx}", title: "New Section", idx: idx)
     flash[:success] = "Section added."
 
     redirect_to edit_survey_path(@survey, index: idx)
+  end
+
+  def delete
+    @survey = Survey.find(params[:survey_id])
+    @survey_section = @survey.sections.where(idx: params[:index]).first
+
+
+    sections_to_increment = @survey.sections.where("idx > ?", params[:index]).order(idx: :asc)
+    @survey_section.destroy
+    sections_to_increment.each do |sec|
+      sec.update_attributes(idx: sec.idx-1)
+    end
+
+    flash[:info] = "Deleted #{@survey_section.name}." #" using params: #{params}."
+    
+    redirect_to edit_survey_path(@survey, idx: params[:index].to_i-1)
   end
 
   private
