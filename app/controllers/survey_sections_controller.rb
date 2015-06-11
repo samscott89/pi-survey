@@ -55,11 +55,17 @@ class SurveySectionsController < ApplicationController
 
 
     @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
-
+    @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
 
     pending_answers = []
-    answer_params.each do |ans_params|
-      ans = Answer.new(ans_params.merge(user: @user))
+    answer_params.each do |qid, ans_params|
+      if @answers[qid.to_i].nil?
+        ans = Answer.new(ans_params.merge(user: @user))
+      else
+        ans = @answers[qid.to_i]
+        # This doesn't quite work due to... multiple choice answers as usual :(
+        #ans.assign_attributes(answer_text: ans_params[:answer_text], option_id: ans_params[:option_id])
+      end
       pending_answers << ans
       if !ans.valid?
         @errors << ans.errors
@@ -129,7 +135,7 @@ class SurveySectionsController < ApplicationController
     # Note: since question_option can be a list of answers, this is also permitted
     def answer_params
 
-      all_answers = []
+      # all_answers = []
 
       @questions.each do |q|
         params[:answers] ||= {} # No answers at all
@@ -146,17 +152,17 @@ class SurveySectionsController < ApplicationController
         end
 
         if ans[:option_id].kind_of? Array # handle multiple answers
-          all_answers.concat ans[:option_id].map {|x| {option_id: x, answer_text: QuestionOption.find(x).option_choice.choice_name, question_id: q.id}}
+          ans = ans[:option_id].map {|x| {option_id: x, answer_text: QuestionOption.find(x).option_choice.choice_name, question_id: q.id}}
         else # handle single answer
           if ans[:answer_text].nil? #No answer text for radio buttons etc.
-            ans[:answer_text] = QuestionOption.find(ans[:option_id]).option_choice.choice_name
+            ans = {option_id: ans[:option_id], answer_text: QuestionOption.find(ans[:option_id]).option_choice.choice_name}
           end
-          all_answers << {answer_text: ans[:answer_text],option_id: ans[:option_id], question_id: q.id }
+          # all_answers << {q.id => {answer_text: ans[:answer_text],option_id: ans[:option_id]} }
         end
 
       end #questions.each
 
-        return all_answers
+        return params[:answers]
     end
 
     def survey_section_params
