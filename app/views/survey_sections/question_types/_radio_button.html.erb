@@ -1,5 +1,5 @@
 <%= f.label q.subtext, class: "control-label" %>
-<%= f.fields_for :answer_options, ans_options do |f2| %>
+<%= f.fields_for :answer_options, ans_options[0] || AnswerOption.new do |f2| %>
 	<% q.question_options.each do |opt| %>
 	<div class="radio">
 		<%= f2.label :option_id  do %>

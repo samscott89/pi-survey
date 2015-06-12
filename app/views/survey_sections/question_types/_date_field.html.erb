@@ -6,6 +6,6 @@
 <%# end %>
 <%= f.date_field :answer_text, class: "form-control", value: date_value %>
 
-<%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
+<%= f.fields_for :answer_options do |f2| %>
 	<%= f2.hidden_field :option_id, value: q.question_options.first.id %>
 <% end %>
