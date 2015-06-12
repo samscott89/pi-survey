@@ -147,3 +147,13 @@ footer {
     @extend .modal-footer;
   }
 }
+
+.badge {
+  a {
+    color: white;
+    &:hover {
+      color: lightblue;
+      text-decoration: none;
+    };
+  }
+}

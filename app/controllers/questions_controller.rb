@@ -129,6 +129,13 @@ class QuestionsController < ApplicationController
 		end
 	end
 
+	def destroy
+		@question = Question.find(params[:id])
+		@question.destroy
+
+		redirect_to :back
+	end
+
 	private
 	  	  def question_params
 	  	  	params.require(:question).permit(:name, :subtext, :required, :group_id)

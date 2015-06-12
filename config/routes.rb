@@ -16,7 +16,7 @@ SurveyApp::Application.routes.draw do
   resources :users
   get "/mysurveys", to: "users#show", as: "user_surveys"
 
-  resources :questions, only: [:create, :update]
+  resources :questions, only: [:create, :update, :destroy]
   # match "/questions/:question_id", to: "questions#update", via: 'post', as: "edit_question"
 
   get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
