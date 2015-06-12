@@ -35,6 +35,8 @@ gem 'rest_in_place'
 gem 'devise' # Password authentication stuff
 gem 'kaminari'
 
+gem 'cancancan'
+
 group :doc do
   gem 'sdoc', '0.3.20', require: false
 end
