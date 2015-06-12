@@ -18,7 +18,7 @@
 	    	<tr>
 	    		<th> <%= u.id %> </th>
 	    		<% @questions.each do |q| %>
-	    			<td><%= @answers[u.id][q.id].join(" ") unless @answers[u.id][q.id].nil? %></td>
+	    			<td><%= @answers[u.id][q.id].answer_options.pluck(:answer_text).join(" ") unless @answers[u.id][q.id].nil? %></td>
 	    		<% end %>
 	    	</tr>
 	    	<% end %>

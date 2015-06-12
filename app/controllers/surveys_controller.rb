@@ -61,8 +61,10 @@ class SurveysController < ApplicationController
     us = Answer.where(question_id: qs).distinct.pluck(:user_id)
     @users = User.find(us)
 
-    #Initialise hash
-    us.each {|u| @answers[u] = {}}
+    #Get answers for each user
+    us.each {|u| @answers[u] = Answer.where(user_id: us, question_id: qs).index_by(&:question_id)}
+
+=begin
 
     #Get all answers
     ans_query = Answer.where(user_id: us, question_id: qs).select(:user_id, :question_id, :answer_text)
@@ -72,6 +74,7 @@ class SurveysController < ApplicationController
       @answers[ans.user_id][ans.question_id] ||= []
       @answers[ans.user_id][ans.question_id] << ans.answer_text
     end
+=end
 
     respond_to do |format|
       format.html

@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-	has_many :answer_options
+	has_many :answer_options, dependent: :destroy
 
 	belongs_to :user
 	belongs_to :unit, class_name:"UnitOfMeasurement"
