@@ -1,5 +1,6 @@
 class SurveysController < ApplicationController
 
+  before_action :authenticate_user!, except: [:show, :index, :finish]
 
   def show
   	@survey = Survey.find(params[:id])
