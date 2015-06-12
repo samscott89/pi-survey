@@ -8,7 +8,10 @@ class Answer < ActiveRecord::Base
 	validates :user_id, presence: true
 	validate :check_answers
 
-	accepts_nested_attributes_for :answer_options, reject_if: proc { |attributes| attributes['option_id'].nil? }
+	accepts_nested_attributes_for :answer_options,
+		allow_destroy: true,
+		reject_if: proc { |attributes| attributes['option_id'].nil? || 
+									  (attributes['option_id'] == 0 && attributes['id'].nil?) }
 
 
 	# before_save :check_answers

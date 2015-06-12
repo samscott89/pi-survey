@@ -60,10 +60,16 @@ class SurveySectionsController < ApplicationController
     pending_answers = []
 
     answer_params(@questions, @user).each do |ans|
-      a = Answer.new(ans)
-      # puts ans
-      # puts a.to_json
-      # puts a.answer_options.to_json
+      if @answers[ans[:question_id].to_i].nil?
+        a = Answer.new(ans)
+      else
+        a = Answer.find_by(question_id: ans[:question_id], user_id: ans[:user_id])
+        a.assign_attributes(ans)
+      end
+      puts "----- Question: #{ans[:question_id]} -----"
+      puts ans
+      puts a.to_json
+      puts a.answer_options.to_json
       if !a.valid?
         @errors << a.errors
       end
@@ -142,15 +148,14 @@ class SurveySectionsController < ApplicationController
             next
           else # Question not required => set to default blank value.
             ans = Answer.new(question_id: q.id)
-            ans.answer_options.build(option_id: q.blank.id, answer_text: q.blank.value)
+            # ans.answer_options.build(option_id: q.blank.id, answer_text: q.blank.value)
           end
         end
       end
 
       answer_params = []
       params.require(:answers).each do |qid, pa|
-        answer_params << pa.permit(:answer_text, answer_options_attributes: [:option_id, :answer_text]).merge(question_id: qid, user_id: user.id)
-        puts pa
+        answer_params << pa.permit(:answer_text, answer_options_attributes: [:id, :option_id, :answer_text]).merge(question_id: qid, user_id: user.id)
       end
 
       answer_params
