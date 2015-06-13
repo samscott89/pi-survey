@@ -1,5 +1,6 @@
 class Question < ActiveRecord::Base
-
+	include NotDeleteable
+	
 	belongs_to :survey_section
 	belongs_to :option_group, foreign_key: "group_id"
 	

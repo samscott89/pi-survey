@@ -8,12 +8,13 @@ class AnswerOption < ActiveRecord::Base
 	
 	before_validation :clean_up
 
+	validates :answer_id, presence: true
 	validates :option_id, presence: true
 
 	def clean_up
 		# Marks the AnswerOption for destruction if option id is 0 (this catches unset checkboxes)
 		if self.option_id == 0
-			puts "Up for destruction: #{self}"
+			#puts "Up for destruction: #{self}"
 			self.mark_for_destruction
 		end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613120725) do
+ActiveRecord::Schema.define(version: 20150613130456) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 20150613120725) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "question_id"
+    t.boolean  "deleted",        default: false
   end
 
+  add_index "answers", ["deleted"], name: "index_answers_on_deleted"
   add_index "answers", ["question_id"], name: "index_answers_on_question_id"
   add_index "answers", ["user_id"], name: "index_answers_on_user_id"
 
@@ -88,8 +90,10 @@ ActiveRecord::Schema.define(version: 20150613120725) do
     t.text    "subtext"
     t.boolean "required"
     t.integer "group_id"
+    t.boolean "deleted",           default: false
   end
 
+  add_index "questions", ["deleted"], name: "index_questions_on_deleted"
   add_index "questions", ["survey_section_id"], name: "index_questions_on_survey_section_id"
 
   create_table "survey_sections", force: true do |t|
@@ -99,6 +103,7 @@ ActiveRecord::Schema.define(version: 20150613120725) do
     t.string  "subtitle"
     t.boolean "required"
     t.integer "idx"
+    t.boolean "deleted",   default: false
   end
 
   add_index "survey_sections", ["survey_id", "idx"], name: "index_survey_sections_on_survey_id_and_idx", unique: true
@@ -122,8 +127,11 @@ ActiveRecord::Schema.define(version: 20150613120725) do
     t.boolean "live"
     t.integer "owner_id"
     t.boolean "is_public",    default: false
+    t.boolean "deleted",      default: false
   end
 
+  add_index "surveys", ["deleted"], name: "index_survey_sections_on_deleted"
+  add_index "surveys", ["deleted"], name: "index_surveys_on_deleted"
   add_index "surveys", ["owner_id"], name: "index_surveys_on_owner_id"
 
   create_table "tags", force: true do |t|
@@ -154,8 +162,10 @@ ActiveRecord::Schema.define(version: 20150613120725) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "deleted",                default: false
   end
 
+  add_index "users", ["deleted"], name: "index_users_on_deleted"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+	include NotDeleteable
+
 	has_many :answer_options, dependent: :destroy
 
 	belongs_to :user
