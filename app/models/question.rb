@@ -6,7 +6,7 @@ class Question < ActiveRecord::Base
 	
 	has_one :blank, class_name: "QuestionBlank"
 
-	has_many :question_options
+	has_many :question_options, dependent: :destroy
 	has_many :option_choices, through: :question_options
 	has_many :answers
 

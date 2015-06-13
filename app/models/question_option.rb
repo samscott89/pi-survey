@@ -8,6 +8,8 @@ class QuestionOption < ActiveRecord::Base
 	belongs_to :question
 	belongs_to :option_choice
 
-	has_many :answers
+	has_many :answer_options
 
+	validates :question_id, presence: true
+	validates :option_choice_id, presence: true
 end

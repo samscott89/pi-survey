@@ -24,11 +24,11 @@ module ApplicationHelper
     case type
     when :success
       "success"
-    when :notice 
+    when :notice, :info 
       "info"
-    when :alert
+    when :alert, :warning
       "warning"
-    when :error
+    when :error, :danger
       "danger"
     else
       "info"

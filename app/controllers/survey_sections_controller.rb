@@ -78,13 +78,15 @@ class SurveySectionsController < ApplicationController
       # puts a.to_json
       # puts a.answer_options.to_json
       if !a.valid?
+        # puts "Errors with answer: #{a.to_json} with options: #{a.answer_options.to_json}"
+        # puts a.errors.to_json
         @errors << a.errors
       end
       pending_answers << a
     end
     
     if @errors.any?
-      flash.now[:alert] = "There were errors with your answers: #{pending_answers}"
+      flash.now[:error] = "There were errors with your answers: #{pending_answers}"
       render 'show'
     else
       pending_answers.each {|a| a.save}
@@ -108,7 +110,7 @@ class SurveySectionsController < ApplicationController
     if @survey_section.save
       flash.now[:success] = "Changed"
     else
-      flash.now[:danger] = "Could not change"
+      flash.now[:error] = "Could not change"
     end 
 
 
@@ -151,16 +153,10 @@ class SurveySectionsController < ApplicationController
 
       questions.each do |q|
         ans = params[:answers][q.id.to_s]
-        if ans.nil? # Nothing was answered for this question
-          if q.required?
-            err = ActiveModel::Errors(self)
-            err.add(:question, "is required")
-            @errors << err
-            next
-          else # Question not required => set to default blank value.
-            ans = Answer.new(question_id: q.id)
-            # ans.answer_options.build(option_id: q.blank.id, answer_text: q.blank.value)
-          end
+        if ans.nil? and q.required?  # Nothing was answered for this question
+          err = ActiveModel::Errors(self)
+          err.add(:question, "is required")
+          @errors << err
         end
       end
 

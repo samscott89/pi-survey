@@ -10,7 +10,7 @@
 class OptionChoice < ActiveRecord::Base
 	# has_many :questions, through: :question_options
 	belongs_to :option_group
-	has_many :question_options
+	has_many :question_options, dependent: :destroy
 
 	validates :option_group_id, presence: true
 	validates :choice_name, presence: true

@@ -9,8 +9,6 @@
 class OptionGroup < ActiveRecord::Base
 	has_many :option_choices
 	belongs_to :question_type, foreign_key: "type_id"
-
-	has_many :option_choices
 	
 	validates :type_id, presence: true
 

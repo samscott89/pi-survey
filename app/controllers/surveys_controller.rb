@@ -73,18 +73,7 @@ class SurveysController < ApplicationController
 
     #Get answers for each user
     us.each {|u| @answers[u] = Answer.where(user_id: us, question_id: qs).index_by(&:question_id)}
-
-=begin
-
-    #Get all answers
-    ans_query = Answer.where(user_id: us, question_id: qs).select(:user_id, :question_id, :answer_text)
-
-    #Map answers to array
-    ans_query.map do |ans|
-      @answers[ans.user_id][ans.question_id] ||= []
-      @answers[ans.user_id][ans.question_id] << ans.answer_text
-    end
-=end
+    #NOTE: Might be slow, should change to batch query later.
 
     respond_to do |format|
       format.html

@@ -19,8 +19,6 @@ module NotDeleteable
     end
   end
 
-
-
   def self.included(base)
     base.class_eval do
       default_scope {

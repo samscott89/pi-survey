@@ -5,6 +5,8 @@ class SurveySection < ActiveRecord::Base
 	validates :title, presence: true
 	# validates :required, presence: true
 
-	belongs_to :survey
-	has_many :questions
+	belongs_to :survey, inverse_of: :sections
+	validates_presence_of :survey
+	
+	has_many :questions, dependent: :destroy
 end

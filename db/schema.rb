@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613130456) do
+ActiveRecord::Schema.define(version: 20150613224836) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -36,14 +36,11 @@ ActiveRecord::Schema.define(version: 20150613130456) do
 
   create_table "answers", force: true do |t|
     t.integer  "user_id"
-    t.integer  "answer_numeric"
-    t.text     "answer_text"
-    t.boolean  "answer_boolean"
-    t.integer  "unit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "question_id"
-    t.boolean  "deleted",        default: false
+    t.boolean  "deleted",     default: false
+    t.text     "answer_text"
   end
 
   add_index "answers", ["deleted"], name: "index_answers_on_deleted"
@@ -63,15 +60,6 @@ ActiveRecord::Schema.define(version: 20150613130456) do
   end
 
   add_index "option_groups", ["type_id"], name: "index_option_groups_on_type_id"
-
-  create_table "question_blanks", force: true do |t|
-    t.string   "value"
-    t.integer  "question_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "question_blanks", ["question_id"], name: "index_question_blanks_on_question_id"
 
   create_table "question_options", force: true do |t|
     t.integer "question_id"
@@ -124,7 +112,6 @@ ActiveRecord::Schema.define(version: 20150613130456) do
     t.string  "name"
     t.text    "instructions"
     t.text    "description"
-    t.boolean "live"
     t.integer "owner_id"
     t.boolean "is_public",    default: false
     t.boolean "deleted",      default: false
@@ -149,8 +136,6 @@ ActiveRecord::Schema.define(version: 20150613130456) do
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_digest"
-    t.string   "remember_token"
     t.boolean  "admin",                  default: false
     t.boolean  "temporary",              default: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -167,7 +152,6 @@ ActiveRecord::Schema.define(version: 20150613130456) do
 
   add_index "users", ["deleted"], name: "index_users_on_deleted"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
