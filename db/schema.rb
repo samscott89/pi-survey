@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612155733) do
+ActiveRecord::Schema.define(version: 20150613120725) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20150612155733) do
     t.datetime "updated_at"
   end
 
+  add_index "active_surveys", ["survey_id"], name: "index_active_surveys_on_survey_id"
+  add_index "active_surveys", ["user_id"], name: "index_active_surveys_on_user_id"
+
   create_table "answer_options", force: true do |t|
     t.integer  "answer_id"
     t.integer  "option_id"
@@ -28,6 +31,8 @@ ActiveRecord::Schema.define(version: 20150612155733) do
     t.datetime "updated_at"
     t.text     "answer_text"
   end
+
+  add_index "answer_options", ["answer_id"], name: "index_answer_options_on_answer_id"
 
   create_table "answers", force: true do |t|
     t.integer  "user_id"
@@ -39,6 +44,9 @@ ActiveRecord::Schema.define(version: 20150612155733) do
     t.datetime "updated_at"
     t.integer  "question_id"
   end
+
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id"
+  add_index "answers", ["user_id"], name: "index_answers_on_user_id"
 
   create_table "option_choices", force: true do |t|
     t.integer "option_group_id"
@@ -94,6 +102,7 @@ ActiveRecord::Schema.define(version: 20150612155733) do
   end
 
   add_index "survey_sections", ["survey_id", "idx"], name: "index_survey_sections_on_survey_id_and_idx", unique: true
+  add_index "survey_sections", ["survey_id"], name: "index_survey_sections_on_survey_id"
 
   create_table "survey_tags", force: true do |t|
     t.integer  "survey_id"
@@ -114,6 +123,8 @@ ActiveRecord::Schema.define(version: 20150612155733) do
     t.integer "owner_id"
     t.boolean "is_public",    default: false
   end
+
+  add_index "surveys", ["owner_id"], name: "index_surveys_on_owner_id"
 
   create_table "tags", force: true do |t|
     t.string   "name"
