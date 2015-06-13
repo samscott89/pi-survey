@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612075819) do
+ActiveRecord::Schema.define(version: 20150612155733) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20150612075819) do
     t.text    "description"
     t.boolean "live"
     t.integer "owner_id"
+    t.boolean "is_public",    default: false
   end
 
   create_table "tags", force: true do |t|

@@ -6,6 +6,7 @@ class SurveySectionsController < ApplicationController
     @errors = []
   	@survey = Survey.find(params[:survey_id])
   	@survey_section = @survey.sections.where(idx: params[:index]).first
+
     if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
       session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
     else
@@ -21,6 +22,8 @@ class SurveySectionsController < ApplicationController
       flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
       "You are currently logged in as guest #{@user.id}"
     end
+
+    authorize! :read, @survey
 
     @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
     @answers = []
@@ -42,6 +45,8 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
     @questions = @survey_section.questions
+
+    authorize! :answer, @survey
 
     if @user.nil?
       if session[:guest_user_id].nil?
@@ -68,10 +73,10 @@ class SurveySectionsController < ApplicationController
         a = Answer.find_by(question_id: ans[:question_id], user_id: ans[:user_id])
         a.assign_attributes(ans)
       end
-      puts "----- Question: #{ans[:question_id]} -----"
-      puts ans
-      puts a.to_json
-      puts a.answer_options.to_json
+      # puts "----- Question: #{ans[:question_id]} -----"
+      # puts ans
+      # puts a.to_json
+      # puts a.answer_options.to_json
       if !a.valid?
         @errors << a.errors
       end
@@ -97,6 +102,8 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(ixd: params[:index]).first
 
+    authorize! :edit, @survey
+
     @survey_section.assign_attributes(survey_section_params)
     if @survey_section.save
       flash.now[:success] = "Changed"
@@ -112,6 +119,8 @@ class SurveySectionsController < ApplicationController
 
   def new
     @survey = Survey.find(params[:survey_id])
+    authorize! :edit, @survey
+
     idx = (@survey.sections.pluck(:idx) << 0).max + 1
     @section = @survey.sections.create(name: "Section #{idx}", title: "New Section", idx: idx)
     flash[:success] = "Section added."
@@ -122,7 +131,7 @@ class SurveySectionsController < ApplicationController
   def delete
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
-
+    authorize! :destroy, @survey
 
     sections_to_increment = @survey.sections.where("idx > ?", params[:index]).order(idx: :asc)
     @survey_section.destroy

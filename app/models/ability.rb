@@ -2,6 +2,21 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    
+    user ||= current_or_guest_user
+
+    # Survey owners can do anything with it
+    can :manage, Survey, owner_id: user.id
+
+    # Anyone can read (index/show) public surveys
+    # Later, this should be more nuanced
+    can :read, Survey, is_public: true
+    can :answer, Survey, is_public: true
+
+    #Equally, anyone can create a survey
+    can :create, Survey
+
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

@@ -10,8 +10,9 @@ class QuestionsController < ApplicationController
 		@question.survey_section = @survey_section
 		#puts params
 
-	    pending_opt_choices = []
+		authorize! :edit, @survey
 
+	    pending_opt_choices = []
 
 	    if @question.option_group.multiple?
 		   	option_params.each do |index, opt|
@@ -59,6 +60,8 @@ class QuestionsController < ApplicationController
 		pending_new = []
 		pending_updates = []
 		@errors = []
+
+		authorize! :edit, @survey
 
 		was_multiple = @question.option_group.multiple?
 
@@ -133,6 +136,8 @@ class QuestionsController < ApplicationController
 	def destroy
 		@question = Question.find(params[:id])
 		@question.destroy
+
+		authorize! :edit, @survey
 
 		redirect_to :back
 	end

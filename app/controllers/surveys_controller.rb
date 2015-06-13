@@ -1,9 +1,12 @@
 class SurveysController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :index, :finish]
+  skip_authorization_check only: [:index, :finish]
 
   def show
   	@survey = Survey.find(params[:id])
+
+    authorize! :read, @survey
 
     respond_to do |format|
       format.html {}
@@ -12,7 +15,7 @@ class SurveysController < ApplicationController
   end
 
   def index
-  	@surveys = Survey.page params[:page]
+    @surveys = Survey.accessible_by(current_ability).page(params[:page])
   end
 
   def finish
@@ -26,10 +29,12 @@ class SurveysController < ApplicationController
 
   def new
     @survey = Survey.new
+    authorize! :create, @survey
   end
 
   def create
   	@survey = Survey.new(survey_params)
+    authorize! :create, @survey
     if @survey.save
       flash[:notice] = "Survey Created"
        @survey.sections.create(name: "Section 1", title: "New Section", idx: 1)
@@ -44,6 +49,8 @@ class SurveysController < ApplicationController
     id = params[:survey_id]
     id ||= params[:id]
   	@survey ||= Survey.find(id)
+    authorize! :edit, @survey
+
     if params[:index].nil?
   	 @survey_section ||= @survey.sections.where(idx: 1).first
     else
@@ -55,6 +62,8 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @questions = Question.where(survey_section_id: @survey.sections.ids)
     @answers = {}
+
+    authorize! :stats, @survey
 
     # Return all question ids for survey:
     qs = @questions.ids
