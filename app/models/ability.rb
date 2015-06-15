@@ -2,8 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    
-    user ||= current_or_guest_user
+
+    user ||= User.new # If no user at all, then just use a temp one.
 
     # Survey owners can do anything with it
     can :manage, Survey, owner_id: user.id

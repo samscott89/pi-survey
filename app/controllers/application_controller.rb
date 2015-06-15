@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Used by CanCanCan to find user authorisation. 
+  def current_ability
+    @current_ability ||= Ability.new(view_context.current_or_guest_user)
+  end
+
   # Add name to the parameters used as sign up information.
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
