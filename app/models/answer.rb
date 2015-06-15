@@ -10,8 +10,6 @@ class Answer < ActiveRecord::Base
 	validates :user_id, presence: true
 	validates :question_id, presence: true
 
-	validate :check_answers
-
 	# This enables mass assignment of answer_options to a single answer
 	# However, if the answer_option has no option_id it is ignored.
 	# Furthermore, if it is a new answer_option and the option_id is 0, then ignore.
@@ -21,19 +19,4 @@ class Answer < ActiveRecord::Base
 									  (attributes['option_id'] == 0 and attributes['id'].nil?) }
 
 
-	# Saves only when at least one value is not blank
-	def check_answers
-		if self.question.required?
-			if self.answer_options.empty?
-				errors.add(:question, "is required")
-				false
-			end
-			if self.answer_options.pluck(:answer_text).join.blank?
-				errors.add(:question, "is required")
-				false
-			end
-		end
-
-		true
-	end
 end

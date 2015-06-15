@@ -20,10 +20,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def index
-    @users = User.order(:name).page params[:page]
-  end
-
   def review_surveys
     @user = current_user
     @guest_user = User.find(session[:guest_user_id])

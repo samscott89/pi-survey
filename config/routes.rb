@@ -13,7 +13,6 @@ SurveyApp::Application.routes.draw do
   get "/surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
 
   devise_for :users
-  resources :users
   get "/mysurveys", to: "users#show", as: "user_surveys"
 
   resources :questions, only: [:create, :update, :destroy]

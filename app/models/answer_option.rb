@@ -13,17 +13,17 @@ class AnswerOption < ActiveRecord::Base
 	validates :option_id, presence: true
 
 	def clean_up
-		# Marks the AnswerOption for destruction if option id is 0 (this catches unset checkboxes)
-		if self.option_id == 0
-			#puts "Up for destruction: #{self}"
-			self.mark_for_destruction
-		end
-
 		# Adds answer text if missing based on the corresponding OptionChoice
 		if (self.answer_text.nil? or (self.option_id_changed? and !self.option_id_was.nil?)) and self.option_id != 0
 			self.answer_text = self.question_option.option_choice.choice_name.capitalize
 		end
 
+		# Marks the AnswerOption for destruction if option id is 0 (this catches unset checkboxes)
+		# OR answer is blank (not set by previous code) (needed for validation).
+		if self.option_id == 0 or self.answer_text.blank?
+			#puts "Up for destruction: #{self}"
+			self.mark_for_destruction
+		end
 	end
 			
 end

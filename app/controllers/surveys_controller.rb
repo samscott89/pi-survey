@@ -91,7 +91,7 @@ class SurveysController < ApplicationController
     CSV.generate(options) do |csv|
       csv << ["User"].concat(qs)
       answers.each do |uid, questions|
-        csv << [uid].concat(qs.map {|qid| questions[qid].join(' ') unless questions[qid].nil?})
+        csv << [uid].concat(qs.map {|qid| questions[qid].nil? ? "" : questions[qid].answer_options.pluck(:answer_text).join(' ') })
       end
     end
   end
