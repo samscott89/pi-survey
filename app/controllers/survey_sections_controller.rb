@@ -152,17 +152,14 @@ class SurveySectionsController < ApplicationController
       params[:answers] ||= {} # Initialise if not set (i.e. no answers given)
 
       questions.each do |q|
-        ans = params[:answers][q.id.to_s]
-        if ans.nil? and q.required?  # Nothing was answered for this question
-          # err = ActiveModel::Errors.new(self)
-          # err.add(:question, "is required")
-          # @errors << err
-        end
+        # I don't know why this is needed :*(
+        # For some reason without this these are hashes and not StrongParamters D:
+        ans = params[:answers][q.id.to_s] 
       end
 
       answer_params = []
       params.require(:answers).each do |qid, pa|
-        answer_params << pa.permit(:answer_text, answer_options_attributes: [:id, :option_id, :answer_text]).merge(question_id: qid, user_id: user.id)
+        answer_params << pa.permit(:question_id, :answer_text, answer_options_attributes: [:id, :option_id, :answer_text]).merge(user_id: user.id)
       end
 
       answer_params
