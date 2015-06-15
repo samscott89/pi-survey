@@ -69,9 +69,11 @@ class SurveySectionsController < ApplicationController
     answer_params(@questions, @user).each do |ans|
       if @answers[ans[:question_id].to_i].nil?
         a = Answer.new(ans)
+        @answers[ans[:question_id].to_i] = a
       else
         a = Answer.find_by(question_id: ans[:question_id], user_id: ans[:user_id])
         a.assign_attributes(ans)
+        @answers[ans[:question_id].to_i] = a
       end
       # puts "----- Question: #{ans[:question_id]} -----"
       # puts ans
@@ -85,8 +87,8 @@ class SurveySectionsController < ApplicationController
       pending_answers << a
     end
     
-    if @errors.any?
-      flash.now[:error] = "There were errors with your answers: #{pending_answers}"
+    if @errors.any? 
+      flash.now[:error] = "There were errors with your answers."
       render 'show'
     else
       pending_answers.each {|a| a.save}

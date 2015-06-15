@@ -19,7 +19,8 @@ class Answer < ActiveRecord::Base
 		allow_destroy: true
 
     def check_answers
-    	if !self.question.nil? and self.question.required? and self.answer_options.empty?
+    	if !self.question.nil? and self.question.required? and 
+    		self.answer_options.to_a.count {|ao| !ao.marked_for_destruction?} == 0
     		errors.add(:question, "is required")
     	end
     end

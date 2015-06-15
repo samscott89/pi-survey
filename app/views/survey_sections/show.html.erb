@@ -3,8 +3,6 @@
 <div class="col-xs-2"></div>
 <div class="col-xs-8 well">
 
-<%= render "answer_error_messages" %>
-
 <fieldset>
 <legend><%= "Section #{@survey_section.idx}: " + @survey_section.title %></legend>
 <%= form_tag submit_answer_path(@survey, @survey_section.idx), action: "post", role: "form" do %>
@@ -14,10 +12,14 @@
 		<% ans ||= Answer.new(question_id: q.id) %>
 		<% ans_options = ans.answer_options %>
 		<% ans.answer_options.build if ans_options.empty? %>
-		<%= fields_for "answers[#{q.id}]", ans do |f| %>
-			<%= f.hidden_field :question_id, value: q.id %>
-			<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q, ans_options: ans_options}, layout: "survey_sections/question_types/question"  %>
-		<% end %>
+		<div class="form-group row <%= 'has-error' unless ans.errors.empty? %>">
+			<div class="col-xs-9">
+			<%= fields_for "answers[#{q.id}]", ans do |f| %>
+				<%= f.hidden_field :question_id, value: q.id %>
+				<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q, ans_options: ans_options}  %>
+			<% end %>
+			</div>
+		</div>
 	<% end %>
 
 	
