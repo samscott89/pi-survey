@@ -15,7 +15,7 @@ module NotDeleteable
   # as a deleteable depedent should indeed be destroyed too.
   def delete
     run_callbacks(:destroy) do
-      self.delete
+      self.destroy
     end
   end
 
