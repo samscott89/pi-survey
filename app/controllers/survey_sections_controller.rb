@@ -156,7 +156,8 @@ class SurveySectionsController < ApplicationController
       questions.each do |q|
         # I don't know why this is needed :*(
         # For some reason without this these are hashes and not StrongParamters D:
-        ans = params[:answers][q.id.to_s] 
+        ans = params[:answers][q.id.to_s]
+        
       end
 
       answer_params = []

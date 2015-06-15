@@ -41,4 +41,22 @@ $(function() {
 		console.log("idx: " + idx)
 		console.log(opt.find("input"))
 	});
+
+
+	// This code here handles setting has_other=1 when a radio button is set to "other"
+	$('[id$=option_id_0]:radio').each(function(){
+		this_id = $(this).prop('id');
+		var ans_id = this_id.substr(0,this_id.indexOf('answer_options_attributes'));
+		if($('#' + ans_id + 'has_other').val() == 't') {
+			$(this).prop('checked', true)
+		}
+		$("input[id^=" + ans_id + "]:radio").change(function(){
+			if($(this).prop('id').indexOf('option_id_0') > 0){
+				$('#' + ans_id + 'has_other').val('t');
+			} else{
+				$('#' + ans_id + 'has_other').val('f');
+			}
+		});
+
+	})
 });
