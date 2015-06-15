@@ -2,14 +2,21 @@
 <% ans_options = ans_options.index_by(&:option_id) %>
 <% q.question_options.each do |opt| %>
 <%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
-<% if ans_options.has_key? opt.id %>
-<% f2.object = ans_options[opt.id] %>
-<%= f2.hidden_field :id %>
-<% end %>
-<div class="checkbox">
-	<%= f2.label :option_id do %>
-	<%= f2.check_box :option_id, {multiple: false}, opt.id, 0 %> <%= opt.option_choice.choice_name.capitalize %>
+	<% if ans_options.has_key? opt.id %>
+	<% f2.object = ans_options[opt.id] %>
+	<%= f2.hidden_field :id %>
 	<% end %>
-</div>
+	<div class="checkbox">
+		<%= f2.label :option_id do %>
+		<%= f2.check_box :option_id, {multiple: false}, opt.id, 0 %> <%= opt.option_choice.choice_name.capitalize %>
+		<% end %>
+	</div>
+	<% end %>
 <% end %>
+
+<% if q.allow_other? %>
+<div class="form-inline">
+<%= f.check_box :has_other, class: "control-label" %> Other:
+<%= f.text_field :answer_text, class: "form-control input-sm" %>
+</div>
 <% end %>

@@ -52,6 +52,11 @@ and PATCH => question#update if q exists in DB. Cool! %>
 		<%= f.check_box :required %> Required?
 		<% end %>
 	</div>
+	<div class="checkbox">
+		<%= f.label :allow_other do %>
+		<%= f.check_box :allow_other %> Allow other/custom entry?
+		<% end %>
+	</div>
 
 	</fieldset>
 	</div>

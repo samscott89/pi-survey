@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613224836) do
+ActiveRecord::Schema.define(version: 20150615152331) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150613224836) do
     t.integer  "question_id"
     t.boolean  "deleted",     default: false
     t.text     "answer_text"
+    t.boolean  "has_other",   default: false
   end
 
   add_index "answers", ["deleted"], name: "index_answers_on_deleted"
@@ -79,6 +80,7 @@ ActiveRecord::Schema.define(version: 20150613224836) do
     t.boolean "required"
     t.integer "group_id"
     t.boolean "deleted",           default: false
+    t.boolean "allow_other",       default: false
   end
 
   add_index "questions", ["deleted"], name: "index_questions_on_deleted"

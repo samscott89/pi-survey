@@ -144,7 +144,7 @@ class QuestionsController < ApplicationController
 
 	private
 	  	  def question_params
-	  	  	params.require(:question).permit(:name, :subtext, :required, :group_id)
+	  	  	params.require(:question).permit(:name, :subtext, :required, :group_id, :allow_other)
 	  	  end
 
 	  	  def option_params
