@@ -23,7 +23,17 @@ class Answer < ActiveRecord::Base
 
 	# Saves only when at least one value is not blank
 	def check_answers
-		answer_valid = !(self.question.required? and self.answer_options.empty?)
-		errors.add(self, "At least one answer value must not be blank") unless answer_valid
+		if self.question.required?
+			if self.answer_options.empty?
+				errors.add(:question, "is required")
+				false
+			end
+			if self.answer_options.pluck(:answer_text).join.blank?
+				errors.add(:question, "is required")
+				false
+			end
+		end
+
+		true
 	end
 end

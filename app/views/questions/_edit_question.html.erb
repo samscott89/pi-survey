@@ -47,6 +47,12 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
 	</div>
 
+	<div class="checkbox">
+		<%= f.label :required do %>
+		<%= f.check_box :required %> Required?
+		<% end %>
+	</div>
+
 	</fieldset>
 	</div>
 	<div class="form-submit">

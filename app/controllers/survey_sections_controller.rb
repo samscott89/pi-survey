@@ -154,9 +154,9 @@ class SurveySectionsController < ApplicationController
       questions.each do |q|
         ans = params[:answers][q.id.to_s]
         if ans.nil? and q.required?  # Nothing was answered for this question
-          err = ActiveModel::Errors(self)
-          err.add(:question, "is required")
-          @errors << err
+          # err = ActiveModel::Errors.new(self)
+          # err.add(:question, "is required")
+          # @errors << err
         end
       end
 
