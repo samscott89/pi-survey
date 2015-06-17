@@ -1,30 +1,38 @@
 SurveyApp::Application.routes.draw do
-  root to: 'static_pages#home'
 
+  #
+  # Static Links
+  #
+  # Standard links to static pages.
+  #
+  root to: 'static_pages#home'
   get "/help", to: "static_pages#help"
   get "/about", to: "static_pages#about"
   get "/contact", to: "static_pages#contact"
-#  get "/signup", to: "users#new"
 
-#  get "/signin", to: "sessions#new"
-#  match '/signout', to: 'sessions#destroy', via: 'delete'
-
-  match "/surveys/:survey_id/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: "submit_answer"
-  get "/surveys/:survey_id/finish", to: 'surveys#finish', via: 'get', as: "survey_completed"
-
+  #
+  # User links
+  #
   devise_for :users
   get "/mysurveys", to: "users#show", as: "user_surveys"
-
-  resources :questions, only: [:create, :update, :destroy]
-  # match "/questions/:question_id", to: "questions#update", via: 'post', as: "edit_question"
-
-  get "/surveys/:survey_id/stats", to: "surveys#stats", as: "survey_stats"
-  match "/surveys/:survey_id/new_section", to: "survey_sections#new", as: :new_survey_section, via: "post"
 
   # Used for reviewing and saving surveys done by guest accounts
   get "/review_surveys", to: "users#review_surveys", as: "review_surveys"
   match "/save_surveys", to: "users#save_surveys", as: "save_surveys", via: 'post'
 
+  ###########################
+  #                         #
+  #                         #
+  #        Surveys          #
+  #                         #
+  #                         #
+  ###########################
+
+  #
+  # Nested Survey Resources
+  #
+  # Nested resources such as survey_sections, stats and answers.
+  #
   resources :surveys do
     #This allows survey sections to be called relative to 
     # a survey. E.g. survey_section_path(@survey, :index)
@@ -32,7 +40,30 @@ SurveyApp::Application.routes.draw do
     match "/sec/:index", to: "survey_sections#update", via: 'put', as: :update_section
     get "/edit/:index", to: "surveys#edit", as: :edit_section
     match "/sec/:index", to: "survey_sections#delete", as: :delete_section, via: 'delete'
+   
+    get "/stats", to: "surveys#stats", as: :stats
+    match "/new_section", to: "survey_sections#new", as: :new_section, via: "post"
+    
+    match "/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: :answer
+    get "/finish", to: 'surveys#finish', via: 'get', as: :completed
   end
+
+  #
+  # Questions
+  #
+  # Separate resources for questions (mostly for editing)
+  #
+  resources :questions, only: [:create, :update, :destroy]
+  # match "/questions/:question_id", to: "questions#update", via: 'post', as: "edit_question"
+
+
+  #
+  # Campaigns
+  #
+  # Resource for viewing campaigns etc.
+  #
+  resources :campaigns
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

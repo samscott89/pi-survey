@@ -16,7 +16,7 @@
 		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.idx %>" sec="<%= sec.id %>"><%= sec.idx %></a></li>
 		<% end %>
 		<li role="presentation"> 
-		<%= link_to new_survey_section_path(@survey), class: "btn", id: "add-section-tab", method: :post do %>
+		<%= link_to survey_new_section_path(@survey), class: "btn", id: "add-section-tab", method: :post do %>
 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 		<% end %>
 		</li>
