@@ -1,0 +1,26 @@
+<%= provide(:title, full_title("View Campaign")) %>
+
+<div class="jumbotron">
+
+<h1>Campaign: <%= @campaign.name %></h1>
+
+<div class="row">
+
+<div class="list-group col-lg-8">
+	<% @campaign.campaign_surveys.each do |cs| %>
+		<%= link_to survey_stats_path(cs.survey), class: "list-group-item" do %>
+		<div class="list-group-item-header">
+			<h2>
+				<%= cs.survey.name %> <p class="text-right">Running: <%= "#{cs.start_date.strftime('%d/%m/%Y')} -- #{cs.end_date.strftime('%d/%m/%Y')}" %></p>
+			</h2>
+		</div>
+		<p class="list-group-item-text">
+		Number of responses: <%= ActiveSurvey.where(survey_id: cs.survey.id, completed: true).count %>	
+		</p>
+		<% end %>
+	<% end %>
+</div>
+</div>
+
+
+</div>
