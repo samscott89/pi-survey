@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615152331) do
+ActiveRecord::Schema.define(version: 20150617150839) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150615152331) do
     t.boolean  "completed"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "campaign_survey_id"
   end
 
   add_index "active_surveys", ["survey_id"], name: "index_active_surveys_on_survey_id"
@@ -48,6 +49,28 @@ ActiveRecord::Schema.define(version: 20150615152331) do
   add_index "answers", ["question_id"], name: "index_answers_on_question_id"
   add_index "answers", ["user_id"], name: "index_answers_on_user_id"
 
+  create_table "campaign_surveys", force: true do |t|
+    t.integer  "campaign_id"
+    t.integer  "survey_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "campaign_surveys", ["campaign_id"], name: "index_campaign_surveys_on_campaign_id"
+
+  create_table "campaigns", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.boolean  "live"
+    t.boolean  "deleted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id"
+
   create_table "option_choices", force: true do |t|
     t.integer "option_group_id"
     t.string  "choice_name"
@@ -61,6 +84,16 @@ ActiveRecord::Schema.define(version: 20150615152331) do
   end
 
   add_index "option_groups", ["type_id"], name: "index_option_groups_on_type_id"
+
+  create_table "participants", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "campaign_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "participants", ["campaign_id"], name: "index_participants_on_campaign_id"
+  add_index "participants", ["user_id"], name: "index_participants_on_user_id"
 
   create_table "question_options", force: true do |t|
     t.integer "question_id"
