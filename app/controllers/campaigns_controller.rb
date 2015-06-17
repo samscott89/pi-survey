@@ -1,7 +1,9 @@
-class CampaignController < ApplicationController
+class CampaignsController < ApplicationController
 	before_action :authenticate_user!
 
 	def new
+	  @user = current_user
+	  @user_surveys = @user.surveys
 	  @campaign = Campaign.new
 	  authorize! :create, @campaign
 	end
@@ -16,7 +18,7 @@ class CampaignController < ApplicationController
 	    render 'new'
 	  end
 	end
-	
+
 	def index
 	  @campaigns = Campaign.accessible_by(current_ability).page(params[:page])
 	end

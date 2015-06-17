@@ -16,6 +16,8 @@ class Ability
     #Equally, anyone can create a survey
     can :create, Survey
 
+    can :create, Campaign
+    can :manage, Campaign, user_id: user.id
 
     # Define abilities for the passed in user here. For example:
     #
