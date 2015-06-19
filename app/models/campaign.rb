@@ -1,6 +1,6 @@
 class Campaign < ActiveRecord::Base
 	has_many :surveys, through: :campaign_surveys
-	belongs_to :owner, foreign_key: :user_id
+	belongs_to :owner, class_name: "User"
 	has_many :participants
 	has_many :users, through: :participants
 

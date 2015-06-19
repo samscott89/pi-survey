@@ -13,7 +13,7 @@ class CampaignsController < ApplicationController
 	  @user_surveys = @user.surveys
 
 	  @campaign = Campaign.new(campaign_params)
-	  @campaign.assign_attributes(user_id: current_user.id)
+	  @campaign.assign_attributes(owner_id: current_user.id)
 	  authorize! :create, @campaign
 	  if @campaign.save
 	    flash[:success] = "Campaign created."
