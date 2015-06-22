@@ -62,7 +62,9 @@ SurveyApp::Application.routes.draw do
   #
   # Resource for viewing campaigns etc.
   #
-  resources :campaigns
+  resources :campaigns do 
+    resources :campaign_surveys, only: [:destroy], shallow: true
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

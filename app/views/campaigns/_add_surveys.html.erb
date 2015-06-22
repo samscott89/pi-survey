@@ -10,6 +10,7 @@
 		<% else %>
 			<div id="campaign-surveys">
 			<%= f.fields_for :campaign_surveys, role: "form" do |f2| %>
+			<div id=<%= "campaign-survey-#{f2.object.id}" %>>
 			<div class="form-group">
 				<%= f2.label :survey_id, class: "control-label" %>
 				<% opt = @user_surveys.map{|srv| [srv.name, srv.id]} %>
@@ -28,6 +29,18 @@
 				<%= f2.label :end_date, class: "control-label" %>
 				<%= f2.date_field :end_date, class: "form-control" %>
 				<span class="help-block">Leave empty for indefinite.</span>
+			</div>
+
+			<div class="form-group">
+				<%= link_to campaign_survey_path(f2.object), id: "remove-survey-remote", remote: true, method: :delete do %>
+					<div class="btn-lg">
+					<span class="glyphicon glyphicon-remove"></span>
+					</div>
+				<% end %>
+				<span class="help-block"><br></span>
+			</div>	
+
+			<div class="clearfix"></div>
 			</div>
 			<% end %>
 			</div>	
@@ -54,6 +67,15 @@
 				<%= f2.label :end_date, class: "control-label" %>
 				<%= f2.date_field :end_date, class: "form-control" %>
 				<span class="help-block">Leave empty for indefinite.</span>
+			</div>
+
+			<div class="form-group">
+				<%= link_to '#', id: "remove-survey" do %>
+					<div class="btn-lg">
+					<span class="glyphicon glyphicon-remove"></span>
+					</div>
+				<% end %>
+				<span class="help-block"><br></span>
 			</div>
 			<% end %>
 			</div>	

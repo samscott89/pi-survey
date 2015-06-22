@@ -1,4 +1,6 @@
 class Campaign < ActiveRecord::Base
+	include NotDeleteable
+
 	has_many :surveys, through: :campaign_surveys
 	belongs_to :owner, class_name: "User"
 	has_many :participants
