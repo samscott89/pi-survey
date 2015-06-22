@@ -1,4 +1,4 @@
-<%= provide(:title, "Create New Campaign") %>
+<%= provide(:title, "Edit Campaign") %>
 
 <%= javascript_include_tag "campaigns" %>
 
@@ -6,7 +6,7 @@
 <div class="row well">
   <div class="col-sm-8 col-sm-offset-1">
 	<%= form_for @campaign do |f| %>
-		<legend>Create a new campaign</legend>
+		<legend>Edit campaign</legend>
 		<fieldset class="form-horizontal">
 		<div class="form-group">
   		  <%= f.label :name, class: "col-sm-1 control-label"%>
@@ -18,7 +18,7 @@
       <%= render partial: 'add_surveys', locals: {f: f} %>
 <br>
 <br>
-	<%= f.submit "Create", class: "btn btn-large btn-primary" %>
+	<%= f.submit "Update", class: "btn btn-large btn-primary" %>
 
 	<% end %>
   </div>

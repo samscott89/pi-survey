@@ -8,8 +8,8 @@ class CampaignSurvey < ActiveRecord::Base
 	validate :check_survey_owner
 
 	def check_survey_owner
-		unless self.survey.owner_id == self.campaign.user_id
-			errors.add(:user_id, "Survey must be owned by Campaign owner.")
+		unless self.survey.owner_id == self.campaign.owner_id
+			errors.add(:owner, "Survey must be owned by Campaign owner.")
 		end
 	end
 	

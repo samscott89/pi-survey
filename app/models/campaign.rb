@@ -6,7 +6,8 @@ class Campaign < ActiveRecord::Base
 
 	has_many :campaign_surveys, inverse_of: :campaign
 
-	accepts_nested_attributes_for :campaign_surveys
+	accepts_nested_attributes_for :campaign_surveys, 
+			reject_if: proc { |attributes| attributes['survey_id'].blank? }
 
-	validates_presence_of :user_id
+	validates_presence_of :owner_id
 end

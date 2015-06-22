@@ -17,7 +17,7 @@ class Ability
     can :create, Survey
 
     can :create, Campaign
-    can :manage, Campaign, user_id: user.id
+    can :manage, Campaign, owner_id: user.id
 
     # Define abilities for the passed in user here. For example:
     #

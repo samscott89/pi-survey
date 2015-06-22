@@ -39,9 +39,33 @@ class CampaignsController < ApplicationController
 	  end
 	end
 
+	def edit
+		@user = current_user
+		@user_surveys = @user.surveys
+		@campaign = Campaign.find(params[:id])
+		authorize! :update, @campaign
+	end
+
+	def update
+		@user = current_user
+		@user_surveys = @user.surveys
+
+		@campaign = Campaign.find(params[:id])
+		@campaign.assign_attributes(campaign_params)
+		authorize! :update, @campaign
+		if @campaign.save
+		  flash[:success] = "Campaign updated."
+		  redirect_to edit_campaign_path @campaign
+		else
+		  @errors = @campaign.errors
+		  flash.now[:error] = "Error updating campaign. #{@errors.to_json}"
+		  render 'edit'
+		end
+	end
+
 	private 
 
 		def campaign_params
-			params.require(:campaign).permit(:name, campaign_surveys_attributes: [:survey_id, :start_date, :end_date])
+			params.require(:campaign).permit(:name, campaign_surveys_attributes: [:id, :survey_id, :start_date, :end_date])
 		end
 end
