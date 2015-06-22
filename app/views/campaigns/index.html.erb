@@ -1,0 +1,45 @@
+<%= provide(:title, full_title("Campaigns Manager")) %>
+
+<div class="jumbotron">
+
+<h1>My Campaigns</h1>
+
+<div class="row">
+
+<% if @user.campaigns.empty? %>
+<div class="list-group col-lg-8">
+	<div class="list-group-item center">
+			<div class="list-group-item-header">
+			<h2>
+				You haven't created any campaigns yet.
+			</h2>
+			</div>
+			<div class="list-group-item-text">
+			<br>
+			<%= link_to "Create a new campaign", new_campaign_path, class: "btn btn-large btn-primary"  %>	
+			<br>
+			</div>
+	</div>
+</div>
+
+<% end %>
+
+<div class="list-group col-lg-8">
+	<% @campaigns.each do |campaign| %>
+		<%= link_to campaign_path(campaign), class: "list-group-item" do %>
+		<div class="list-group-item-header">
+			<h2>
+				<%= campaign.name %>
+			</h2>
+		</div>
+		<p class="list-group-item-text">
+		<div class="row">
+			<%= render partial: "campaign_survey_small", collection: campaign.campaign_surveys, as: :cs %>
+			</div>
+		</p>
+		<% end %>
+	<% end %>
+</div>
+</div>
+
+</div>

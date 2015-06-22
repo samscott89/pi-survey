@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :active_surveys, dependent: :destroy # surveys in progress/completed
   has_many :surveys, foreign_key: :owner_id # surveys owned by this user
+  has_many :campaigns, foreign_key: :owner_id
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   with_options unless: :temporary do |user|

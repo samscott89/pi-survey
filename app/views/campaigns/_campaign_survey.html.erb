@@ -1,0 +1,11 @@
+<% cs = campaign_survey %>
+<%= link_to survey_stats_path(cs.survey), class: "list-group-item" do %>
+<div class="list-group-item-header">
+	<h2>
+		<%= cs.survey.name %> <p class="text-right">Running: <%= "#{cs.start_date.strftime('%d/%m/%Y')} -- #{cs.end_date.nil? ? "Indefinite" : cs.end_date.strftime('%d/%m/%Y')}" %></p>
+	</h2>
+</div>
+<p class="list-group-item-text">
+Number of responses: <%= ActiveSurvey.where(survey_id: cs.survey.id, completed: true).count %>	
+</p>
+<% end %>

@@ -1,6 +1,8 @@
 class CampaignsController < ApplicationController
 	before_action :authenticate_user!
 
+	skip_authorization_check only: [:index]
+
 	def new
 	  @user = current_user
 	  @user_surveys = @user.surveys
@@ -26,6 +28,7 @@ class CampaignsController < ApplicationController
 	end
 
 	def index
+	  @user = current_user
 	  @campaigns = Campaign.accessible_by(current_ability).page(params[:page])
 	end
 	

@@ -28,6 +28,9 @@
                 <li><%= link_to "Sign up", new_user_registration_path %></li>
               <% end %>
               <li><%= link_to "My Surveys", user_surveys_path %></li>
+              <% if user_signed_in? %>
+                <li><%= link_to "My Campaigns", campaigns_path %></li>
+              <% end %>
             </ul>
           </nav>
         </div>
