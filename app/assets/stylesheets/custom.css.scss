@@ -1,36 +1,10 @@
 
+
 @mixin box_sizing {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
-/*
-
-Color shades for site.
-
-#000000
-#0D0811
-#190F21
-#261632
-#321E42
-#3F2653
-#4C2D64
-#583474
-#653C85
-#714495
-###7E4BA6
-#8B5DAF
-#986FB8
-#A581C1
-#B293CA
-#BEA5D2
-#CBB7DB
-#D8C9E4
-#E5DBED
-#F2EDF6
-#FFFFFF
-*/
 
 
 /* universal */
@@ -58,6 +32,24 @@ textarea {
    margin-bottom: 10px;
   }
 }
+
+
+.link-primary {
+  color: #428bca;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.link-secondary {
+  color: #5cb85c;
+  &:hover {
+    text-decoration: none;
+    color: darken(#5cb85c, 10%);
+  }
+}
+
+
 
 
 .logo {

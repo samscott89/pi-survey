@@ -1,10 +1,20 @@
-<div class="jumbotron center">
-		<h1>Survey App</h1>
-	<h1> <small>Under Construction</small></h2>
-
-	<p>This is the homepage for the survey application.</p>
-
-	 <%= link_to "See a sample survey", surveys_path, class: "btn btn-large btn-primary" %>
-	 <%= link_to "Create a new survey", new_survey_path, class: "btn btn-large btn-success" %>
+<div class="center jumbotron">
+<h1>PsychInsight</h1>
+<p class="lead"> Making scientific research and evaluations efficient, <br> enjoyable, and accessible to everyone.</p>
+<br>
+<div class="row" id="call-to-actions">
+<div class="col-lg-3 col-lg-offset-3">
+    <%= link_to new_survey_path, class: "link-primary" do %>
+    <%= image_tag "survey-icon.png", width: "140px"  %>
+    <h2>Create a new survey</h2>
+    <% end %>
 </div>
-
+<div class="col-lg-3">
+    <%= link_to new_campaign_path, class: "link-secondary" do %>
+    <%= image_tag "campaign-icon.png", width: "140px"  %>
+    <h2>Manage Campaigns</h2>
+    <% end %>
+</div>
+<div class="col-lg-3"></div>
+</div>
+</div>
