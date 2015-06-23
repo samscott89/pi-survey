@@ -1,0 +1,53 @@
+/*
+  Define theme colours here.
+*/
+$theme-main: #7E4BA6;
+
+// Some main colours to be re-used throughout.
+$component-active-color: white;
+$component-active-bg: lighten($theme-main, 15%);
+
+// Default colours for the navbar components
+$navbar-default-color: white;
+$navbar-default-bg: $theme-main;
+$navbar-default-border: lighten($navbar-default-bg, 6.5%);
+$navbar-default-link-color: white;
+
+$navbar-default-link-hover-color: white;
+$navbar-default-link-active-color: white;
+$navbar-default-link-hover-bg: lighten($theme-main, 10%);
+$navbar-default-link-active-bg: lighten($theme-main, 10%);
+
+// Make the navbar pills fill the header
+$nav-link-padding: 15px 15px;
+$nav-pills-border-radius: 0px;
+
+@import "bootstrap";
+
+
+/*
+
+Color shades for site.
+
+#000000
+#0D0811
+#190F21
+#261632
+#321E42
+#3F2653
+#4C2D64
+#583474
+#653C85
+#714495
+###7E4BA6
+#8B5DAF
+#986FB8
+#A581C1
+#B293CA
+#BEA5D2
+#CBB7DB
+#D8C9E4
+#E5DBED
+#F2EDF6
+#FFFFFF
+*/

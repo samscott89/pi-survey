@@ -1,10 +1,36 @@
-@import "bootstrap";
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+/*
+
+Color shades for site.
+
+#000000
+#0D0811
+#190F21
+#261632
+#321E42
+#3F2653
+#4C2D64
+#583474
+#653C85
+#714495
+###7E4BA6
+#8B5DAF
+#986FB8
+#A581C1
+#B293CA
+#BEA5D2
+#CBB7DB
+#D8C9E4
+#E5DBED
+#F2EDF6
+#FFFFFF
+*/
 
 
 /* universal */
@@ -33,7 +59,6 @@ textarea {
   }
 }
 
-/* header */
 
 .logo {
   float: left;
@@ -42,7 +67,7 @@ textarea {
   font-size: 1.7em;
   color: white;
   letter-spacing: -1px;
-  padding-top: 0px;
+  padding-top: 10px;
   font-weight: bold;
   line-height: 1;
 
@@ -60,12 +85,12 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
-  color: $gray-light;
+  color: light-gray;
 
   a {
-    color: $gray;
+    color: gray;
     &:hover {
-     color: $gray-darker;
+     color: dark-gray;
    }
   }
 
@@ -79,21 +104,6 @@ footer {
     li {
       float: left;
      margin-left: 10px;
-    }
-  }
-}
-
-/* Users index */
-
-.users {
-  list-style: none;
-  margin: 0;
-  li {
-    overflow: auto;
-    padding: 10px 0;
-    border-top: 1px solid $gray-lighter;
-    &:last-child {
-      border-bottom: 1px solid $gray-lighter;
     }
   }
 }
