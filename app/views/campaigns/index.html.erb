@@ -5,15 +5,12 @@
 <div class="page-header">
 <h1>My Campaigns <br><small>Create, edit and view your campaigns here.</small></h1>
 </div>
-
-<h3>Create a new campaign.</h3>
-<%= link_to "Create a campaign", new_campaign_path, class: "btn btn-primary" %>
-
+<%= link_to "Create new campaign", new_campaign_path, class: "btn btn-primary" %>
 <br>
 <br>
 
 <% if @user.campaigns.empty? %>
-<div class="list-group col-lg-8">
+<div class="list-group">
 	<div class="list-group-item center">
 			<div class="list-group-item-header">
 			<h2>
@@ -37,7 +34,7 @@
 			<div class="row">
 			<div class="col-md-3">
 			<h3>
-				<%= campaign.name %>
+				<b> <%= campaign.name %> </b>
 			</h3>
 			</div>
 			<div class="col-md-3">
