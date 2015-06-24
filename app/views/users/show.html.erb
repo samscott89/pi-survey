@@ -6,12 +6,12 @@
 <h1>My Surveys <br><small>View surveys you own and surveys you answered.</small></h1>
 </div>
 <%= link_to "Create new survey", new_survey_path, class: "btn btn-primary" %>
-<%= link_to "Browse surveys", surveys_path, class: "btn btn-primary" %>
+<%= link_to "Browse surveys", surveys_path, class: "btn btn-success" %>
 <br>
 
 <hr>
 <br>
-<h1>My created surveys</h1>
+<h2>Created surveys</h2>
 <% if @user.surveys.empty? %>
 <div class="list-group">
 	<div class="list-group-item center">
@@ -34,9 +34,9 @@
 	<% @user.surveys.each do |survey| %>
 		<%= link_to survey_stats_path(survey), class: "list-group-item" do %>
 		<div class="list-group-item-header">
-			<h2>
-				<%= survey.name %>
-			</h2>
+			<h3>
+				<b><%= survey.name %></b>
+			</h3>
 		</div>
 		<p class="list-group-item-text">
 		Number of responses: <%= ActiveSurvey.where(survey_id: survey.id, completed: true).count %>	
@@ -48,18 +48,18 @@
 
 <br>
 
-<h1>My Survey Answers</h1>
+<h2>Answered surveys</h2>
 <% if @user.active_surveys.empty? %>
 <div class="list-group">
 	<div class="list-group-item center">
 			<div class="list-group-item-header">
-			<h2>
+			<h3>
 				You haven't answered any surveys yet.
-			</h2>
+			</h3>
 			</div>
 			<div class="list-group-item-text">
 			<br>
-			<%= link_to "Find a survey", surveys_path, class: "btn btn-large btn-primary"  %>	
+			<%= link_to "Find a survey", surveys_path, class: "btn btn-lg btn-primary"  %>	
 			<br>
 			</div>
 	</div>
@@ -72,9 +72,9 @@
 		<% survey = active_survey.survey %>
 		<%= link_to survey_path(survey), class: "list-group-item list-group-item-#{active_survey.completed ? "success" : "info"}" do %>
 		<div class="list-group-item-header">
-			<h2>
-				<%= survey.name %>
-			</h2>
+			<h3>
+				<b><%= survey.name %></b>
+			</h3>
 		</div>
 		<p class="list-group-item-text">
 			Completed: <%= t active_survey.completed.class %>

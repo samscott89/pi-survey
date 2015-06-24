@@ -1,0 +1,28 @@
+<% provide(:title, 'Tour') %>
+
+<div class="row">
+<div class="col-md-offset-1 col-md-10">
+
+<div class="page-header">
+<h2>PsychInsight Tour <br><small>Welcome to PsychInsight. <br>This page will give a tour through the main features of PsychInsight's survey application.</small></h2>
+
+<p>
+For your convenience, a guest user account has been created for you. <br>
+If you want to try logging in and out, the username is <mark>guest@example.com</mark> and the password is <mark>password</mark>.
+</p>
+</div>
+
+<h3>Features to try:</h3>
+
+<div class="list-group">
+<%= link_to "Create a new survey", new_survey_path, class: "list-group-item" %>
+<%= link_to "Answer a survey", survey_path(Survey.first), class: "list-group-item" %>
+<%= link_to "View created and answered survey", user_surveys_path, class: "list-group-item" %>
+<%= link_to "View survey stats", survey_stats_path(Survey.first), class: "list-group-item" %>
+<%= link_to "Create a campaign", new_campaign_path, class: "list-group-item" %>
+<%= link_to "View campaigns", campaigns_path, class: "list-group-item" %>
+
+</div>
+
+</div>
+</div>

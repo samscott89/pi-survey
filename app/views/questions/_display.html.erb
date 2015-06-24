@@ -1,8 +1,8 @@
 <!-- Link to modal -->
-<%= link_to "#{q.id}. #{q.subtext}", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %> <!--please check this bit sam as I am not sure if the myModal#q.id needs to be unique as this is copied from the _edit partial.
+<%= link_to "Q#{q.id}.", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %> <!--please check this bit sam as I am not sure if the myModal#q.id needs to be unique as this is copied from the _edit partial.
 
 <!-- Modal -->
-<div class="modal fade" id= <%= "myModal#{q.id}" %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id=<%="myModal#{q.id}" %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,13 +11,11 @@
       </div>
       <div class="modal-body">
       <div class="row">
-	      <div class="col-sm-8">
+	      <div class="col-sm-offset-1 col-sm-8">
 	      	<%= fields_for Answer.new do |f| %>
-          <fieldset disabled>
             <% f.object.answer_options.build %>
 	      		<%= render partial: "survey_sections/question_types/#{q.option_group.question_type.name}", locals: { f: f, q: q, ans_options: f.object.answer_options}, layout: "survey_sections/question_types/question"  %>
 	      	<% end %>
-          </fieldset>
 	      </div> 
       </div>
       </div>

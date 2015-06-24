@@ -49,8 +49,12 @@ textarea {
   }
 }
 
-
-
+table th {
+  text-align: center;
+  .modal {
+    text-align: left;
+  }
+}
 
 .logo {
   float: left;

@@ -1,6 +1,11 @@
 <% provide(:title, 'All surveys') %>
-<h1>All surveys</h1>
+<div class="row">
+<div class="col-md-offset-1 col-md-10">
 
+
+<div class="page-header">
+<h1>All surveys <br><small>Browse possible surveys to answer</small></h1>
+</div>
 <%= paginate @surveys %>
 
 <div class="list-group">
@@ -8,3 +13,6 @@
 </div>
 
 <%= paginate @surveys %>
+
+</div>
+</div>
