@@ -1,7 +1,7 @@
-<div class="col-sm-3<%=(cs.start_date..cs.end_date||Time.now+1).cover?(Time.now) ? " text-success bg-success" : " text-info bg-info"
+<div class="col-sm-3<%= cs.running? ? " text-success bg-success" : " text-info bg-info"
  %>">
 <h4><%= cs.survey.name%></h4><small>
-Running: <%= "#{cs.start_date.strftime('%d/%m/%Y')} -- #{cs.end_date.nil? ? "Indefinite" : cs.end_date.strftime('%d/%m/%Y')}" %> <br>
+Running: <%= "#{cs.start_date.strftime('%d/%m/%Y')} - #{cs.end_date.nil? ? "Indefinite" : cs.end_date.strftime('%d/%m/%Y')}" %> <br>
 Number of responses: <%= ActiveSurvey.where(survey_id: cs.survey.id, completed: true).count %>
 </small>
 </div>

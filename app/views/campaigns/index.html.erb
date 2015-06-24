@@ -1,10 +1,16 @@
 <%= provide(:title, full_title("Campaigns Manager")) %>
-
-<div class="jumbotron">
-
-<h1>My Campaigns</h1>
-
 <div class="row">
+<div class="col-md-offset-1 col-md-10">
+
+<div class="page-header">
+<h1>My Campaigns <br><small>Create, edit and view your campaigns here.</small></h1>
+</div>
+
+<h3>Create a new campaign.</h3>
+<%= link_to "Create a campaign", new_campaign_path, class: "btn btn-primary" %>
+
+<br>
+<br>
 
 <% if @user.campaigns.empty? %>
 <div class="list-group col-lg-8">
@@ -24,22 +30,36 @@
 
 <% end %>
 
-<div class="list-group col-lg-8">
+<div class="list-group">
 	<% @campaigns.each do |campaign| %>
 		<%= link_to campaign_path(campaign), class: "list-group-item" do %>
 		<div class="list-group-item-header">
-			<h2>
+			<div class="row">
+			<div class="col-md-3">
+			<h3>
 				<%= campaign.name %>
-			</h2>
+			</h3>
+			</div>
+			<div class="col-md-3">
+			<h3>
+			<small>
+				<% if campaign.live? %>
+					<b>Running</b>
+				<% end %>
+			</small>
+			</h3>
+			</div>
+			</div>
 		</div>
 		<p class="list-group-item-text">
 		<div class="row">
 			<%= render partial: "campaign_survey_small", collection: campaign.campaign_surveys, as: :cs %>
 			</div>
 		</p>
+
 		<% end %>
 	<% end %>
 </div>
-</div>
 
+</div>
 </div>

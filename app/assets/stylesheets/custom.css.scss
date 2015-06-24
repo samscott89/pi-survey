@@ -77,27 +77,21 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
-  color: light-gray;
-
-  a {
-    color: gray;
-    &:hover {
-     color: dark-gray;
-   }
-  }
+  color: #808080;
 
   small {
     float: left;
   }
+}
 
-  ul {
-    float: right;
-    list-style: none;
-    li {
-      float: left;
-     margin-left: 10px;
-    }
-  }
+/*
+  Bit hacky: makes the list-group border only display
+  between elements
+*/
+.list-group-item {
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-bottom: 0px !important;
 }
 
 /* forms */

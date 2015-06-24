@@ -1,19 +1,24 @@
 <%= provide(:title, full_title("View Campaign")) %>
 
-<div class="jumbotron">
-
-<h1>Campaign: <%= @campaign.name %></h1>
-
-<%= link_to "Edit Campaign", edit_campaign_path(@campaign), class: "btn btn-primary btn-lg" %>
-<br>
-<br>
-
 <div class="row">
+<div class="col-md-offset-1 col-md-10">
 
-<div class="list-group col-lg-8">
+<div class="page-header">
+<h1>Campaign <br><small><%= @campaign.name %> </small></h1>
+</div>
+
+<%= link_to "Edit campaign", edit_campaign_path(@campaign), class: "btn btn-primary"%>
+<%= link_to "Add participants", '#', class: "btn btn-primary disabled", title: "Coming soon" %>
+<% if @campaign.live? %>
+<%= link_to "Deactivate campaign", '#', class: "btn btn-danger disabled" %>
+<% else %>
+<%= link_to "Activate campaign", '#', class: "btn btn-success disabled" %>
+<% end %>
+<br>
+<br>
+
+<div class="list-group">
 	<%= render partial: 'campaign_survey', collection: @campaign.campaign_surveys%>
 </div>
 </div>
-
-
 </div>

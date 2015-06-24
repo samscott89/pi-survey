@@ -12,5 +12,9 @@ class CampaignSurvey < ActiveRecord::Base
 			errors.add(:owner, "Survey must be owned by Campaign owner.")
 		end
 	end
+
+	def running?
+		(self.start_date..self.end_date||Time.now+1).cover?(Time.now)
+	end
 	
 end

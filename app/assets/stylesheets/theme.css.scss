@@ -22,6 +22,10 @@ $navbar-default-link-active-bg: lighten($theme-main, 10%);
 $nav-link-padding: 15px 15px;
 $nav-pills-border-radius: 0px;
 
+// List group styles
+$list-group-border: #EEE;
+$list-group-hover-bg: lighten($theme-main, 50%);
+
 @import "bootstrap";
 
 
