@@ -3,6 +3,9 @@ namespace :db do
   desc "Fill the database with realistic surveys"
   task fake_answers: :environment do
 
+    ### WARNING: THIS IS DONE WITH HARDCODED VALUES. DO NOT USE.
+    if false
+
     # # Change this to desired target, or make it input.
     # survey_target_id = 6 
 
@@ -33,6 +36,8 @@ namespace :db do
       Answer.create!(user_id: u.id, question_id: 8, answer_options_attributes: {"0" => {option_id: rand(24..28)}})
     
       ActiveSurvey.create(user_id: u.id, survey_id: 1, completed: true)
+    end
+
     end
 
   end
