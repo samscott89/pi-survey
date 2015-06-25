@@ -8,8 +8,12 @@
 	    <thead>
 	    <tr>
 	    	<th>User</th>
-	    	<% @questions.each do |q| %>
-	    			<th><%= render partial: "questions/display", locals: {q: q} %></th>
+	    	<% @questions.each_with_index do |q, idx| %>
+	    			<th>
+	    			<!-- Link to modal -->
+	    			<%= link_to "Q#{idx+1}.", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
+	    			<%= render partial: "questions/display", locals: {q: q} %>
+	    			</th>
 	    	<% end %>
 	    </tr
 	    </thead>

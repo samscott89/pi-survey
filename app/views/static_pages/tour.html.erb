@@ -17,7 +17,7 @@ If you want to try logging in and out, the username is <mark>guest@example.com</
 <div class="list-group">
 <%= link_to "Create a new survey", new_survey_path, class: "list-group-item" %>
 <%= link_to "Answer a survey", survey_path(Survey.first), class: "list-group-item" %>
-<%= link_to "View created and answered survey", user_surveys_path, class: "list-group-item" %>
+<%= link_to "View created and answered surveys", user_surveys_path, class: "list-group-item" %>
 <%= link_to "View survey stats", survey_stats_path(Survey.first), class: "list-group-item" %>
 <%= link_to "Create a campaign", new_campaign_path, class: "list-group-item" %>
 <%= link_to "View campaigns", campaigns_path, class: "list-group-item" %>
