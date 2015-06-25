@@ -12,13 +12,4 @@ class Question < ActiveRecord::Base
 	validates :subtext, presence: true
 
 	accepts_nested_attributes_for :option_choices
-
-	after_create :add_blank
-
-	def add_blank
-		if self.required?
-			#TODO: user-chosen values for unspecified.
-			QuestionBlank.create(question: self, value: "Unspecified") 
-		end
-	end
 end
