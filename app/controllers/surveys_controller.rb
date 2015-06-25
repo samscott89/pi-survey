@@ -33,7 +33,7 @@ class SurveysController < ApplicationController
   end
 
   def create
-  	@survey = Survey.new(survey_params)
+  	@survey = Survey.new(survey_params.merge( owner_id: current_user.id))
     authorize! :create, @survey
     if @survey.save
       flash[:notice] = "Survey Created"
