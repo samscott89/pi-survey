@@ -10,7 +10,7 @@ namespace :db do
     # questions.flatten
 
     users = []
-    100.times do
+    10.times do
        users << User.create(name: Faker::Name.name, email: Faker::Internet.email, password: "password")
     end
 
@@ -31,6 +31,8 @@ namespace :db do
       Answer.create!(user_id: u.id, question_id: 6, answer_options_attributes: {"0" => {option_id: rand(14..18)}})
       Answer.create!(user_id: u.id, question_id: 7, answer_options_attributes: {"0" => {option_id: rand(19..23)}})
       Answer.create!(user_id: u.id, question_id: 8, answer_options_attributes: {"0" => {option_id: rand(24..28)}})
+    
+      ActiveSurvey.create(user_id: u.id, survey_id: 1, completed: true)
     end
 
   end

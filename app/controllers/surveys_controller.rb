@@ -72,7 +72,7 @@ class SurveysController < ApplicationController
     @users = User.find(us)
 
     #Get answers for each user
-    us.each {|u| @answers[u] = Answer.where(user_id: us, question_id: qs).index_by(&:question_id)}
+    us.each {|u| @answers[u] = Answer.where(user_id: u, question_id: qs).index_by(&:question_id)}
     #NOTE: Might be slow, should change to batch query later.
 
     respond_to do |format|
