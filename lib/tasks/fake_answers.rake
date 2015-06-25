@@ -23,7 +23,7 @@ namespace :db do
                         {"0" => {answer_text: (Time.now + rand(-10..10)*60*60*24).strftime("%Y-%m-%d"), option_id: 6}})
       a = Answer.new(user_id: u.id, question_id: 4)
       (7..10).each do |n|
-        a.answer_options.build(option_id: n) if rand(0) == 0
+        a.answer_options.build(option_id: n) if rand(2) == 0
       end
       a.save
 
