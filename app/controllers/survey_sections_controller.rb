@@ -1,6 +1,10 @@
 class SurveySectionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :answer]
+
+  # Delegate authorisation to the parent survey
+  load_and_authorize_resource :survey, except: [:answer]
+  #load_and_authorize_resource :survey_section, :through => :survey
   
   def show
     @errors = []
@@ -23,7 +27,7 @@ class SurveySectionsController < ApplicationController
       "You are currently logged in as guest #{@user.id}"
     end
 
-    authorize! :read, @survey
+    # authorize! :read, @survey
 
     @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
     @answers = []
@@ -106,7 +110,7 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(ixd: params[:index]).first
 
-    authorize! :edit, @survey
+    # authorize! :edit, @survey
 
     @survey_section.assign_attributes(survey_section_params)
     if @survey_section.save
@@ -123,7 +127,7 @@ class SurveySectionsController < ApplicationController
 
   def new
     @survey = Survey.find(params[:survey_id])
-    authorize! :edit, @survey
+    # authorize! :edit, @survey
 
     idx = (@survey.sections.pluck(:idx) << 0).max + 1
     @section = @survey.sections.create(name: "Section #{idx}", title: "New Section", idx: idx)
@@ -135,7 +139,7 @@ class SurveySectionsController < ApplicationController
   def delete
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
-    authorize! :destroy, @survey
+    # authorize! :destroy, @survey
 
     sections_to_increment = @survey.sections.where("idx > ?", params[:index]).order(idx: :asc)
     @survey_section.destroy
