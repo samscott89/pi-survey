@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  # Insert custom layouts here
+  layout :layout_by_resource
+
   protected
 
   # Used by CanCanCan to find user authorisation. 
@@ -26,6 +29,14 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource) || user_surveys_path
     else
       review_surveys_path
+    end
+  end
+
+  def layout_by_resource
+    if devise_controller?
+      "small_form"
+    else
+      "application"
     end
   end
 end

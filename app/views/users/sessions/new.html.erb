@@ -1,32 +1,32 @@
 <% provide(:title, "Sign in") %>
 
-<h2>Log in</h2>
-
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-2">
-  <%= form_for resource, as: resource_name, url: session_path(resource_name) do |f| %>
-  <fieldset>
-    <div class="form-group">
-      <%= f.label :email, class: "col-sm-2 control-label" %><br />
-      <%= f.email_field :email, autofocus: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :password, class: "col-sm-2 control-label" %><br />
-      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-    </div>
-
-    <% if devise_mapping.rememberable? -%>
-      <div class="form-group">
-        <%= f.label :remember_me, class: "col-sm-3 control-label" %>
-        <%= f.check_box :remember_me %>
-      </div>
-    <% end -%>
-
-    <div class="actions">
-      <%= f.submit "Log in", class: "btn btn-large btn-primary" %>
-    </div>
-  </fieldset>
-  <% end %>
+<%= form_for resource, as: resource_name, url: session_path(resource_name) do |f| %>
+<legend>Log in</legend>
+<fieldset>
+  <div class="form-group">
+    <%= f.label :email, class: "control-label" %>
+    <%= f.email_field :email, autofocus: true, class: "form-control" %>
   </div>
-</div>
+
+  <div class="form-group">
+    <%= f.label :password, class: "control-label" %>
+    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+    <%- if devise_mapping.recoverable? %>
+    <span class="help-block">
+      <%= link_to "Forgot password?", new_password_path(resource_name), class: 'right' %>
+    <% end -%>
+    </span>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="form-group">
+      <%= f.label :remember_me, class: "control-label" %>
+      <%= f.check_box :remember_me %>
+    </div>
+  <% end -%>
+
+  <div class="actions">
+    <%= f.submit "Log in", class: "btn btn-large btn-primary" %>
+  </div>
+</fieldset>
+<% end %>
