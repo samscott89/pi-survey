@@ -39,4 +39,7 @@ SurveyApp::Application.configure do
   silence_warnings do
     BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
   end
+
+  # ActionMailer Config
+  config.action_mailer.default_url_options = { host: 'psychinsight.co.uk' }
 end
