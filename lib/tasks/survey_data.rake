@@ -3,7 +3,7 @@ namespace :db do
   desc "Fill the database with realistic surveys"
   task populate_survey: :environment do
 
-    survey = Survey.create!(name: "Example Survey", description: "This is an example survey.", is_public: true, owner_id: User.find_by(email: guest@example.com).id))
+    survey = Survey.create!(name: "Example Survey", description: "This is an example survey.", is_public: true, owner_id: User.find_by(email: "guest@example.com").id)
     	
   	sec = SurveySection.create!(name: "Section 1", title: "Introduction", required: true, survey: survey, idx: 1)
   	q = Question.create!(survey_section: sec, name: "Name", subtext: "What is your name?", option_group: g_text)
