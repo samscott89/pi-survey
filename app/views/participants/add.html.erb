@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-2">
+	<%= form_tag edit_campaign_participants_path(@campaign), role: "form", html: {class: "form-horizontal"} do %>
+	<legend>Add Participants</legend>
+	<fieldset>
+	 <div class="form-group">
+	 	<%= label_tag "emails", "Add users", class: "control-label" %>
+	 	<%= text_area_tag "emails", nil, class: "form-control" %>
+	 	<span class="help-block">Enter values seperated by a comma, space, or newline.</span>
+	 </div>
+	 </fieldset>
+	 <%= submit_tag "Update", class: "btn btn-primary" %>
+	<% end %>
+
+  </div>
+</div>

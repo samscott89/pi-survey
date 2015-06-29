@@ -66,7 +66,12 @@ SurveyApp::Application.routes.draw do
   #
   resources :campaigns do 
     resources :campaign_surveys, only: [:destroy], shallow: true
-    resources :participants
+    resources :participants, only: [:index]  do
+      collection do 
+        get "add"
+        match "edit", via: :post
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

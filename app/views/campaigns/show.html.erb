@@ -4,11 +4,11 @@
 <div class="col-md-offset-1 col-md-10">
 
 <div class="page-header">
-<h1>Campaign <br><small><%= @campaign.name %> </small></h1>
+<h1><%= @campaign.name %> <br><small>Campaign page </small></h1>
 </div>
 
 <%= link_to "Edit campaign", edit_campaign_path(@campaign), class: "btn btn-primary"%>
-<%= link_to "Add participants", '#', class: "btn btn-primary disabled", title: "Coming soon" %>
+<%= link_to "Manage participants", campaign_participants_path(@campaign), class: "btn btn-primary" %>
 <% if @campaign.live? %>
 <%= link_to "Deactivate campaign", '#', class: "btn btn-danger disabled" %>
 <% else %>
