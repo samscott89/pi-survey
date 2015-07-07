@@ -20,7 +20,7 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	<p><%= %></p>
 	<div id="question-options">
 		<p> this happened </p>
-		<% if OptionGroup.multiples.include? q.group_id %>
+		<% if Question_Type.multiples.include? q.group_id %>
 
 				<div class="row">
 				<%= f.fields_for :option_choices, role: "form" do |f2| %>
