@@ -13,14 +13,14 @@ and PATCH => question#update if q exists in DB. Cool! %>
 
 	<%= f.label "Question Type", class: "control-label" %>
 	<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
+
 	<%= f.select :group_id, options_for_select(types, q.group_id), {}, {class: "form-control", id: "question_group_id#{q.id}"} %>
 	
 	<%= f.label "Question Text", class: "control-label"  %>
 	<%= f.text_area :subtext, class: "form-control" %>
-	<p><%= %></p>
-	<div id="question-options">
-		<p> this happened </p>
-		<% if Question_Type.multiples.include? q.group_id %>
+	<p><%= QuestionType.multiples[0].name %></p>
+	<div id="question-options<%= q.id %>">
+		<% if QuestionType.multiples.include? q.group_id %>
 
 				<div class="row">
 				<%= f.fields_for :option_choices, role: "form" do |f2| %>
