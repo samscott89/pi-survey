@@ -6,8 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = CreateAdminService.new.call
-puts 'Created Admin User: ' << user.email
+#user = CreateAdminService.new.call
+#puts 'Created Admin User: ' << user.email
 
 
 guest = User.find_by(email: "guest@example.com")
@@ -15,9 +15,14 @@ guest ||= User.create(name: "Guest", email: "guest@example.com", password: "pass
 puts 'Created Guest User'
 
 # Instantiate possible Question Types
-possible_types = ["check_box", "radio_button", "text_field", "text_area", "select", "select_multiple", "collection_select", "date_field", "datetime_field", "time_field"]
+possible_types = ["check_box", "radio_button", "text_field", "text_area", "select", "select_multiple", "collection_select", "date_field", "datetime_field", "time_field", "likert_scale"]
 possible_types.each do |t|
-	QuestionType.create(name: t)
+	if t == "check_box" || t == "radio_button" || t == "select" || t == "select_multiple" || t == "collection_select" || t == "likert_scale"
+		m = true
+	else
+		m = false
+	end
+	QuestionType.create(name: t, is_multiple: m)
 end
 
 #Creates some generic option choices
@@ -47,5 +52,11 @@ end
 
 g_date = OptionGroup.create!(name: "SimpleDate", question_type: QuestionType.find_by(name: "date_field"))
 simple_date = OptionChoice.create!(choice_name: "SimpleDate", option_group: g_date)
+
+g_likert = OptionGroup.create!(name: "SimpleScaleChoice", question_type: QuestionType.find_by(name: "likert_scale"))
+likert_choices = {}
+for n in 1..11 do
+	likert_choices[n] = OptionChoice.create!(choice_name: "#{n}", option_group: g_likert)
+end
 
 puts "Created default survey data"

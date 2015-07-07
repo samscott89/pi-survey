@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622164600) do
+ActiveRecord::Schema.define(version: 20150707082343) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -104,7 +104,8 @@ ActiveRecord::Schema.define(version: 20150622164600) do
   add_index "question_options", ["question_id"], name: "index_question_options_on_question_id"
 
   create_table "question_types", force: true do |t|
-    t.string "name"
+    t.string  "name"
+    t.boolean "is_multiple"
   end
 
   create_table "questions", force: true do |t|
