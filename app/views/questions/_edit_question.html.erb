@@ -18,7 +18,7 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	
 	<%= f.label "Question Text", class: "control-label"  %>
 	<%= f.text_area :subtext, class: "form-control" %>
-	<p><%= QuestionType.multiples[0].name %></p>
+	<p><%# QuestionType.multiples[0].name %></p>
 	<div id="question-options<%= q.id %>">
 		<% if QuestionType.multiples.include? q.group_id %>
 
@@ -31,7 +31,7 @@ and PATCH => question#update if q exists in DB. Cool! %>
 					<div class="col-lg-3">
 					<br>
 					<%= label_tag "delete[#{f2.object.id}]", class: "control-label" do %>
-					<%= check_box_tag "delete[#{f2.object.id}]" %> Delete 
+					<%= check_box_tag "delete[#{f2.object.id}]" %> Delete
 					<% end %>						
 					</div>
 				<% end %>
