@@ -6,7 +6,7 @@ class AnswerOption < ActiveRecord::Base
 	belongs_to :answer, inverse_of: :answer_options
   	validates_presence_of :answer
 
-	belongs_to :question_option, foreign_key: "option_id"
+	belongs_to :option_choice, foreign_key: "option_id"
 	
 	before_validation :clean_up
 
@@ -15,7 +15,7 @@ class AnswerOption < ActiveRecord::Base
 	def clean_up
 		# Adds answer text if missing based on the corresponding OptionChoice
 		if (self.answer_text.nil? or (self.option_id_changed? and !self.option_id_was.nil?)) and self.option_id != 0
-			self.answer_text = self.question_option.option_choice.choice_name.capitalize
+			self.answer_text = self.option_choice.choice_name.capitalize
 		end
 
 		# Marks the AnswerOption for destruction if option id is 0 (this catches unset checkboxes)

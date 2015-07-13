@@ -7,5 +7,5 @@
 <%# end %>
 	<%= f2.label :answer_text, q.subtext, class: "control-label" %>
 	<%= f2.date_field :answer_text, class: "form-control", value: date_value %>
-	<%= f2.hidden_field :option_id, value: q.question_options.first.id %>
+	<%= f2.hidden_field :option_id, value: q.option_choices.first.id %>
 <% end %>

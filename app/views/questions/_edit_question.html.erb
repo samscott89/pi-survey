@@ -12,15 +12,15 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	<% end %>
 
 	<%= f.label "Question Type", class: "control-label" %>
-	<% types = OptionGroup.all.order(:name).map{|opt| ["#{opt.question_type.name.gsub("_"," ").capitalize} - #{opt.name}", opt.id]} %>
+	<% types = QuestionType.all.order(:name).map{|type| [type.name.gsub("_"," ").capitalize, type.id]} %>
 
-	<%= f.select :group_id, options_for_select(types, q.group_id), {}, {class: "form-control", id: "question_group_id#{q.id}"} %>
+	<%= f.select :question_type_id, options_for_select(types, q.question_type_id), {}, {class: "form-control", id: "question_type#{q.id}"} %>
 	
 	<%= f.label "Question Text", class: "control-label"  %>
 	<%= f.text_area :subtext, class: "form-control" %>
 	<p><%# QuestionType.multiples[0].name %></p>
 	<div id="question-options<%= q.id %>">
-		<% if QuestionType.multiples.include? q.group_id %>
+		<% if !q.question_type.nil? && q.question_type.is_multiple? %>
 
 				<div class="row">
 				<%= f.fields_for :option_choices, role: "form" do |f2| %>
@@ -48,16 +48,18 @@ and PATCH => question#update if q exists in DB. Cool! %>
 		<% end %>
 		</div>	
 	<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
+
+	<div class="checkbox">
+		<%= f.label :allow_other do %>
+		<%= f.check_box :allow_other %> Allow other/custom entry?
+		<% end %>
+	</div>
+
 	</div>
 
 	<div class="checkbox">
 		<%= f.label :required do %>
 		<%= f.check_box :required %> Required?
-		<% end %>
-	</div>
-	<div class="checkbox">
-		<%= f.label :allow_other do %>
-		<%= f.check_box :allow_other %> Allow other/custom entry?
 		<% end %>
 	</div>
 

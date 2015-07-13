@@ -10,13 +10,11 @@ $(function() {
 	});
 
 	// Function to change the question type box when value is changed
-	$('[id^=question_group_id]').change(function() {
-	  var type = $(this).val();
+	$('[id^=question_type]').change(function() {
+	  var type = parseInt($(this).val(), 10);
 	  var option_types = <%= QuestionType.multiples.ids %>;
-	  var idx = $(this).attr('id').substr(17)
-	  console.log(idx);
-	  console.log(option_types);
-	  console.log(type);
+	  var idx = $(this).attr('id').substr(17);
+	  
 	  if(option_types.indexOf(type) > -1 ){
 	  	$("#question-options" + idx).show();
 	  } else {

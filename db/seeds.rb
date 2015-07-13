@@ -16,13 +16,12 @@ guest ||= User.create(name: "Guest", email: "guest@example.com", password: "pass
 puts 'Created Guest User'
 
 # Instantiate possible Question Types
-possible_types = ["check_box", "radio_button", "text_field", "text_area", "select", "select_multiple", "collection_select", "date_field", "datetime_field", "time_field", "likert_scale"]
+possible_types = ["check_box", "color_field", "date_field", "datetime_field", 
+	"email_field", "file_field", "number_field", "password_field", 
+	"phone_field", "radio_button", "range_field", "telephone_field", "text_area", 
+	"text_field", "time_field", "url_field", "select", "select_multiple", "likert_scale"]
 possible_types.each do |t|
-	if t == "check_box" || t == "radio_button" || t == "select" || t == "select_multiple" || t == "collection_select" || t == "likert_scale"
-		m = true
-	else
-		m = false
-	end
+	m = ["check_box", "radio_button", "select", "select_multiple", "likert_scale"].include? t
 	QuestionType.create(name: t, is_multiple: m)
 end
 
