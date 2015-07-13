@@ -6,8 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = CreateAdminService.new.call
-puts 'Created Admin User: ' << user.email
+# This is only a Rails 4.1+ feature. Will look into upgrading.
+# user = CreateAdminService.new.call
+# puts 'Created Admin User: ' << user.email
 
 
 guest = User.find_by(email: "guest@example.com")

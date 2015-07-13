@@ -7,8 +7,23 @@
 
 /
 class OptionGroup < ActiveRecord::Base
-	has_many :option_choices
+	has_many :option_choices, inverse_of: :option_group
+	belongs_to :question
 	belongs_to :question_type, foreign_key: "type_id"
+
+	accepts_nested_attributes_for :option_choices
 	
 	validates :type_id, presence: true
+
+	/ Returns a copy of the OptionGroup
+	  with all new Optionchoices. (Not saved).
+	/
+	def deep_copy
+		new_og = self.dup
+		self.option_choices.each do |oc|
+			new_og.option_choices.build(choice_name: oc.choice_name)
+		end
+
+		new_og
+	end
 end
