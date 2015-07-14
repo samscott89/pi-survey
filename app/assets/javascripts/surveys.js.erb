@@ -6,48 +6,69 @@ $(function() {
 	});
 
 	$("#add-section-tab").click(function(e){
-		console.log("Add section - Click!");
+		// console.log("Add section - Click!");
 	});
 
 	// Function to change the question type box when value is changed
-	$('[id^=question_type]').change(function() {
+	$('[id^=question_option_group_attributes_question_type]').change(function() {
 	  var type = parseInt($(this).val(), 10);
 	  var option_types = <%= QuestionType.multiples.ids %>;
-	  var idx = $(this).attr('id').substr(17);
+	  idx = "question_option_group_attributes_question_type".length
+	  var qid = parseInt($(this).attr('id').substr(idx), 10);
+	  if(!qid) qid = ""
 	  
 	  if(option_types.indexOf(type) > -1 ){
-	  	$("#question-options" + idx).show();
+	  	$("#question-options" + qid).show();
 	  } else {
-	  	$("#question-options" + idx).hide();
+	  	$("#question-options" + qid).hide();
 	  }
 	  // $("#option_choice_option_group_id").attr("value", type);
 	});
 	// $("[id^=question-option] input").attr("name", "option_choice[0][choice_name]");
-	var qc = []
-	$("[id^=question-option]").each(function(e){
-		var idx = $(this).attr('id').substr(19)
-		qc[idx] = 1;
+	var qc = {}
+	$("[id^=question-options]").each(function(e){
+		idx = "question-options".length
+		var qid = parseInt($(this).attr('id').substr(idx), 10)
+		if(!qid) qid = ""
+		// This ridiculous expressions counts the current number of question options.
+		q_opts = $(this).find("input[id^=question_option_group_attributes_option_choices_attributes_][id*=choice_name]").length
+		qc[qid] = q_opts;
 	})
 	
 
+	/*
+	This makes the 'add' link clone a new question, and set the correct values.
+	The hash qc stores the highest index added.
+	*/
 	$("[id^=add-question-option]").click(function(e){
 		console.log(e)
 		e.preventDefault();
-		var idx = $(this).attr('id').substr(19)
-		var opt = $("#question-option" + idx).clone();
-		opt.find("input").attr("name",  "option_choice[" + qc[idx] + "][choice_name]");
+		idx = "add-question-option".length
+		var qid = parseInt($(this).attr('id').substr(idx), 10)
+		if(!qid) qid = ""
+		var opt = $("#question-option" + qid).clone();
+
+		opt.find("input").attr("name",  "question[option_group_attributes][option_choices_attributes][" 
+			+ qc[qid] + "][choice_name]");
+		opt.find("input").attr("id",  "question_option_group_attributes_option_choices_attributes_"
+		 + qc[qid] + "_choice_name");
+		opt.find("label").attr("for",  "question_option_group_attributes_option_choices_attributes_"
+		 + qc[qid] + "_choice_name");
 		opt.find("input").val("");
-		$("#add-question-option" + idx).before(opt)
-		qc[idx]++;
-		console.log("idx: " + idx)
-		console.log(opt.find("input"))
+
+		// Insert the new html before the add button.
+		$("#add-question-option" + qid).before(opt)
+		qc[qid]++;
+		// console.log("q id: " + qid)
+		// console.log(opt.find("input"))
 	});
 
 
 	// This code here handles setting has_other=1 when a radio button is set to "other"
 	$('[id$=option_id_0]:radio').each(function(){
 		this_id = $(this).prop('id');
-		var ans_id = this_id.substr(0,this_id.indexOf('answer_options_attributes'));
+		idx = this_id.indexOf('answer_options_attributes')
+		var ans_id = this_id.substr(0, idx);
 		if($('#' + ans_id + 'has_other').val() == 't') {
 			$(this).prop('checked', true)
 		}

@@ -8,10 +8,11 @@
 /
 class OptionGroup < ActiveRecord::Base
 	has_many :option_choices, inverse_of: :option_group
-	belongs_to :question
+	belongs_to :question, inverse_of: :option_group
 	belongs_to :question_type, foreign_key: "type_id"
 
-	accepts_nested_attributes_for :option_choices
+	accepts_nested_attributes_for :option_choices, allow_destroy: true, 
+	reject_if: proc { |attributes| attributes['choice_name'].blank? }
 	
 	validates :type_id, presence: true
 

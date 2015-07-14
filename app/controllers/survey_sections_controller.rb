@@ -108,7 +108,7 @@ class SurveySectionsController < ApplicationController
 
   def update
     @survey = Survey.find(params[:survey_id])
-    @survey_section = @survey.sections.where(ixd: params[:index]).first
+    @survey_section = @survey.sections.where(idx: params[:index]).first
 
     # authorize! :edit, @survey
 

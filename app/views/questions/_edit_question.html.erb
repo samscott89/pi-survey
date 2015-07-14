@@ -11,43 +11,48 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	<%= hidden_field_tag :survey_section, q.survey_section_id %>
 	<% end %>
 
-	<%= f.label "Question Type", class: "control-label" %>
-	<% types = QuestionType.all.order(:name).map{|type| [type.name.gsub("_"," ").capitalize, type.id]} %>
+	<% og = q.option_group %>
+	<% og ||= OptionGroup.new %>
+	<%= f.fields_for :option_group, og, role: "form" do |f2| %>
+		<%= f2.label "Question Type", class: "control-label" %>
+		<% types = QuestionType.all.order(:name).map{|type| [type.name.gsub("_"," ").capitalize, type.id]} %>
 
-	<%= f.select :question_type_id, options_for_select(types, q.question_type_id), {}, {class: "form-control", id: "question_type#{q.id}"} %>
-	
-	<%= f.label "Question Text", class: "control-label"  %>
-	<%= f.text_area :subtext, class: "form-control" %>
-	<p><%# QuestionType.multiples[0].name %></p>
-	<div id="question-options<%= q.id %>">
-		<% if !q.question_type.nil? && q.question_type.is_multiple? %>
+		<%= f2.select :type_id, options_for_select(types, q.question_type.try(:id)), {}, {class: "form-control"} %>
+		
+		<%= f.label "Question Text", class: "control-label"  %>
+		<%= f.text_area :subtext, class: "form-control" %>
+		<p><%# QuestionType.multiples[0].name %></p>
+		<div id="question-options<%= q.id %>">
+			<% if true or !q.question_type.nil? && q.question_type.is_multiple? %>
 
-				<div class="row">
-				<%= f.fields_for :option_choices, role: "form" do |f2| %>
-					<div class="col-lg-9">
-					<%= f2.label :choice_name, "Answer Option", class: "control-label" %>
-					<%= f2.text_field :choice_name, class: "form-control"%>	
+					<div class="row">
+					<%= f2.fields_for :option_choices, role: "form" do |f2f| %>
+						<div class="col-lg-9">
+						<%= f2f.label :choice_name, "Answer Option", class: "control-label" %>
+						<%= f2f.text_field :choice_name, class: "form-control"%>	
+						</div>
+						<div class="col-lg-3">
+						<br>
+						<%= f2f.label "Delete", class: "control-label" do %>
+						<%= f2f.check_box :_destroy %> Delete
+						<% end #label tab %>						
+						</div>
+					<% end #f2.fields_for%>
 					</div>
-					<div class="col-lg-3">
-					<br>
-					<%= label_tag "delete[#{f2.object.id}]", class: "control-label" do %>
-					<%= check_box_tag "delete[#{f2.object.id}]" %> Delete
-					<% end %>						
-					</div>
-				<% end %>
-				</div>
 
-		<% end %>
+			<% end #if %>
 
-		<%# This is essentially a dummy template for adding new options.
-		Javascript handles cloning this for new entries.  %>		
-		<div id="question-option<%= q.id %>">
-		<%= fields_for "option_choice[0]", OptionChoice.new, role: "form" do |f2| %>
-			<%= f2.label :choice_name, "Answer Option", class: "control-label" %>
-			<%= f2.text_field :choice_name, class: "form-control" %>
-		<% end %>
-		</div>	
-	<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
+			<%# This is essentially a dummy template for adding new options.
+			Javascript handles cloning this for new entries.  %>		
+			<div id="question-option<%= q.id %>">
+			<%= f2.fields_for :option_choices, OptionChoice.new, role: "form" do |ff| %>
+				<%= ff.label :choice_name, "Answer Option", class: "control-label" %>
+				<%= ff.text_field :choice_name, class: "form-control" %>
+			<% end %>
+			</div>	
+		<%= link_to "Add", "#", id: "add-question-option#{q.id}" %>
+	<% end #f2 %>
+
 
 	<div class="checkbox">
 		<%= f.label :allow_other do %>
@@ -64,8 +69,7 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	</div>
 
 	</fieldset>
-	</div>
 	<div class="form-submit">
 	<%= f.button "Save Question", class: "btn btn-primary btn-large" %>
 	</div>
-<% end %>
+<% end #f %>
