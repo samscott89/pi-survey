@@ -1,0 +1,22 @@
+<%= f.label q.subtext, class: "control-label" %>
+<%= f.fields_for :answer_options do |f2| %>
+	<% q.question_options.each do |opt| %>
+	<div class="radio form-inline">
+		<%= f2.label :option_id  do %>
+		<%= f2.radio_button :option_id, opt.id %> <%= opt.option_choice.choice_name.capitalize %>
+		<% end %>
+	</div>
+	<% end %>
+	
+	<% if q.allow_other? %>
+	<div class="form-inline">
+	<div class="radio">
+		<%= f2.label :option_id do %>
+		<%= f2.radio_button :option_id, 0 %> Other:
+		<%= f.text_field :answer_text, class: "form-control input-sm" %>
+		<%= f.hidden_field :has_other %>
+		<% end %>
+	</div>
+	</div>
+	<% end %>
+<% end %>

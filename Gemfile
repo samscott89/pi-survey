@@ -16,6 +16,8 @@ group :test do
   gem 'factory_girl_rails', '4.1.0'
 end
 
+gem "chartkick"
+
 gem 'bootstrap-sass', '3.2.0' # pretty CSS
 gem 'sass-rails', '4.0.3' # More CSS trickery
 gem 'bcrypt-ruby', '3.1.2' # security

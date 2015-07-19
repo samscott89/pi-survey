@@ -3,6 +3,8 @@
 <div class="center">
 
 <h1><%= @survey.name %></h1>
+	
+
 	<div class="table-responsive">
 	  <table class="table table-hover">
 	    <thead>
@@ -13,6 +15,8 @@
 	    			<!-- Link to modal -->
 	    			<%= link_to "Q#{idx+1}.", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
 	    			<%= render partial: "questions/display", locals: {q: q} %>
+	    			<%= link_to "Chart Q#{idx+1}.", "#", "data-toggle" => "modal", "data-target" => "#myChartModal#{q.id}" %>
+	    			<%= render partial: "questions/chart", locals: {q: q} %>
 	    			</th>
 	    	<% end %>
 	    </tr
@@ -26,9 +30,12 @@
 	    		<% end %>
 	    	</tr>
 	    	<% end %>
+
+	    		
+
 	    </tbody>
 	  </table>
-	</div>
+	  
 
 	<%= link_to "Export as CSV",  survey_stats_path(@survey, format: :csv), class: "btn btn-large btn-success"%>
 

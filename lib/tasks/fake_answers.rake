@@ -4,7 +4,7 @@ namespace :db do
   task fake_answers: :environment do
 
     ### WARNING: THIS IS DONE WITH HARDCODED VALUES. DO NOT USE.
-    if false
+    if true
 
     # # Change this to desired target, or make it input.
     # survey_target_id = 6 
