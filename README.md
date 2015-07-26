@@ -2,9 +2,13 @@ README
 =======
 -------
 
-The is the code repository for the PsychInsight Ltd survey application.
+This is the code repository for the PsychInsight Ltd survey application.
 
 The application is written as a Ruby on Rails application, using Bootstrap for general themes and styling.
+  
+**(26/07/2015) Sam:** Some of this is information is probably out of date, since it is copied across from the old wiki. Need to go through and update.
+
+------
   
 
 Code Overview
@@ -19,7 +23,7 @@ The main pages of interest are:
 
 [Models](app/models)
 
-[Views](app/models)
+[Views](app/views)
 
 -------
 
