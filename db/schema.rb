@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713073021) do
+ActiveRecord::Schema.define(version: 20150805154942) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -71,6 +71,21 @@ ActiveRecord::Schema.define(version: 20150713073021) do
 
   add_index "campaigns", ["deleted"], name: "index_campaigns_on_deleted"
   add_index "campaigns", ["owner_id"], name: "index_campaigns_on_owner_id"
+
+  create_table "chart_types", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type_id"
+    t.boolean  "is_multiple"
+  end
+
+  create_table "charts", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type_id"
+    t.string   "question_id"
+    t.integer  "owner_id"
+  end
 
   create_table "option_choices", force: true do |t|
     t.integer "option_group_id"

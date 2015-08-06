@@ -1,0 +1,24 @@
+<div class="form-body">
+
+<%= form_for(Chart.new) do |f| %>
+	<fieldset>
+
+	<%= f.label "Chart Type", class: "control-label" %>
+	<% chartoptions = ChartType.pluck(:type_id) %>
+	<%= f.select :type_id, options_for_select(chartoptions.map{|c| c.gsub("_"," ").capitalize}), {}, {class: "form-control"} %>
+
+	<%= f.label "Questions", class: "control-label" %>
+	<% availableqs = @questions.all.map{|qname| [qname.name]} %>
+	<%= f.select :question_id, options_for_select(availableqs), {}, {class: "form-control"} %>
+	
+	<%= f.label "Questions", class: "control-label" %>
+	<% availableqs = @questions.all.map{|qname| [qname.name]} %>
+	<%= f.select :question_id, options_for_select(availableqs), {}, {class: "form-control"} %>
+
+	</fieldset>
+	<br>
+	<div class="form-submit">
+	<%= f.button "Make Graph", class: "btn btn-primary btn-large" %>
+	</div>
+
+<% end #f %>

@@ -1,6 +1,6 @@
 class Question < ActiveRecord::Base
 	include NotDeleteable
-	
+	belongs_to :chart
 	belongs_to :survey_section
 	has_one :option_group, inverse_of: :question
 

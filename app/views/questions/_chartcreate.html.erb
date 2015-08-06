@@ -1,0 +1,29 @@
+	   <div class="row">
+            <% if q != nil %>
+              <!-- <%= pie_chart(@answers) %> -->
+              <% @question = @questions.where(name: q.question_id) %>
+              <% if @question != nil %>
+                <% @temp_ans_hash = @answers_hash.select {|k,v| k.split(",").last == @question.pluck(:id).to_s[1,@question.pluck(:id).to_s.length-2]} %>
+                <% @ans_for_chart_hash = Hash.new%>
+                <% @temp_ans_hash.each do |k,v| %>
+                <% @ans_for_chart_hash[k.split(",").first] = v %>
+              <% end %>
+              <% end %>
+              <% case q.type_id %>
+                <% when "Bar chart" %>
+                  <%= bar_chart @ans_for_chart_hash %>
+                <% when "Pie chart" %>
+                  <%= pie_chart @ans_for_chart_hash %>
+                <% when "Line chart" %>
+                  <% @tempdata1 = @ans_for_chart_hash.values %>
+                  <% @data1 = @tempdata1.sum / @tempdata1.size.to_f %>
+                  <% @ans_line = [[@question.pluck(:name), @data1],["q2", 3]] %>
+                
+                  <%= line_chart @ans_line, {discrete: true} %>
+                <% when "Column chart" %>
+                  <%= column_chart @ans_for_chart_hash %>
+              <% end %>
+            <% end %>
+
+      </div>
+ 

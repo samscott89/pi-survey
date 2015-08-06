@@ -8,6 +8,9 @@ class Ability
     # Survey owners can do anything with it
     can :manage, Survey, owner_id: user.id
 
+    # Survey owners should be able to access charts
+    can :manage, Chart, owner_id: user.id
+
     # Anyone can read (index/show) public surveys
     # Later, this should be more nuanced
     can :read, Survey, is_public: true

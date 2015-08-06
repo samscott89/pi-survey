@@ -44,11 +44,16 @@ SurveyApp::Application.routes.draw do
     match "/sec/:index", to: "survey_sections#delete", as: :delete_section, via: 'delete'
    
     get "/stats", to: "surveys#stats", as: :stats
+    get "/charts", to: "surveys#charts", as: :charts
+    get "/chartcreate", to: "surveys#chartcreate"
+    #get "/chartsgo", to: "charts#show"
     match "/new_section", to: "survey_sections#new", as: :new_section, via: "post"
     
     match "/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: :answer
     get "/finish", to: 'surveys#finish', via: 'get', as: :completed
   end
+
+  resources :charts
 
   #
   # Questions

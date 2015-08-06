@@ -1,0 +1,16 @@
+<%= provide(:title, @survey.name) %>
+<%= javascript_include_tag "surveys" %>
+
+<h1>Lets chart some data!</h1>
+
+<div class="row">
+<div class="col-sm-3" id="chart-options">
+<legend>Choose a chart</legend>
+<%= render partial: "surveys/chart_select", locals: {q: @questions.name, s: @survey} %> <!-- if q is set as @question.name then it works -->
+</div>
+
+<div class="col-sm-9" id="chart-display">
+	<%= render partial: "questions/chartcreate", locals: {q: @chart} %>
+</div>
+
+</div>
