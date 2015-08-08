@@ -81,4 +81,15 @@ $(function() {
 		});
 
 	})
+
+	$("#ChartSelect").change(function() {
+            chart_opt = $("#ChartSelect option:selected").val();
+            console.log(chart_opt);
+       		if(chart_opt == "Line chart") {
+       			console.log("this worked");	
+       			$("#extra-question").show();
+	  		} else {
+	  			$("#extra-question").hide();
+	 		}
+        });
 });

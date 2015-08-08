@@ -6,7 +6,7 @@
                 <% @temp_ans_hash = @answers_hash.select {|k,v| k.split(",").last == @question.pluck(:id).to_s[1,@question.pluck(:id).to_s.length-2]} %>
                 <% @ans_for_chart_hash = Hash.new%>
                 <% @temp_ans_hash.each do |k,v| %>
-                <% @ans_for_chart_hash[k.split(",").first] = v %>
+                  <% @ans_for_chart_hash[k.split(",").first] = v %>
               <% end %>
               <% end %>
               <% case q.type_id %>
@@ -15,11 +15,40 @@
                 <% when "Pie chart" %>
                   <%= pie_chart @ans_for_chart_hash %>
                 <% when "Line chart" %>
-                  <% @tempdata1 = @ans_for_chart_hash.values %>
-                  <% @data1 = @tempdata1.sum / @tempdata1.size.to_f %>
-                  <% @ans_line = [[@question.pluck(:name), @data1],["q2", 3]] %>
-                
-                  <%= line_chart @ans_line, {discrete: true} %>
+                  <% @question2 = @questions.where(name: q.question_id2) %>
+                  <% if @question2 != nil %>
+                    <% @temp_ans_hash2 = @answers_hash.select {|k,v| k.split(",").last == @question2.pluck(:id).to_s[1,@question.pluck(:id).to_s.length-2]} %>
+                    <% @ans_for_chart_hash2 = Hash.new%>
+                    <% @temp_ans_hash2.each do |k,v| %>
+                      <% @ans_for_chart_hash2[k.split(",").first] = v %>
+                    <% end %>
+                  <% end %>
+                  <% @tempdata1 = @ans_for_chart_hash.keys.map{|k| k.to_i} %>
+                  <% @test = [] %>
+                  <% @temp_loopcount = 0 %>
+                  <% @ans_for_chart_hash.each do |s,v| %>
+                    <% @temp_loopcount = @temp_loopcount + 1 %>
+                    <% @test[@temp_loopcount] = s.to_i.to_s == s %>
+                  <% end %>
+                  <% @test2 = [] %>
+                  <% @temp_loopcount2 = 0 %>
+                  <% @ans_for_chart_hash2.each do |s,v| %>
+                    <% @temp_loopcount2 = @temp_loopcount2 + 1 %>
+                    <% @test2[@temp_loopcount2] = s.to_i.to_s == s %>
+                  <% end %>
+                  <% if @test.include?(false) || @test2.include?(false) %>
+
+                    <p>Sorry but the variables you chose were not numeric and so couldn't be charted in this way</p>
+
+                  <% else %>
+                    <% @data1 = @ans_for_chart_hash.map{|k,v| k.to_i*v}.sum / @ans_for_chart_hash.values.sum.to_f %>
+                    <% @data2 =  @ans_for_chart_hash2.map{|k,v| k.to_i*v}.sum / @ans_for_chart_hash2.values.sum.to_f %>
+                    <!-- so this bit of code above takes the @ans_for_chart_hash which contains the answers given and the number of tmies used. K,v. So then the sum can be calculated as k*v. Then N can be calced as the sum of all values. -->
+                    
+                    <% @ans_line = [[@question.pluck(:name), @data1],["temp for q2.pluck", @data2]] %>
+                    <%= line_chart @ans_line, {discrete: true} %>
+
+                  <% end %>
                 <% when "Column chart" %>
                   <%= column_chart @ans_for_chart_hash %>
               <% end %>

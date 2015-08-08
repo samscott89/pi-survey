@@ -144,6 +144,7 @@ class SurveysController < ApplicationController
     @questionnames = @questions.pluck(:name)
     @answers = {}
     @answers_ar = []
+    @line_ans_ar = []
     @answers_ar_count = 0
     # @chart_count = Chart.last
     # @chart = Chart.where(id: @chart_count)
@@ -167,6 +168,7 @@ class SurveysController < ApplicationController
       qs.each do |q|
          unless @answers[u][q].nil? 
           @answers_ar[@answers_ar_count] = (@answers[u][q].answer_options.pluck(:answer_text) << @answers[u][q].question_id).join(",")
+          @line_ans_ar[@answers_ar_count] = (@answers[u][q].answer_options.pluck(:answer_text))
           #@questions[2].option_choices.pluck(:choice_name, :id) need some code like this inserted into the above line 
           #so that we can find the actual answer option selected instead of the answer_text value which is fairly meaningless
           #although this does mean that things like the name field and date field will return the type field rather than the actual submitted value which is annoying

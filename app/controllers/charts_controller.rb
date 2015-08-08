@@ -3,6 +3,8 @@ class ChartsController < ApplicationController
 	def new
 		@chart = Chart.new
 		authorize! :create, @chart
+		@question_id1
+		@question_id2
 	end
 	def create
 		#this runs but has an authentication check problem. I dont understand this properly. 
@@ -21,6 +23,6 @@ class ChartsController < ApplicationController
 	private
 
 	def chart_params
-    	params.require(:chart).permit(:id, :type_id, :question_id)
+    	params.require(:chart).permit(:id, :type_id, :question_id, :question_id2, :question_id3)
   	end
 end

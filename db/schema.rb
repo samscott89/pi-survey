@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805154942) do
+ActiveRecord::Schema.define(version: 20150806183210) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "survey_id"
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 20150805154942) do
     t.string   "type_id"
     t.string   "question_id"
     t.integer  "owner_id"
+    t.string   "question_id2"
+    t.string   "question_id3"
   end
 
   create_table "option_choices", force: true do |t|

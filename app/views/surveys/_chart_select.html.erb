@@ -5,16 +5,19 @@
 
 	<%= f.label "Chart Type", class: "control-label" %>
 	<% chartoptions = ChartType.pluck(:type_id) %>
-	<%= f.select :type_id, options_for_select(chartoptions.map{|c| c.gsub("_"," ").capitalize}), {}, {class: "form-control"} %>
+	<%= f.select :type_id, options_for_select(chartoptions.map{|c| c.gsub("_"," ").capitalize}), {}, {class: "form-control",  id: "ChartSelect"} %>
 
 	<%= f.label "Questions", class: "control-label" %>
 	<% availableqs = @questions.all.map{|qname| [qname.name]} %>
 	<%= f.select :question_id, options_for_select(availableqs), {}, {class: "form-control"} %>
 	
-	<%= f.label "Questions", class: "control-label" %>
-	<% availableqs = @questions.all.map{|qname| [qname.name]} %>
-	<%= f.select :question_id, options_for_select(availableqs), {}, {class: "form-control"} %>
+	<div id="extra-question">
+		<%= f.label "Questions", class: "control-label" %>
+		<% availableqs = @questions.all.map{|qname| [qname.name]} %>
+		<%= f.select :question_id2, options_for_select(availableqs), {}, {class: "form-control"} %>
 
+	</div>
+	
 	</fieldset>
 	<br>
 	<div class="form-submit">
