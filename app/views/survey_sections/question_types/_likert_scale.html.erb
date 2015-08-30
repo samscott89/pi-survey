@@ -2,11 +2,13 @@
 	<%= f.fields_for :answer_options do |f2| %>
 		<table class="table table-condensed likert-table">
 			<thead>
+				
 				<tr>
 					<% q.option_choices.each do |opt| %>
 						<th><%= opt.choice_name.capitalize %></th>
 					<% end %>
 				</tr>
+
 			</thead>
 			<tbody>
 				<tr>

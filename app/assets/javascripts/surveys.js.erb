@@ -28,12 +28,13 @@ $(function() {
 
 	  $("#likert-5").hide();
 
-	  if(type == <%= QuestionType.find_by(name: "likert_scale") %>){
+/*	  if(type == <%= QuestionType.find_by(name: "likert_scale") %>){
 	  	$("#question-options" + qid).hide();
 	  	$("#likert-options").show();
 	  } else {
 	  	$("#likert-options").hide();
 	  }
+*/
 	  // $("#option_choice_option_group_id").attr("value", type);
 	});
 	// $("[id^=question-option] input").attr("name", "option_choice[0][choice_name]");

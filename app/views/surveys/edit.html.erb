@@ -10,7 +10,7 @@
 <%= render partial: "questions/edit_question", locals: {q: Question.new(survey_section: @survey_section)} %>
 </div>
 
-<div id="tabs" class="col-sm-6">
+<div id="tabs" class="col-sm-9">
 	<ul class="nav nav-tabs">
 		<% @survey.sections.each do |sec| %>
 		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.idx %>" sec="<%= sec.id %>"><%= sec.idx %></a></li>

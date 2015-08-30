@@ -29,6 +29,17 @@ and PATCH => question#update if q exists in DB. Cool! %>
 			<% availableqs = @questions.all.map{|qname| [qname.name]} %>
 			<% availableqs.push "custom" %>
 			<%#= select_tag(@likert_prevs, options_for_select(availableqs), class: "form-control") %>
+
+			<%#= 
+			  select_tag(
+			      :first_select, # name of selectbox
+			      
+			      options_for_select(availableqs), # your options for this select box
+			      :'data-remote' => 'true', # important for UJS
+			      :'data-url' => url_for(:controller => 'surveys', :action => 'getdata'), # we get the data from here!
+			      :'data-type' => 'json') # tell jQuery to parse the response as JSON!
+			%>
+
 			<%= 
 			   select_tag(
 			       :second_select, # name of selectbox
@@ -36,26 +47,6 @@ and PATCH => question#update if q exists in DB. Cool! %>
 			%> 
 		</div>
 
-		<div id="likert-options">
-			<div id="likert-question-option<%= q.id %>">
-				<%= f2.fields_for :option_choices, OptionChoice.new, role: "form" do |ff| %>
-					<%= ff.label :choice_name, "First Option", class: "control-label" %>
-					<%= ff.text_field :choice_name, class: "form-control" %>
-				<% end #ff.fields_for%>
-				<%= f.label "Likert Options", class: "control-label"  %>
-				
-			</div>
-			<div id="likert-displayed-options">
-			</div>
-			<div id="likert-hidden-options">
-				<select id="likert-options-select" class="form-control">
-					<option value="Empty">Empty</option>	
-					<option value="5">5</option>	
-					<option value="7">7</option>	
-					<option value="Custom">Custom</option>
-				</select>	
-			</div>
-		</div>
 
 		<p><%# QuestionType.multiples[0].name %></p>
 		<div id="question-options<%= q.id %>">
