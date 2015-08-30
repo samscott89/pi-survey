@@ -5,7 +5,7 @@ class SurveysController < ApplicationController
 
   def show
   	@survey = Survey.find(params[:id])
-
+    
     authorize! :read, @survey
 
     respond_to do |format|

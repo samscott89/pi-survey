@@ -10,6 +10,7 @@ class SurveySectionsController < ApplicationController
     @errors = []
   	@survey = Survey.find(params[:survey_id])
   	@survey_section = @survey.sections.where(idx: params[:index]).first
+    @num_sections = @survey.sections.count
 
     if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
       session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
