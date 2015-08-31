@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713073021) do
+ActiveRecord::Schema.define(version: 20150831065833) do
 
   create_table "active_surveys", force: true do |t|
+    t.integer  "campaign_survey_id"
     t.integer  "survey_id"
     t.integer  "user_id"
     t.boolean  "completed"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "campaign_survey_id"
   end
 
   add_index "active_surveys", ["survey_id"], name: "index_active_surveys_on_survey_id"
@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 20150713073021) do
   create_table "answer_options", force: true do |t|
     t.integer  "answer_id"
     t.integer  "option_id"
+    t.text     "answer_text"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "answer_text"
   end
 
   add_index "answer_options", ["answer_id"], name: "index_answer_options_on_answer_id"
@@ -71,6 +71,20 @@ ActiveRecord::Schema.define(version: 20150713073021) do
 
   add_index "campaigns", ["deleted"], name: "index_campaigns_on_deleted"
   add_index "campaigns", ["owner_id"], name: "index_campaigns_on_owner_id"
+
+  create_table "chart_types", force: true do |t|
+    t.string   "name"
+    t.boolean  "is_multiple"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "charts", force: true do |t|
+    t.integer  "type_id",     limit: 255
+    t.integer  "question_id", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "option_choices", force: true do |t|
     t.integer "option_group_id"

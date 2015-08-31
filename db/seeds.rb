@@ -25,6 +25,12 @@ possible_types.each do |t|
 	QuestionType.create(name: t, is_multiple: m)
 end
 
+#Create the possible chart types
+possible_charts = ["line_chart", "pie_chart", "column_chart", "bar_chart"]
+possible_charts.each do |c|
+	m = ["line_chart"].include? c
+	ChartType.create(name: c, is_multiple: m)
+end
 #Creates some generic option choices
 g_text = OptionGroup.create!(name: "SimpleTextEntry", question_type: QuestionType.find_by(name: "text_field"))
 simple_text = OptionChoice.create!(choice_name: "other", option_group: g_text)

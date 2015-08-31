@@ -77,21 +77,6 @@ class SurveysController < ApplicationController
     us.each {|u| @answers[u] = Answer.where(user_id: u, question_id: qs).index_by(&:question_id)}
     #NOTE: Might be slow, should change to batch query later.
 
-    us.each do |u|
-      qs.each do |q|
-         unless @answers[u][q].nil? 
-          @answers_ar[@answers_ar_count] = (@answers[u][q].answer_options.pluck(:answer_text) << @answers[u][q].question_id).join(",")
-          #@questions[2].option_choices.pluck(:choice_name, :id) need some code like this inserted into the above line 
-          #so that we can find the actual answer option selected instead of the answer_text value which is fairly meaningless
-          #although this does mean that things like the name field and date field will return the type field rather than the actual submitted value which is annoying
-          @answers_ar_count = @answers_ar_count + 1
-        end 
-      end
-    end
-
-    @answers_hash = Hash.new(0)
-    @answers_ar.each { |a| @answers_hash[a] += 1 }
-
     respond_to do |format|
       format.html
       format.csv { send_data answers_to_csv(@answers, qs)}

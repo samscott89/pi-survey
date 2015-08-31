@@ -15,8 +15,6 @@
 	    			<!-- Link to modal -->
 	    			<%= link_to "Q#{idx+1}.", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
 	    			<%= render partial: "questions/display", locals: {q: q} %>
-	    			<%= link_to "Chart Q#{idx+1}.", "#", "data-toggle" => "modal", "data-target" => "#myChartModal#{q.id}" %>
-	    			<%= render partial: "questions/chart", locals: {q: q} %>
 	    			</th>
 	    	<% end %>
 	    </tr
