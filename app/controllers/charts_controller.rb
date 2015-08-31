@@ -36,14 +36,16 @@ class ChartsController < ApplicationController
     # Aggregate data for question
     # Currently just count entries. But this should be changed to
     # something more sophisticated.
-    if @chart.chart_type == ChartType.where(name: 'line_chart')
-      qs = Question.where(id: [@chart.question_id, @chart.question_id2, @chart.question_id3])
-      @stats = qs.map {|q|
-        {name: q.name, data: Answer.joins(:answer_options).where(question_id: q.id).group("answer_options.answer_text").count}
-      }
-    else
-      @stats = Answer.joins(:answer_options).where(question_id: @chart.question_id).group("answer_options.answer_text").count
-    end
+    unless @chart.nil?
+      if @chart.chart_type == ChartType.where(name: 'line_chart')
+        qs = Question.where(id: [@chart.question_id, @chart.question_id2, @chart.question_id3])
+        @stats = qs.map {|q|
+          {name: q.name, data: Answer.joins(:answer_options).where(question_id: q.id).group("answer_options.answer_text").count}
+        }
+      else
+        @stats = Answer.joins(:answer_options).where(question_id: @chart.question_id).group("answer_options.answer_text").count
+      end
+    end 
   end
 
 	private
