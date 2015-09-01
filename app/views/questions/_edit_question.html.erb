@@ -19,8 +19,10 @@ and PATCH => question#update if q exists in DB. Cool! %>
 
 		<%= f2.select :type_id, options_for_select(types, q.question_type.try(:id)), {}, {class: "form-control"} %>
 		
+		<%= f.label "Question Name", class: "control-label"  %>
+		<%= f.text_area :name, :placeholder => "This is a short name that will allow you to identify the question easily later e.g. Name", class: "form-control" %>
 		<%= f.label "Question Text", class: "control-label"  %>
-		<%= f.text_area :subtext, class: "form-control" %>
+		<%= f.text_area :subtext, :placeholder => "This is the actual question text, for example: what is your name?", class: "form-control" %>
 		<p><%# QuestionType.multiples[0].name %></p>
 		<div id="question-options<%= q.id %>">
 			<% if true or !q.question_type.nil? && q.question_type.is_multiple? %>

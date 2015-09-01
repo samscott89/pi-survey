@@ -157,3 +157,12 @@ footer {
     };
   }
 }
+
+.likert-table {
+  border: none;
+  table-layout:fixed;
+  width: 100%;
+  td {
+    text-align:center;
+  }
+}
