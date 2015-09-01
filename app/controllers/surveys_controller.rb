@@ -49,6 +49,9 @@ class SurveysController < ApplicationController
     id = params[:survey_id]
     id ||= params[:id]
   	@survey ||= Survey.find(id)
+
+    @questions = Question.where(survey_section_id: @survey.sections.ids)
+
     authorize! :edit, @survey
 
     if params[:index].nil?
@@ -56,6 +59,31 @@ class SurveysController < ApplicationController
     else
       @survey_section ||= @survey.sections.where(idx: params[:index]).first
     end
+  end
+
+  #this is the function that deals with populating the previous question drop down boxes so that particiipants can choose 
+  #to use answer options from a previous question. 
+  def getdata
+    
+    #@survey = Survey.find(params[:survey_id])
+    #@questions = Question.where(survey_section_id: @survey.sections.ids)
+    #@answerOptions = 
+    # this contains what has been selected in the first select box
+    authorize! :post, @survey
+
+    @data_from_select1 = params[:first_select]
+
+
+    # we get the data for selectbox 2
+    @data_for_select2 = @questions.where(:name => @data_from_select1).all
+
+    # render an array in JSON containing arrays like:
+    # [[:id1, :name1], [:id2, :name2]]
+    respond_to do |format|
+      format.html {}
+      format.json {render :json => @data_for_select2.map{|c| [c.id, c.name]}}
+    end
+    
   end
 
   def stats

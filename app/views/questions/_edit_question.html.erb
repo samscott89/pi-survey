@@ -23,6 +23,40 @@ and PATCH => question#update if q exists in DB. Cool! %>
 		<%= f.text_area :name, :placeholder => "This is a short name that will allow you to identify the question easily later e.g. Name", class: "form-control" %>
 		<%= f.label "Question Text", class: "control-label"  %>
 		<%= f.text_area :subtext, :placeholder => "This is the actual question text, for example: what is your name?", class: "form-control" %>
+		
+		<%# I have no idea what is supposed to be going on here. I'll come back to it. %>
+		<div id="likert-5">
+			<% availableqs = @questions.all.map{|qname| [qname.name]} %>
+			<% availableqs.push "custom" %>
+			<%#= select_tag(@likert_prevs, options_for_select(availableqs), class: "form-control") %>
+			<%= 
+			   select_tag(
+			       :second_select, # name of selectbox
+			       "<option>Please select something from first select!</option>")
+			%> 
+		</div>
+
+		<div id="likert-options">
+			<div id="likert-question-option<%= q.id %>">
+				<%= f2.fields_for :option_choices, OptionChoice.new, role: "form" do |ff| %>
+					<%= ff.label :choice_name, "First Option", class: "control-label" %>
+					<%= ff.text_field :choice_name, class: "form-control" %>
+				<% end #ff.fields_for%>
+				<%= f.label "Likert Options", class: "control-label"  %>
+				
+			</div>
+			<div id="likert-displayed-options">
+			</div>
+			<div id="likert-hidden-options">
+				<select id="likert-options-select" class="form-control">
+					<option value="Empty">Empty</option>	
+					<option value="5">5</option>	
+					<option value="7">7</option>	
+					<option value="Custom">Custom</option>
+				</select>	
+			</div>
+		</div>
+
 		<p><%# QuestionType.multiples[0].name %></p>
 		<div id="question-options<%= q.id %>">
 			<% if true or !q.question_type.nil? && q.question_type.is_multiple? %>
