@@ -81,4 +81,14 @@ $(function() {
 		});
 
 	})
+
+	$("#chart_type_id").change(function() {
+        chart_opt = $(this).val();
+        console.log(chart_opt);
+		if(chart_opt == <%= ChartType.where(name: "line_chart").first.id %>) {
+			$("#extra-question").show();
+		} else {
+			$("#extra-question").hide();
+		}
+    });
 });

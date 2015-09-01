@@ -33,18 +33,22 @@ class ChartsController < ApplicationController
 
     @chart = Chart.where(question_id: @questions.pluck(:id)).last
 
-
     # Aggregate data for question
     # Currently just count entries. But this should be changed to
     # something more sophisticated.
-    @question = Question.find(@chart.question_id)
-   	@stats = Answer.joins(:answer_options).where(question_id: @question.id).group("answer_options.answer_text").count
-
+    if @chart.chart_type == ChartType.where(name: 'line_chart')
+      qs = Question.where(id: [@chart.question_id, @chart.question_id2, @chart.question_id3])
+      @stats = qs.map {|q|
+        {name: q.name, data: Answer.joins(:answer_options).where(question_id: q.id).group("answer_options.answer_text").count}
+      }
+    else
+      @stats = Answer.joins(:answer_options).where(question_id: @chart.question_id).group("answer_options.answer_text").count
+    end
   end
 
 	private
 
 	def chart_params
-    	params.require(:chart).permit(:id, :type_id, :question_id)
+    	params.require(:chart).permit(:id, :type_id, :question_id, :question_id2, :question_id3)
   	end
 end
