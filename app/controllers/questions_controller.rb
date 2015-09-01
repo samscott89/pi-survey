@@ -11,6 +11,10 @@ class QuestionsController < ApplicationController
 
 		authorize! :edit, @survey
 
+		if !@question.option_group.question_type.is_multiple?
+			@question.option_group.option_choices.build(choice_name: "Other")
+		end
+
 	    if !@question.valid?
 	      # render 'show'
 	      flash[:error] = "Errors with adding question."

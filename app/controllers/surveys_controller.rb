@@ -61,6 +61,7 @@ class SurveysController < ApplicationController
   def stats
     @survey = Survey.find(params[:survey_id])
     @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @ta_type = QuestionType.find_by(name: "text_area").id
     @answers = {}
     @answers_ar = []
     @answers_ar_count = 0

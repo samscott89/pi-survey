@@ -9,6 +9,8 @@ $(function() {
 		// console.log("Add section - Click!");
 	});
 
+	$('[data-toggle="popover"]').popover({trigger: "hover"});
+
 	// Function to change the question type box when value is changed
 	$('[id^=question_option_group_attributes_type_id]').change(function() {
 	  
