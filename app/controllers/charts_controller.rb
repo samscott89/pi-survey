@@ -23,7 +23,6 @@ class ChartsController < ApplicationController
   end
 
   def index
-    @chart_types = ChartType.all
     @survey = Survey.find(params[:survey_id])
     @questions = @survey.questions
 
@@ -37,7 +36,7 @@ class ChartsController < ApplicationController
     # Currently just count entries. But this should be changed to
     # something more sophisticated.
     unless @chart.nil?
-      if @chart.chart_type == ChartType.where(name: 'line_chart')
+      if @chart.chart_type == ChartType.find_by(name: 'line_chart')
         qs = Question.where(id: [@chart.question_id, @chart.question_id2, @chart.question_id3])
         @stats = qs.map {|q|
           {name: q.name, data: Answer.joins(:answer_options).where(question_id: q.id).group("answer_options.answer_text").count}

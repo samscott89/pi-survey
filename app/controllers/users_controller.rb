@@ -27,9 +27,13 @@ class UsersController < ApplicationController
   def save_surveys
     # Logic to move surveys to new user
     @guest_user = User.find(session[:guest_user_id])
-    @guest_user.active_surveys.each do |survey|
-      if params[:survey][survey.id.to_s] == "1"
-        survey.update(user_id: current_user.id)
+
+    if !params[:survey].nil?
+      @guest_user.active_surveys.each do |as|
+        if params[:survey][as.id.to_s] == "1"
+          as.update(user_id: current_user.id)
+          Answer.where(user_id: @guest_user.id).update_all(user_id: current_user.id)
+        end
       end
     end
 
