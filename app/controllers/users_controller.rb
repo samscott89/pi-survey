@@ -9,7 +9,6 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-
     if @user.nil?
       if !session[:guest_user_id].nil?
         @user = User.find(session[:guest_user_id])

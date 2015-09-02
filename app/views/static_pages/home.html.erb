@@ -3,20 +3,32 @@
 <p class="lead"> Making scientific research and evaluations efficient, <br> enjoyable, and accessible to everyone.</p>
 <br>
 <div class="row" id="call-to-actions">
-<div class="col-md-3 col-md-offset-3">
-    <%= link_to new_survey_path, class: "link-primary" do %>
-    <%= image_tag "survey-icon.png", width: "140px"  %>
-    <h2>Create a <br> New Survey</h2>
-    <% end %>
-</div>
-<div class="col-md-3">
-    <%= link_to campaigns_path, class: "link-secondary" do %>
-    <%= image_tag "campaign-icon.png", width: "140px"  %>
-    <h2>Manage Campaigns</h2>
-    <% end %>
-</div>
-<div class="col-md-3"></div>
-</div>
+<% if user_signed_in? and current_user.is_creator? %>
+	<div class="col-md-3 col-md-offset-3">
+	    <%= link_to new_survey_path, class: "link-primary" do %>
+	    <%= image_tag "survey-icon.png", width: "140px"  %>
+	    <h2>Create a <br> New Survey</h2>
+	    <% end %>
+	</div>
+	<div class="col-md-3">
+	    <%= link_to campaigns_path, class: "link-secondary" do %>
+	    <%= image_tag "campaign-icon.png", width: "140px"  %>
+	    <h2>Manage Campaigns</h2>
+	    <% end %>
+	</div>
+	<div class="col-md-3"></div>
+	</div>
+<% else %>
+	<div class="col-md-4 col-md-offset-4">
+	    <%= link_to surveys_path, class: "link-primary" do %>
+	    <%= image_tag "survey-icon.png", width: "140px"  %>
+	    <h2>Browse Surveys</h2>
+	    <% end %>
+	</div>
+	<div class="col-md-4"></div>
+	</div>
+
+<% end %>
 </div>
 
 <footer><small>Disclaimer: This is a work in progress prototype used to give an idea of the kind of functionality we can provide. </small></footer>

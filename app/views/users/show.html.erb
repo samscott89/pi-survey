@@ -3,14 +3,19 @@
 <div class="col-md-offset-1 col-md-10">
 
 <div class="page-header">
+<% if creator_user? %>
 <h1>My Surveys <br><small>View surveys you own and surveys you answered.</small></h1>
+<% else %>
+<h1>My Surveys <br><small>View answered surveys.</small></h1>
+<% end %>
 </div>
-<%= link_to "Create new survey", new_survey_path, class: "btn btn-primary" %>
+<%= link_to "Create new survey", new_survey_path, class: "btn btn-primary" if creator_user?%>
 <%= link_to "Browse surveys", surveys_path, class: "btn btn-success" %>
 <br>
 
 <hr>
 <br>
+<% if creator_user? %>
 <h2>Created surveys</h2>
 <% if @user.surveys.empty? %>
 <div class="list-group">
@@ -54,7 +59,7 @@
 	<% end %>
 </div>
 
-
+<% end %>
 <br>
 
 <h2>Answered surveys</h2>
