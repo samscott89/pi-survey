@@ -12,7 +12,7 @@
 
 
 guest = User.find_by(email: "guest@example.com")
-guest ||= User.create(name: "Guest", email: "guest@example.com", password: "password");
+guest ||= User.create(name: "Guest", email: "guest@example.com", password: "password", is_creator: true);
 puts 'Created Guest User'
 
 # Instantiate possible Question Types

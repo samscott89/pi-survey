@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901054300) do
+ActiveRecord::Schema.define(version: 20150902041606) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "campaign_survey_id"
@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 20150901054300) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.boolean  "deleted",                default: false
+    t.boolean  "is_creator",             default: false
   end
 
   add_index "users", ["deleted"], name: "index_users_on_deleted"
