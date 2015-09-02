@@ -44,6 +44,7 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
     @questions = @survey_section.questions
+    @num_sections = @survey.sections.count
 
     authorize! :answer, @survey
 
