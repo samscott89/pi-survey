@@ -1,5 +1,5 @@
 <%= f.fields_for :answer_options do |f2| %>
 	<%= f2.label :answer_text, q.subtext, class: "control-label" %>
-	<%= f2.text_field :answer_text, class: "form-control" %>
+	<%= f2.range_field :answer_text, class: "form-control" %>
 	<%= f2.hidden_field :option_id, value: q.option_choices.first.id %>
 <% end %>

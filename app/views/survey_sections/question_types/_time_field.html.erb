@@ -1,0 +1,11 @@
+
+<%= f.fields_for :answer_options do |f2| %>
+<%# if f.object.answer_text.nil? %>
+<%# date_value = Time.now.strftime("%Y-%m-%d") %>
+<%# else %>
+<% date_value = f2.object.answer_text %>
+<%# end %>
+	<%= f2.label :answer_text, q.subtext, class: "control-label" %>
+	<%= f2.time_field :answer_text, class: "form-control", value: date_value %>
+	<%= f2.hidden_field :option_id, value: q.option_choices.first.id %>
+<% end %>
