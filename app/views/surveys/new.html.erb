@@ -16,6 +16,13 @@
 		<%= f.text_area :description, class: "form-control" %>
 		</div>
 
+		<div class="checkbox">
+		<%= f.label :is_public do %>
+		<%= f.check_box :is_public %>
+		Make this survey public
+		<% end %>
+		</div>
+
 		<%= f.submit "Create", class: "btn btn-large btn-primary" %>
 
       </fieldset>

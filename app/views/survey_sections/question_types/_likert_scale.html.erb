@@ -1,32 +1,34 @@
 <%= f.label q.subtext, class: "control-label" %>
-	<%= f.fields_for :answer_options do |f2| %>
-		<table class="table table-condensed likert-table">
-			<thead>
-				
-				<tr>
-					<% q.option_choices.each do |opt| %>
-						<th><%= opt.choice_name.capitalize %></th>
-					<% end %>
-				</tr>
-
-			</thead>
-			<tbody>
-				<tr>
-					<% q.option_choices.each do |opt| %>
-						<td><%= f2.radio_button :option_id, opt.id %></td>
-					<% end %>
-				</tr>
-			</tbody>
-		</table>
-		<% if q.allow_other? %>
-		<div class="form-inline">
-		<div class="radio">
+<%= f.fields_for :answer_options do |f2| %>
+	<table class="table table-condensed likert-table">
+	<thead>
+		<tr>
+		<% q.option_choices.each do |opt| %>
+			<th><%= opt.choice_name.capitalize %></th>
+		<% end %>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+		<% q.option_choices.each do |opt| %>
+			<td>
 			<%= f2.label :option_id do %>
-			<%= f2.radio_button :option_id, 0 %> Other:
-			<%= f.text_field :answer_text, class: "form-control input-sm" %>
-			<%= f.hidden_field :has_other %>
+			<%= f2.radio_button :option_id, opt.id %>
 			<% end %>
-		</div>
-		</div>
-	<% end %>
+			</td>
+		<% end %>
+		</tr>
+	</tbody>
+	</table>
+	<% if q.allow_other? %>
+	<div class="form-inline">
+	<div class="radio">
+		<%= f2.label :option_id do %>
+		<%= f2.radio_button :option_id, 0 %> Other:
+		<%= f.text_field :answer_text, class: "form-control input-sm" %>
+		<%= f.hidden_field :has_other %>
+		<% end %>
+	</div>
+	</div>
+<% end %>
 <% end %>

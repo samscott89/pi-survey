@@ -61,7 +61,7 @@ class SurveySectionsController < ApplicationController
     end
 
 
-    @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
+    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: @user)
     @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
 
     pending_answers = []
@@ -91,11 +91,16 @@ class SurveySectionsController < ApplicationController
       flash.now[:error] = "There were errors with your answers."
       render 'show'
     else
-      pending_answers.each {|a| a.save}
+
+      
       if @active_survey.nil?
-        @user.active_surveys.create(survey: @survey, completed: false)
+        @active_survey = @user.active_surveys.create(survey: @survey, completed: false)
       else
         @active_survey.touch # this updates the "updated_at" column... pretty cool!
+      end
+
+      if !@active_survey.completed?
+        pending_answers.each {|a| a.save}
       end
 
       if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
