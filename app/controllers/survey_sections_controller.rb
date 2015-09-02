@@ -12,12 +12,6 @@ class SurveySectionsController < ApplicationController
   	@survey_section = @survey.sections.where(idx: params[:index]).first
     @num_sections = @survey.sections.count
 
-    if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
-      session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
-    else
-      session[:next_page] = survey_completed_path(@survey)
-    end
-
     @questions = @survey_section.questions
 
     @user = current_user
@@ -102,7 +96,12 @@ class SurveySectionsController < ApplicationController
       else
         @active_survey.touch # this updates the "updated_at" column... pretty cool!
       end
-      redirect_to session[:next_page]
+
+      if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
+        redirect_to survey_section_path(@survey, params[:index].to_i + 1)
+      else
+        redirect_to survey_completed_path(@survey)
+      end
     end
 
   end
