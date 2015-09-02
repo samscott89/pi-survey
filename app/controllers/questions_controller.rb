@@ -21,6 +21,13 @@ class QuestionsController < ApplicationController
 	      redirect_to :back
 	    else
 	      @question.save
+	      # Questions which have multiple options but should only have
+	      # a single answer TODO: move this into the model
+	      QuestionType.where(name: ["radio_button", "select", "likert_scale"]).ids.include? @question.question_type.id
+		  	@question.update(max_answers: 1)
+		  else
+		  	@question.update(max_answers: @question.option_choices.count)
+	      end
 	      flash[:success] = "Question added."
 	      redirect_to survey_edit_section_path(@survey, @survey_section.idx)
 	    end

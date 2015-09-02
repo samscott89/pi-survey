@@ -2,6 +2,11 @@ class SurveySectionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :answer]
 
+  #VERY useful line. Uses the set_cache_buster method
+  # as defined in application_controller to stop the browser
+  # from caching pages refreshes page on back :)
+  before_filter :set_cache_buster, only: [:show, :answer]
+
   # Delegate authorisation to the parent survey
   load_and_authorize_resource :survey, except: [:answer]
   #load_and_authorize_resource :survey_section, :through => :survey
