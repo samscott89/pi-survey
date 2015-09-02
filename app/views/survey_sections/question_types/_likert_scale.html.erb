@@ -1,13 +1,25 @@
 <%= f.label q.subtext, class: "control-label" %>
 <%= f.fields_for :answer_options do |f2| %>
-	<% q.question_options.each do |opt| %>
-	<div class="radio form-inline">
-		<%= f2.label :option_id  do %>
-		<%= f2.radio_button :option_id, opt.id %> <%= opt.option_choice.choice_name.capitalize %>
+	<table class="table table-condensed likert-table">
+	<thead>
+		<tr>
+		<% q.option_choices.each do |opt| %>
+			<th><%= opt.choice_name.capitalize %></th>
 		<% end %>
-	</div>
-	<% end %>
-	
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+		<% q.option_choices.each do |opt| %>
+			<td>
+			<%= f2.label :option_id do %>
+			<%= f2.radio_button :option_id, opt.id %>
+			<% end %>
+			</td>
+		<% end %>
+		</tr>
+	</tbody>
+	</table>
 	<% if q.allow_other? %>
 	<div class="form-inline">
 	<div class="radio">
@@ -18,5 +30,5 @@
 		<% end %>
 	</div>
 	</div>
-	<% end %>
+<% end %>
 <% end %>

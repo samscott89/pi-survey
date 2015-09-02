@@ -1,0 +1,26 @@
+<div class="form-body">
+
+<%= form_for [@survey, Chart.new], role: "form" do |f| %>
+	<fieldset>
+
+	<%= f.label "Chart Type", class: "control-label" %>
+	<%= f.select :type_id, options_for_select(ChartType.all.map{|c| [c.name.gsub("_"," ").capitalize, c.id]}), {}, {class: "form-control"} %>
+
+	<%= f.label "Questions", class: "control-label" %>
+	<% available_qs = [[nil, 0]].concat @questions.all.map{|q| [q.name, q.id]} %>
+	<%= f.select :question_id, options_for_select(available_qs), {}, {class: "form-control"} %>
+
+	<div id="extra-question">
+		<%= f.label "Questions", class: "control-label" %>
+		<% available_qs = [[nil, 0]].concat @questions.all.map{|q| [q.name, q.id]} %>
+		<%= f.select :question_id2, options_for_select(available_qs), {}, {class: "form-control"} %>
+
+	</div>
+
+	</fieldset>
+	<br>
+	<div class="form-submit">
+	<%= f.button "Make Graph", class: "btn btn-primary btn-large" %>
+	</div>
+
+<% end #f %>

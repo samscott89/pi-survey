@@ -2,6 +2,11 @@ class SurveySectionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :answer]
 
+  #VERY useful line. Uses the set_cache_buster method
+  # as defined in application_controller to stop the browser
+  # from caching pages refreshes page on back :)
+  before_filter :set_cache_buster, only: [:show, :answer]
+
   # Delegate authorisation to the parent survey
   load_and_authorize_resource :survey, except: [:answer]
   #load_and_authorize_resource :survey_section, :through => :survey
@@ -10,12 +15,7 @@ class SurveySectionsController < ApplicationController
     @errors = []
   	@survey = Survey.find(params[:survey_id])
   	@survey_section = @survey.sections.where(idx: params[:index]).first
-
-    if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
-      session[:next_page] = survey_section_path(@survey, params[:index].to_i + 1)
-    else
-      session[:next_page] = survey_completed_path(@survey)
-    end
+    @num_sections = @survey.sections.count
 
     @questions = @survey_section.questions
 
@@ -49,6 +49,7 @@ class SurveySectionsController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
     @questions = @survey_section.questions
+    @num_sections = @survey.sections.count
 
     authorize! :answer, @survey
 
@@ -65,7 +66,7 @@ class SurveySectionsController < ApplicationController
     end
 
 
-    @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
+    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: @user)
     @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
 
     pending_answers = []
@@ -95,13 +96,23 @@ class SurveySectionsController < ApplicationController
       flash.now[:error] = "There were errors with your answers."
       render 'show'
     else
-      pending_answers.each {|a| a.save}
+
+      
       if @active_survey.nil?
-        @user.active_surveys.create(survey: @survey, completed: false)
+        @active_survey = @user.active_surveys.create(survey: @survey, completed: false)
       else
         @active_survey.touch # this updates the "updated_at" column... pretty cool!
       end
-      redirect_to session[:next_page]
+
+      if !@active_survey.completed?
+        pending_answers.each {|a| a.save}
+      end
+
+      if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
+        redirect_to survey_section_path(@survey, params[:index].to_i + 1)
+      else
+        redirect_to survey_completed_path(@survey)
+      end
     end
 
   end

@@ -1,4 +1,7 @@
-<% active_survey = current_or_guest_user.active_surveys.find_by(survey_id: survey.id) || ActiveSurvey.new %>
+<%# Set active_survey to a new by default, unless can find a matching survey for the
+current user. %>
+<% active_survey = ActiveSurvey.new if current_or_guest_user.nil? %>
+<% active_survey ||= current_or_guest_user.active_surveys.find_by(survey_id: survey.id) || ActiveSurvey.new %>
 <%= link_to survey_path(survey), class: "list-group-item " +
 "#{active_survey.completed ? "list-group-item-success" : "list-group-item-info" unless active_survey.new_record?}" do %>
 <div class="list-group-item-header">

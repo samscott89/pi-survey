@@ -9,8 +9,13 @@ class AnswerOption < ActiveRecord::Base
 	belongs_to :option_choice, foreign_key: "option_id"
 	
 	before_validation :clean_up
+	before_save :remove_duplicates
 
 	validates :option_id, presence: true
+
+	def remove_duplicates
+		AnswerOption.where(answer_id: self.answer_id, option_id: self.option_id).where.not(updated_at: nil).destroy_all
+	end
 
 	def clean_up
 		# Adds answer text if missing based on the corresponding OptionChoice

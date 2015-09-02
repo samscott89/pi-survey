@@ -1,0 +1,15 @@
+<div class="row">
+      <% if chart != nil %>
+        <% case chart.chart_type.name %>
+          <% when "bar_chart" %>
+            <%= bar_chart @stats %>
+          <% when "pie_chart" %>
+            <%= pie_chart @stats %>
+          <% when "line_chart" %>
+            <%= line_chart @stats, {discrete: true} %>
+          <% when "column_chart" %>
+            <%= column_chart @stats %>
+        <% end %>
+      <% end %>
+</div>
+ 

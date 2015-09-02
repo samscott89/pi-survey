@@ -9,4 +9,9 @@ class SurveySection < ActiveRecord::Base
 	validates_presence_of :survey
 	
 	has_many :questions, dependent: :destroy
+
+	def destroy
+		self.idx = nil
+	    self.update_attribute :deleted, true
+  	end
 end

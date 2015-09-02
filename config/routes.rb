@@ -44,11 +44,22 @@ SurveyApp::Application.routes.draw do
     match "/sec/:index", to: "survey_sections#delete", as: :delete_section, via: 'delete'
    
     get "/stats", to: "surveys#stats", as: :stats
+
+    #this is the route to get data in the edit questions page where we require the previously submitted answers so 
+    #participants can choose to replicate previously used answer options.
+    get "/getdata", to: "surveys#getdata"
+
     match "/new_section", to: "survey_sections#new", as: :new_section, via: "post"
     
     match "/sec/:index/submit", to: 'survey_sections#answer', via: 'post', as: :answer
     get "/finish", to: 'surveys#finish', via: 'get', as: :completed
+    
+    # Charts
+    # Considered as a subset of the features of survey
+    # Basically an extended version of /stats
+    resources :charts
   end
+
 
   #
   # Questions
@@ -73,6 +84,7 @@ SurveyApp::Application.routes.draw do
       end
     end
   end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

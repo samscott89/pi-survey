@@ -20,6 +20,10 @@ module ApplicationHelper
   	  @user
   end
 
+  def creator_user?
+    !current_or_guest_user.nil? and current_or_guest_user.is_creator?
+  end 
+
   def bootstrap_alert(type)
     case type
     when :success

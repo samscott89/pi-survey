@@ -5,7 +5,7 @@ class SurveysController < ApplicationController
 
   def show
   	@survey = Survey.find(params[:id])
-
+    
     authorize! :read, @survey
 
     respond_to do |format|
@@ -19,12 +19,23 @@ class SurveysController < ApplicationController
   end
 
   def finish
+    @survey = Survey.find(params[:survey_id])
     @user = view_context.current_or_guest_user
     if @user.nil?
       flash.now[:alert] = "No user found"
     end
     @active_survey = ActiveSurvey.where(user_id: @user, survey_id: params[:survey_id]).first
-    @active_survey.update(completed: true)
+    required_qs = @active_survey.survey.questions.where(required: true).pluck("questions.id")
+    answered_qs = Answer.where(user_id: @user.id, question_id: required_qs).pluck(:question_id)
+    # Yup, this does exactly what it looks like
+    missing_qs = required_qs - answered_qs
+    if missing_qs.length > 0
+      flash[:alert] = "Some required questions are missing." 
+      idx = Question.find(missing_qs[0]).survey_section.idx
+      redirect_to  survey_section_path(@survey, idx)
+    else
+      @active_survey.update(completed: true)
+    end
   end
 
   def new
@@ -49,6 +60,9 @@ class SurveysController < ApplicationController
     id = params[:survey_id]
     id ||= params[:id]
   	@survey ||= Survey.find(id)
+
+    @questions = Question.where(survey_section_id: @survey.sections.ids)
+
     authorize! :edit, @survey
 
     if params[:index].nil?
@@ -58,9 +72,35 @@ class SurveysController < ApplicationController
     end
   end
 
+  #this is the function that deals with populating the previous question drop down boxes so that particiipants can choose 
+  #to use answer options from a previous question. 
+  def getdata
+    
+    #@survey = Survey.find(params[:survey_id])
+    #@questions = Question.where(survey_section_id: @survey.sections.ids)
+    #@answerOptions = 
+    # this contains what has been selected in the first select box
+    authorize! :post, @survey
+
+    @data_from_select1 = params[:first_select]
+
+
+    # we get the data for selectbox 2
+    @data_for_select2 = @questions.where(:name => @data_from_select1).all
+
+    # render an array in JSON containing arrays like:
+    # [[:id1, :name1], [:id2, :name2]]
+    respond_to do |format|
+      format.html {}
+      format.json {render :json => @data_for_select2.map{|c| [c.id, c.name]}}
+    end
+    
+  end
+
   def stats
     @survey = Survey.find(params[:survey_id])
     @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @ta_type = QuestionType.find_by(name: "text_area").id
     @answers = {}
     @answers_ar = []
     @answers_ar_count = 0
@@ -76,21 +116,6 @@ class SurveysController < ApplicationController
     #Get answers for each user
     us.each {|u| @answers[u] = Answer.where(user_id: u, question_id: qs).index_by(&:question_id)}
     #NOTE: Might be slow, should change to batch query later.
-
-    us.each do |u|
-      qs.each do |q|
-         unless @answers[u][q].nil? 
-          @answers_ar[@answers_ar_count] = (@answers[u][q].answer_options.pluck(:answer_text) << @answers[u][q].question_id).join(",")
-          #@questions[2].option_choices.pluck(:choice_name, :id) need some code like this inserted into the above line 
-          #so that we can find the actual answer option selected instead of the answer_text value which is fairly meaningless
-          #although this does mean that things like the name field and date field will return the type field rather than the actual submitted value which is annoying
-          @answers_ar_count = @answers_ar_count + 1
-        end 
-      end
-    end
-
-    @answers_hash = Hash.new(0)
-    @answers_ar.each { |a| @answers_hash[a] += 1 }
 
     respond_to do |format|
       format.html

@@ -6,7 +6,7 @@ class Ability
     user ||= User.new # If no user at all, then just use a temp one.
 
     # Survey owners can do anything with it
-    can :manage, Survey, owner_id: user.id
+    can :manage, Survey, {owner_id: user.id}
 
     # Anyone can read (index/show) public surveys
     # Later, this should be more nuanced
@@ -14,9 +14,9 @@ class Ability
     can :answer, Survey, is_public: true
 
     #Equally, anyone can create a survey
-    can :create, Survey
+    can :create, Survey if user.is_creator?
 
-    can :create, Campaign
+    can :create, Campaign if user.is_creator?
     can :manage, Campaign, owner_id: user.id
 
     # Define abilities for the passed in user here. For example:

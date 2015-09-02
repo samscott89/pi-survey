@@ -9,7 +9,7 @@
       <div class="modal-body">
  
 	   <div class="row">
-          <div class="col-sm-offset-1 col-sm-8">
+          <div class="col-md-offset-1 col-md-8">
             <!-- <%= pie_chart(@answers) %> -->
             <% @temp_ans_hash = @answers_hash.select {|k,v| k.split(",").last == q.id.to_s} %>
             <% @ans_for_chart_hash = Hash.new%>

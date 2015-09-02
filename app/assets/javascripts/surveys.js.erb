@@ -9,29 +9,42 @@ $(function() {
 		// console.log("Add section - Click!");
 	});
 
+	$('[data-toggle="popover"]').popover({trigger: "hover"});
+
 	// Function to change the question type box when value is changed
-	$('[id^=question_option_group_attributes_question_type]').change(function() {
+	$('[id^=question_option_group_attributes_type_id]').change(function() {
+	  
 	  var type = parseInt($(this).val(), 10);
 	  var option_types = <%= QuestionType.multiples.ids %>;
-	  idx = "question_option_group_attributes_question_type".length
+	  idx = "question_option_group_attributes_question_type".length;
 	  var qid = parseInt($(this).attr('id').substr(idx), 10);
 	  if(!qid) qid = ""
-	  
+
 	  if(option_types.indexOf(type) > -1 ){
 	  	$("#question-options" + qid).show();
 	  } else {
 	  	$("#question-options" + qid).hide();
 	  }
+
+	  $("#likert-5").hide();
+
+/*	  if(type == <%= QuestionType.find_by(name: "likert_scale") %>){
+	  	$("#question-options" + qid).hide();
+	  	$("#likert-options").show();
+	  } else {
+	  	$("#likert-options").hide();
+	  }
+*/
 	  // $("#option_choice_option_group_id").attr("value", type);
 	});
 	// $("[id^=question-option] input").attr("name", "option_choice[0][choice_name]");
-	var qc = {}
+	var qc = {};
 	$("[id^=question-options]").each(function(e){
-		idx = "question-options".length
+		idx = "question-options".length;
 		var qid = parseInt($(this).attr('id').substr(idx), 10)
 		if(!qid) qid = ""
 		// This ridiculous expressions counts the current number of question options.
-		q_opts = $(this).find("input[id^=question_option_group_attributes_option_choices_attributes_][id*=choice_name]").length
+		q_opts = $(this).find("input[id^=question_option_group_attributes_option_choices_attributes_][id*=choice_name]").length;
 		qc[qid] = q_opts;
 	})
 	
@@ -63,6 +76,30 @@ $(function() {
 		// console.log(opt.find("input"))
 	});
 
+	// #first_select is the id of our first select box, if the ajax request has been successful,
+	// an ajax:success event is triggered.
+
+	$('#first_select').on('ajax:success', null, function(evt, data, status, xhr) {
+		// get second selectbox by its id
+		var selectbox2 = $('#second_select');
+
+		// empty it
+		selectbox2.empty();
+
+		// we got a JSON array in data, iterate through it
+
+		$.each(data, function(index, value) {
+		  // append an option
+		  var opt = $('<option/>');
+
+		  // value is an array: [:id, :name]
+		  opt.attr('value', value[0]);
+		  // set text
+		  opt.text(value[1]);
+		  // append to select
+		  opt.appendTo(selectbox2);
+		});
+	});
 
 	// This code here handles setting has_other=1 when a radio button is set to "other"
 	$('[id$=option_id_0]:radio').each(function(){
@@ -81,4 +118,14 @@ $(function() {
 		});
 
 	})
+
+	$("#chart_type_id").change(function() {
+        chart_opt = $(this).val();
+        console.log(chart_opt);
+		if(chart_opt == <%= ChartType.where(name: "line_chart").first.id %>) {
+			$("#extra-question").show();
+		} else {
+			$("#extra-question").hide();
+		}
+    });
 });
