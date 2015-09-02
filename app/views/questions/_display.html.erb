@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
       <div class="row">
-	      <div class="col-sm-offset-1 col-sm-8">
+	      <div class="col-md-offset-1 col-md-8">
 	      	<%= fields_for Answer.new do |f| %>
             <% f.object.answer_options.build %>
 	      		<%= render partial: "survey_sections/question_types/#{q.question_type.name}", locals: { f: f, q: q, ans_options: f.object.answer_options}, layout: "survey_sections/question_types/question"  %>

@@ -5,12 +5,12 @@
 <h1>Edit Survey</h1>
 
 <div class="row">
-<div class="col-sm-3" id="survey-options">
+<div class="col-md-3" id="survey-options">
 <legend>Add Components</legend>
 <%= render partial: "questions/edit_question", locals: {q: Question.new(survey_section: @survey_section)} %>
 </div>
 
-<div id="tabs" class="col-sm-9">
+<div id="tabs" class="col-md-9">
 	<ul class="nav nav-tabs">
 		<% @survey.sections.each do |sec| %>
 		<li <%= "class=active" if @survey_section == sec %>><a data-toggle="tab" href="#tabs-<%= sec.idx %>" sec="<%= sec.id %>"><%= sec.idx %></a></li>
@@ -29,8 +29,8 @@
 
 	<legend>
 	<div class="row">
-	<div class="col-sm-9"><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></div>
-	<div class="col-sm-3"><%= link_to "Delete", survey_delete_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
+	<div class="col-md-9"><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></div>
+	<div class="col-md-3"><%= link_to "Delete", survey_delete_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
 	<fieldset>
 		<ul class="list-group">
 		<% sec.questions.each do |q| %>
@@ -57,7 +57,7 @@
 
 </div>
 
-<div class="col-sm-3">
+<div class="col-md-3">
 
 </div>
 

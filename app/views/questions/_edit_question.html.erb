@@ -54,11 +54,11 @@ and PATCH => question#update if q exists in DB. Cool! %>
 
 					<div class="row">
 					<%= f2.fields_for :option_choices, role: "form" do |f2f| %>
-						<div class="col-lg-9">
+						<div class="col-md-9">
 						<%= f2f.label :choice_name, "Answer Option", class: "control-label" %>
 						<%= f2f.text_field :choice_name, class: "form-control"%>	
 						</div>
-						<div class="col-lg-3">
+						<div class="col-md-3">
 						<br>
 						<%= f2f.label "Delete", class: "control-label" do %>
 						<%= f2f.check_box :_destroy %> Delete

@@ -4,12 +4,12 @@
 <h1>Lets chart some data!</h1>
 
 <div class="row">
-<div class="col-sm-3" id="chart-options">
+<div class="col-md-3" id="chart-options">
 <legend>Choose a chart</legend>
 <%= render partial: "select"%> <!-- if q is set as @question.name then it works -->
 </div>
 
-<div class="col-sm-9" id="chart-display">
+<div class="col-md-9" id="chart-display">
 	<%= render partial: "display", locals: {chart: @chart, stats: @stats} %>
 </div>
 

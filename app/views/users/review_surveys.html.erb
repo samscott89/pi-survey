@@ -6,7 +6,7 @@
  <fieldset>
  	
 <% @guest_user.active_surveys.order(updated_at: :desc).each do |active_survey| %>
-<ul class="list-group col-lg-8">
+<ul class="list-group col-md-8">
 		<% survey = active_survey.survey %>
 		<li class="list-group-item list-group-item-#{active_survey.completed ? "success" : "info"}">
 		<div class="list-group-item-header">
@@ -14,10 +14,10 @@
 				<%= survey.name %>
 			</h2>
 		</div>
-		<p class="list-group-item-text col-lg-7">
+		<p class="list-group-item-text col-md-7">
 			Completed: <%= t active_survey.completed.class %>
 		</p>
-		<div clas="col-lg-1">
+		<div clas="col-md-1">
 			<%= label_tag  "survey[#{active_survey.id}]", "Save survey to user account?" %>
 			<%= check_box_tag "survey[#{active_survey.id}]"%>
 		</div>
