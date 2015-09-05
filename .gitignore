@@ -27,3 +27,6 @@ doc/
 
 # Ignore sublime files
 *.sublime*
+
+# Ignore local config file (sensitive things here)
+config/local.yml

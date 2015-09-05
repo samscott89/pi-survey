@@ -80,12 +80,12 @@ ActiveRecord::Schema.define(version: 20150902073104) do
   end
 
   create_table "charts", force: true do |t|
-    t.integer  "type_id",      limit: 255
-    t.integer  "question_id",  limit: 255
+    t.integer  "type_id"
+    t.integer  "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "question_id2", limit: 255
-    t.integer  "question_id3", limit: 255
+    t.integer  "question_id2"
+    t.integer  "question_id3"
   end
 
   create_table "option_choices", force: true do |t|

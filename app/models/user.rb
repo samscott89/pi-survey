@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_save { self.email = email.downcase unless self.temporary }
+  before_save { self.email = email.downcase unless self.temporary 
+                self.is_creator = true if !self.email.nil? and  self.email.ends_with? "psychinsight.co.uk"}
 
   before_destroy {self.surveys.destroy_all}
 
