@@ -126,7 +126,8 @@ class SurveysController < ApplicationController
   private
 
   def survey_params
-    params.require(:survey).permit(:name, :description)
+    #added is_public to the parameters that are permitted to be altered by the create method.
+    params.require(:survey).permit(:name, :description, :is_public)
   end
 
   def answers_to_csv(answers, qs, options = {})
