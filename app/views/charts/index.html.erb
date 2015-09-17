@@ -1,12 +1,13 @@
 <%= provide(:title, @survey.name) %>
 <%= javascript_include_tag "surveys" %>
+<%= javascript_include_tag "http://www.google.com/jsapi", "chartkick" %>
 
 <h1>Lets chart some data!</h1>
 
 <div class="row">
 <div class="col-md-3" id="chart-options">
 <legend>Choose a chart</legend>
-<%= render partial: "select"%> <!-- if q is set as @question.name then it works -->
+<%= render partial: "select"%>
 </div>
 
 <div class="col-md-9" id="chart-display">
