@@ -29,7 +29,12 @@
 
 	<legend>
 	<div class="row">
-	<div class="col-md-9"><span class="rest-in-place" data-attribute="title"><%= sec.title %></span></div>
+	<div class="col-md-9">
+	<%= best_in_place sec, :title, url: survey_section_path(@survey, sec.idx)
+	# Add this line if we want a save button by the title.
+	#, ok_button: "Save", ok_button_class: "btn btn-md btn-primary" 
+	%>
+	</div>
 	<div class="col-md-3"><%= link_to "Delete", survey_delete_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
 	<fieldset>
 		<ul class="list-group">
