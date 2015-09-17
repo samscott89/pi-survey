@@ -28,11 +28,13 @@ gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.0.1'
 gem 'coffee-script-source', '1.8.0'
 
-gem 'jquery-rails', '3.0.4'
+gem 'jquery-rails'
+gem 'bootstrap-datepicker-rails'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
 
 gem 'best_in_place', '3.0.1'
+gem 'modernizr-rails'
 
 gem 'devise' # Password authentication stuff
 gem 'kaminari'

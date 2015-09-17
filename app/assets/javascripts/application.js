@@ -12,7 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap-datepicker/core
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
 //= require best_in_place
-//= require best_in_place.jquery-ui
 //= require bootstrap
 //= require turbolinks
