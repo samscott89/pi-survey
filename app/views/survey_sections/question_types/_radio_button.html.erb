@@ -3,7 +3,7 @@
 	<% q.option_choices.each do |opt| %>
 	<div class="radio">
 		<%= f2.label :option_id  do %>
-		<%= f2.radio_button :option_id, opt.id %> <%= opt.choice_name.capitalize %>
+		<%= f2.radio_button :option_id, opt.id %> <%= opt.choice_name %>
 		<% end %>
 	</div>
 	<% end %>
