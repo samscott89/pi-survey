@@ -1,4 +1,4 @@
-<%= f.label q.subtext, class: "control-label" %>
+<%= f.label :answer_options, q.subtext, class: "control-label" %>
 <% ans_options = ans_options.index_by(&:option_id) %>
 <% q.option_choices.each do |opt| %>
 <%= f.fields_for :answer_options, AnswerOption.new do |f2| %>
