@@ -48,7 +48,6 @@ class SurveysController < ApplicationController
     authorize! :create, @survey
     if @survey.save
       flash[:notice] = "Survey Created"
-       @survey.sections.create(name: "Section 1", title: "New Section", idx: 1)
        redirect_to edit_survey_path @survey
     else
       flash.now[:fail] = "Error creating survey"
@@ -66,7 +65,10 @@ class SurveysController < ApplicationController
     authorize! :edit, @survey
 
     if params[:index].nil?
-  	 @survey_section ||= @survey.sections.where(idx: 1).first
+  	  @survey_section ||= @survey.sections.where(idx: 1).first
+      if @survey_section.nil?
+        @survey_section = @survey.sections.create(name: "Section 1", title: "New Section", idx: 1)
+      end
     else
       @survey_section ||= @survey.sections.where(idx: params[:index]).first
     end

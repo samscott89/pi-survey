@@ -5,6 +5,12 @@ and PATCH => question#update if q exists in DB. Cool! %>
 
 <%= form_for q, role: "form" do |f| %>
 <fieldset>
+	<%# 
+	If the survey section is nil (user tried to edit a section which does
+	not exist) then just default to the first section.
+
+	This could be handled better.
+	 %>
 	<% if q.survey_section.nil? %>
 	<%= hidden_field_tag :survey_section, @survey.sections.first.id %>
 	<% else %>
