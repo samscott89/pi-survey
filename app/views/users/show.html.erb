@@ -48,6 +48,7 @@
 					<%= link_to "Stats", survey_stats_path(survey), class: "btn btn-primary" %>
 					<%= link_to "Edit", edit_survey_path(survey), class: "btn btn-success" %>
 					<%= link_to "Charts", survey_charts_path(survey) , class: "btn btn-primary" %>
+					<%= link_to "Delete", survey_path(survey), class: "btn btn-danger", method: 'delete', confirm: "Delete this survey?" %>
 				</div>
 				</div>
 			</h3>

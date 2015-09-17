@@ -25,7 +25,7 @@
 	<div class="tab-content">
 
 	<% @survey.sections.each do |sec| %>
-	<div id="tabs-<%= sec.idx %>" data-object="survey_section" data-url="<%= survey_update_section_path @survey, sec.idx %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
+	<div id="tabs-<%= sec.idx %>" data-object="survey_section" data-url="<%= survey_section_path @survey, sec.idx %>" class="tab-pane well well-lg <%= "active" if @survey_section == sec %>">
 
 	<legend>
 	<div class="row">
@@ -35,7 +35,7 @@
 	#, ok_button: "Save", ok_button_class: "btn btn-md btn-primary" 
 	%>
 	</div>
-	<div class="col-md-3"><%= link_to "Delete", survey_delete_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
+	<div class="col-md-3"><%= link_to "Delete", survey_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
 	<fieldset>
 		<ul class="list-group">
 		<% sec.questions.each do |q| %>

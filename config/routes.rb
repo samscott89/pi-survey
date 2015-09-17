@@ -39,9 +39,10 @@ SurveyApp::Application.routes.draw do
     #This allows survey sections to be called relative to 
     # a survey. E.g. survey_section_path(@survey, :index)
     get "/sec/:index", to: "survey_sections#show", as: :section
-    match "/sec/:index", to: "survey_sections#update", via: 'put', as: :update_section
+    match "/sec/:index", to: "survey_sections#destroy", via: 'destroy'
+    match "/sec/:index", to: "survey_sections#update", via: 'put'
+    
     get "/edit/:index", to: "surveys#edit", as: :edit_section
-    match "/sec/:index", to: "survey_sections#delete", as: :delete_section, via: 'delete'
    
     get "/stats", to: "surveys#stats", as: :stats
 

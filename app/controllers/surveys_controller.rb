@@ -125,6 +125,17 @@ class SurveysController < ApplicationController
     end
   end
 
+  def destroy
+    @survey = Survey.find(params[:id])
+
+    authorize! :destroy, @survey
+    @survey.destroy
+
+    flash[:info] = "Deleted #{@survey.name}." #" using params: #{params}."
+    
+    redirect_to user_surveys_path
+  end
+
   private
 
   def survey_params

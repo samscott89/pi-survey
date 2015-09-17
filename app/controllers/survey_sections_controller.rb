@@ -147,7 +147,7 @@ class SurveySectionsController < ApplicationController
     redirect_to edit_survey_path(@survey, index: idx)
   end
 
-  def delete
+  def destroy
     @survey = Survey.find(params[:survey_id])
     @survey_section = @survey.sections.where(idx: params[:index]).first
     # authorize! :destroy, @survey
