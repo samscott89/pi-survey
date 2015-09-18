@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150918040425) do
+ActiveRecord::Schema.define(version: 20150918055751) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "campaign_survey_id"
