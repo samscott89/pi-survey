@@ -23,6 +23,9 @@
 
 <fieldset>
 <legend><%= "Section #{@survey_section.idx}: " + @survey_section.title %></legend>
+
+<h4><%= @survey_section.subtitle %></h4>	
+
 <%= form_tag survey_answer_path(@survey, @survey_section.idx), action: "post", role: "form", class: "col-md-12" do %>
 
 	<% @questions.each do |q| %>

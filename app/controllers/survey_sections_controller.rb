@@ -185,6 +185,6 @@ class SurveySectionsController < ApplicationController
 
 
     def survey_section_params
-      params.require(:survey_section).permit(:name, :title, :required, :index)
+      params.require(:survey_section).permit(:name, :title, :subtitle, :required, :index)
     end
 end

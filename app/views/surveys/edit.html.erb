@@ -36,6 +36,15 @@
 	%>
 	</div>
 	<div class="col-md-3"><%= link_to "Delete", survey_section_path(@survey, sec.idx), method: 'delete', class: "btn btn-sm btn-danger"%></div></div></legend>
+
+	<div class="row">
+		<div class="col-md-9">
+			<h4><%= best_in_place sec, :subtitle, :as => :textarea, :nil => "Click me to add a description of this survey section, this will be displayed to participants.", url: survey_section_path(@survey, sec.idx)
+			# Add this line if we want a save button by the title.
+			#, ok_button: "Save", ok_button_class: "btn btn-md btn-primary" 
+			%></h4>
+		</div>
+	</div>
 	<fieldset>
 		<ul class="list-group">
 		<% sec.questions.each do |q| %>
