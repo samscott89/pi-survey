@@ -1,5 +1,5 @@
 class SurveySection < ActiveRecord::Base
-	include NotDeleteable
+	acts_as_paranoid
 	
 	validates :name, presence: true
 	validates :title, presence: true
@@ -10,8 +10,9 @@ class SurveySection < ActiveRecord::Base
 	
 	has_many :questions, dependent: :destroy
 
+	after_destroy :remove_idx
+
 	def destroy
 		self.idx = nil
-	    self.update_attribute :deleted, true
   	end
 end

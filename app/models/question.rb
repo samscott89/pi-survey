@@ -1,5 +1,6 @@
 class Question < ActiveRecord::Base
-	include NotDeleteable
+	acts_as_paranoid
+	
 	has_many :charts
 	belongs_to :survey_section
 	has_one :option_group, inverse_of: :question

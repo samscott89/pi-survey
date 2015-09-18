@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails', '4.0.3'
+gem 'rails', '4.0.4'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'
@@ -35,6 +35,8 @@ gem 'jbuilder', '1.0.2'
 
 gem 'best_in_place', '3.0.1'
 gem 'modernizr-rails'
+
+gem "paranoia", "~> 2.0" # soft-delete records
 
 gem 'devise' # Password authentication stuff
 gem 'kaminari'

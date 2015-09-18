@@ -1,6 +1,6 @@
 class Answer < ActiveRecord::Base
-	include NotDeleteable
-
+	acts_as_paranoid
+	
 	has_many :answer_options, dependent: :destroy, inverse_of: :answer
 
 	belongs_to :user

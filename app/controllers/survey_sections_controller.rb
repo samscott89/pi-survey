@@ -176,7 +176,7 @@ class SurveySectionsController < ApplicationController
       end
 
       answer_params = []
-      params.permit(:answers).each do |qid, pa|
+      params.require(:answers).each do |qid, pa|
         answer_params << pa.permit(:question_id, :answer_text, :has_other, answer_options_attributes: [:id, :option_id, :answer_text]).merge(user_id: user.id)
       end
 

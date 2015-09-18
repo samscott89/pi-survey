@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902073104) do
+ActiveRecord::Schema.define(version: 20150918040425) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "campaign_survey_id"
@@ -40,12 +40,11 @@ ActiveRecord::Schema.define(version: 20150902073104) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "question_id"
-    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
     t.text     "answer_text"
     t.boolean  "has_other",   default: false
   end
 
-  add_index "answers", ["deleted"], name: "index_answers_on_deleted"
   add_index "answers", ["question_id"], name: "index_answers_on_question_id"
   add_index "answers", ["user_id"], name: "index_answers_on_user_id"
 
@@ -64,12 +63,10 @@ ActiveRecord::Schema.define(version: 20150902073104) do
     t.string   "name"
     t.integer  "owner_id"
     t.boolean  "live"
-    t.boolean  "deleted",    default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "campaigns", ["deleted"], name: "index_campaigns_on_deleted"
   add_index "campaigns", ["owner_id"], name: "index_campaigns_on_owner_id"
 
   create_table "chart_types", force: true do |t|
@@ -120,29 +117,28 @@ ActiveRecord::Schema.define(version: 20150902073104) do
   end
 
   create_table "questions", force: true do |t|
-    t.string  "name"
-    t.integer "survey_section_id"
-    t.text    "subtext"
-    t.boolean "required"
-    t.boolean "deleted",           default: false
-    t.boolean "allow_other",       default: false
-    t.integer "max_answers",       default: 0
+    t.string   "name"
+    t.integer  "survey_section_id"
+    t.text     "subtext"
+    t.boolean  "required"
+    t.datetime "deleted_at"
+    t.boolean  "allow_other",       default: false
+    t.integer  "max_answers",       default: 0
   end
 
-  add_index "questions", ["deleted"], name: "index_questions_on_deleted"
   add_index "questions", ["survey_section_id"], name: "index_questions_on_survey_section_id"
 
   create_table "survey_sections", force: true do |t|
-    t.string  "name"
-    t.integer "survey_id"
-    t.string  "title"
-    t.string  "subtitle"
-    t.boolean "required"
-    t.integer "idx"
-    t.boolean "deleted",   default: false
+    t.string   "name"
+    t.integer  "survey_id"
+    t.string   "title"
+    t.string   "subtitle"
+    t.boolean  "required"
+    t.integer  "idx"
+    t.datetime "deleted_at"
   end
 
-  add_index "survey_sections", ["survey_id", "idx"], name: "index_survey_sections_on_survey_id_and_idx", unique: true
+  add_index "survey_sections", ["survey_id", "idx"], name: "index_survey_sections_on_survey_id_and_idx"
   add_index "survey_sections", ["survey_id"], name: "index_survey_sections_on_survey_id"
 
   create_table "survey_tags", force: true do |t|
@@ -157,17 +153,15 @@ ActiveRecord::Schema.define(version: 20150902073104) do
   add_index "survey_tags", ["tag_id"], name: "index_survey_tags_on_tag_id"
 
   create_table "surveys", force: true do |t|
-    t.string  "name"
-    t.text    "instructions"
-    t.text    "description"
-    t.integer "owner_id"
-    t.boolean "is_public",    default: false
-    t.boolean "deleted",      default: false
+    t.string   "name"
+    t.text     "instructions"
+    t.text     "description"
+    t.integer  "owner_id"
+    t.boolean  "is_public",    default: false
+    t.datetime "deleted_at"
   end
 
-  add_index "surveys", ["deleted"], name: "index_survey_sections_on_deleted"
-  add_index "surveys", ["deleted"], name: "index_surveys_on_deleted"
-  add_index "surveys", ["owner_id"], name: "index_surveys_on_owner_id"
+  add_index "surveys", ["deleted_at"], name: "index_survey_sections_on_deleted"
 
   create_table "tags", force: true do |t|
     t.string   "name"
@@ -195,11 +189,10 @@ ActiveRecord::Schema.define(version: 20150902073104) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.boolean  "deleted",                default: false
+    t.datetime "deleted_at"
     t.boolean  "is_creator",             default: false
   end
 
-  add_index "users", ["deleted"], name: "index_users_on_deleted"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
