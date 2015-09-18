@@ -12,7 +12,7 @@ class SurveySection < ActiveRecord::Base
 
 	after_destroy :remove_idx
 
-	def destroy
+	def remove_idx
 		self.idx = nil
   	end
 end
