@@ -19,14 +19,14 @@ class SurveysController < ApplicationController
   end
 
   def finish
-    @survey = Survey.find(params[:survey_id])
-    @user = view_context.current_or_guest_user
-    if @user.nil?
+    survey = Survey.find(params[:survey_id])
+    user = view_context.current_or_guest_user
+    if user.nil?
       flash.now[:alert] = "No user found"
     end
-    @active_survey = ActiveSurvey.where(user_id: @user, survey_id: params[:survey_id]).first
-    required_qs = @active_survey.survey.questions.where(required: true).pluck("questions.id")
-    answered_qs = Answer.where(user_id: @user.id, question_id: required_qs).pluck(:question_id)
+    active_survey = ActiveSurvey.where(user_id: user, survey_id: params[:survey_id]).first
+    required_qs = active_survey.survey.questions.where(required: true).pluck("questions.id")
+    answered_qs = Answer.where(user_id: user.id, question_id: required_qs).pluck(:question_id)
     # Yup, this does exactly what it looks like
     missing_qs = required_qs - answered_qs
     if missing_qs.length > 0
@@ -34,7 +34,7 @@ class SurveysController < ApplicationController
       idx = Question.find(missing_qs[0]).survey_section.idx
       redirect_to  survey_section_path(@survey, idx)
     else
-      @active_survey.update(completed: true)
+      active_survey.update(completed: true)
     end
   end
 
@@ -59,6 +59,8 @@ class SurveysController < ApplicationController
     id = params[:survey_id]
     id ||= params[:id]
   	@survey ||= Survey.find(id)
+
+    @survey_sections = @survey.sections
 
     @questions = Question.where(survey_section_id: @survey.sections.ids)
 

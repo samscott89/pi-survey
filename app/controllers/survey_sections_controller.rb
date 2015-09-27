@@ -19,28 +19,28 @@ class SurveySectionsController < ApplicationController
     idx = params[:index].to_i
     @num_sections = sections.count
 
-    @prev_section = sections.find_by(idx: idx-1)
-    @next_section = sections.find_by(idx: idx+1)
+    @prev_section_idx = sections.find_by(idx: idx-1).nil? ? nil : idx-1
+    @next_section_idx = sections.find_by(idx: idx+1).nil? ? nil : idx+1
 
     @questions = @survey_section.questions
 
-    @user = current_user
+    user = current_user
 
-    if @user.nil? and !session[:guest_user_id].nil?
-      @user = User.find(session[:guest_user_id])
+    if user.nil? and !session[:guest_user_id].nil?
+      user = User.find(session[:guest_user_id])
       flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
-      "You are currently logged in as guest #{@user.id}"
+      "You are currently logged in as guest #{user.id}"
     end
 
     # authorize! :read, @survey
 
-    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: @user)
+    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: user)
     @answers = []
     if !@active_survey.nil?
       flash[:alert] = "This survey has been submitted and cannot be changed." if @active_survey.completed?
-      @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
+      @answers = Answer.where(question_id: @questions.ids, user_id: user.id).index_by(&:question_id)
     else 
-      @active_survey = ActiveSurvey.create(survey_id: @survey, user_id: @user, completed: false)
+      @active_survey = ActiveSurvey.create(survey_id: @survey, user_id: user, completed: false)
     end
 
     respond_to do |format|
@@ -52,33 +52,33 @@ class SurveySectionsController < ApplicationController
   
   def answer
     @errors = []
-    @user = current_user
-    @survey = Survey.find(params[:survey_id])
-    @survey_section = @survey.sections.where(idx: params[:index]).first
-    @questions = @survey_section.questions
-    @num_sections = @survey.sections.count
+    user = current_user
+    survey = Survey.find(params[:survey_id])
+    survey_section = @survey.sections.where(idx: params[:index]).first
+    questions = @survey_section.questions
+    num_sections = @survey.sections.count
 
     authorize! :answer, @survey
 
-    if @user.nil?
+    if user.nil?
       if session[:guest_user_id].nil?
-        @user = User.create(temporary: true)
-        @user.save!(validate: false)
-        session[:guest_user_id] = @user.id
+        user = User.create(temporary: true)
+        user.save!(validate: false)
+        session[:guest_user_id] = user.id
       else
-        @user = User.find(session[:guest_user_id])
+        user = User.find(session[:guest_user_id])
       end
       flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
-      "You are currently logged in as guest #{@user.id}"
+      "You are currently logged in as guest #{user.id}"
     end
 
 
-    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: @user)
-    @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
+    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: user)
+    @answers = Answer.where(question_id: @questions.ids, user_id: user.id).index_by(&:question_id)
 
     pending_answers = []
 
-    answer_params(@questions, @user).each do |ans|
+    answer_params(@questions, user).each do |ans|
       if @answers[ans[:question_id].to_i].nil?
         a = Answer.new(ans)
         @answers[ans[:question_id].to_i] = a
@@ -87,13 +87,7 @@ class SurveySectionsController < ApplicationController
         a.assign_attributes(ans)
         @answers[ans[:question_id].to_i] = a
       end
-      # puts "----- Question: #{ans[:question_id]} -----"
-      # puts ans
-      # puts a.to_json
-      # puts a.answer_options.to_json
       if !a.valid?
-        # puts "Errors with answer: #{a.to_json} with options: #{a.answer_options.to_json}"
-        # puts a.errors.to_json
         @errors << a.errors
       end
       pending_answers << a
@@ -103,12 +97,10 @@ class SurveySectionsController < ApplicationController
       flash.now[:error] = "There were errors with your answers."
       render 'show'
     else
-
-      
       if @active_survey.nil?
-        @active_survey = @user.active_surveys.create(survey: @survey, completed: false)
+        @active_survey = user.active_surveys.create(survey: @survey, completed: false)
       else
-        @active_survey.touch # this updates the "updated_at" column... pretty cool!
+        @active_survey.touch # this updates the "updated_at" column.
       end
 
       if !@active_survey.completed?
