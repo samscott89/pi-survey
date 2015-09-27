@@ -74,6 +74,20 @@ class SurveysController < ApplicationController
     end
   end
 
+  def update
+    survey = Survey.find(params[:id])
+    authorize! :update, survey
+
+    survey.assign_attributes(survey_params)
+    if survey.save
+      flash[:success] = "Changed"
+    else
+      flash[:error] = "Could not change"
+    end 
+
+    redirect_to :back
+  end
+
   #this is the function that deals with populating the previous question drop down boxes so that particiipants can choose 
   #to use answer options from a previous question. 
   def getdata
@@ -139,7 +153,6 @@ class SurveysController < ApplicationController
   private
 
   def survey_params
-    #added is_public to the parameters that are permitted to be altered by the create method.
     params.require(:survey).permit(:name, :description, :is_public)
   end
 
