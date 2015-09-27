@@ -14,8 +14,13 @@ class SurveySectionsController < ApplicationController
   def show
     @errors = []
   	@survey = Survey.find(params[:survey_id])
-  	@survey_section = @survey.sections.where(idx: params[:index]).first
-    @num_sections = @survey.sections.count
+    sections = @survey.sections
+  	@survey_section = sections.find_by(idx: params[:index])
+    idx = params[:index].to_i
+    @num_sections = sections.count
+
+    @prev_section = sections.find_by(idx: idx-1)
+    @next_section = sections.find_by(idx: idx+1)
 
     @questions = @survey_section.questions
 

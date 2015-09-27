@@ -18,15 +18,15 @@
 </div>
 
 <div class="row">
-<div class="col-md-2"></div>
-<div class="col-md-8 well">
+<div class="col-md-offset-2 col-md-8">
 
+<%= form_tag survey_answer_path(@survey, @survey_section.idx), action: "post", role: "form" do %>
+<div class="well">
 <fieldset>
 <legend><%= "Section #{@survey_section.idx}: " + @survey_section.title %></legend>
 
 <h4><%= @survey_section.subtitle %></h4>	
 
-<%= form_tag survey_answer_path(@survey, @survey_section.idx), action: "post", role: "form", class: "col-md-12" do %>
 
 	<% @questions.each do |q| %>
 		<% ans = @answers[q.id] %>
@@ -40,14 +40,14 @@
 			<% end %>
 		</div>
 	<% end %>
+</fieldset>
+</div>
 
-	
 	<div class="form-actions">
-	<%= submit_tag "Submit answer", class: 'btn btn-primary', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
+		<%= link_to "Back", survey_section_path(@survey, @prev_section.idx), class: "btn btn-primary btn-lg", confirm: "This will lose any unsaved answers. Continue?" unless @prev_section.nil? %>
+		<%= submit_tag @next_section.nil? ? "Submit" : "Save", class: 'btn btn-success btn-lg pull-right', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
+		<%= link_to "Next", survey_section_path(@survey, @next_section.idx), class: "btn btn-primary btn-lg pull-right", confirm: "This will lose any unsaved answers. Continue?" unless @next_section.nil? %>
 	</div>
 <% end %>
-</fieldset>
-
 </div>
-<div class="col-md-2"></div>
 </div>
