@@ -39,6 +39,8 @@ class SurveySectionsController < ApplicationController
     if !@active_survey.nil?
       flash[:alert] = "This survey has been submitted and cannot be changed." if @active_survey.completed?
       @answers = Answer.where(question_id: @questions.ids, user_id: @user.id).index_by(&:question_id)
+    else 
+      @active_survey = ActiveSurvey.create(survey_id: @survey, user_id: @user, completed: false)
     end
 
     respond_to do |format|
