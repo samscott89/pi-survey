@@ -30,3 +30,4 @@ doc/
 
 # Ignore local config file (sensitive things here)
 config/local.yml
+Gemfile.lock
