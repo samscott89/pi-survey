@@ -34,7 +34,7 @@ class SurveySectionsController < ApplicationController
 
     # authorize! :read, @survey
 
-    @active_survey = ActiveSurvey.where(survey_id: @survey, user_id: @user).first
+    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: @user)
     @answers = []
     if !@active_survey.nil?
       flash[:alert] = "This survey has been submitted and cannot be changed." if @active_survey.completed?
