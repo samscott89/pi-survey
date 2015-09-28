@@ -31,3 +31,8 @@ doc/
 # Ignore local config file (sensitive things here)
 config/local.yml
 Gemfile.lock
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
