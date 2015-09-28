@@ -6,8 +6,8 @@ class ChartsController < ApplicationController
 
 
   def new
-	@chart = Chart.new
-	@survey = Survey.find(params[:survey_id])
+  	@chart = Chart.new
+  	@survey = Survey.find(params[:survey_id])
     @questions = Question.where(survey_section_id: @survey.sections.ids)
   end
 

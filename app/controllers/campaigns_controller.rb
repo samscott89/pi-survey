@@ -4,18 +4,20 @@ class CampaignsController < ApplicationController
 	skip_authorization_check only: [:index]
 
 	def new
+	  @campaign = Campaign.new
 	  @user = current_user
 	  @user_surveys = @user.surveys
-	  @campaign = Campaign.new
+
 	  authorize! :create, @campaign
 	end
 
 	def create
 	  @user = current_user
-	  @user_surveys = @user.surveys
-
 	  @campaign = Campaign.new(campaign_params)
 	  @campaign.assign_attributes(owner_id: current_user.id)
+
+	  @user_surveys = @user.surveys
+	  
 	  authorize! :create, @campaign
 	  if @campaign.save
 	    flash[:success] = "Campaign created."
@@ -55,6 +57,7 @@ class CampaignsController < ApplicationController
 
 		@campaign = Campaign.find(params[:id])
 		@campaign.assign_attributes(campaign_params)
+		
 		authorize! :update, @campaign
 		if @campaign.save
 		  flash[:success] = "Campaign updated."

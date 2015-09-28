@@ -80,9 +80,10 @@ class SurveysController < ApplicationController
 
   def update
     survey = Survey.find(params[:id])
-    authorize! :update, survey
 
     survey.assign_attributes(survey_params)
+
+    authorize! :update, survey
     if survey.save
       flash[:success] = "Changed"
     else

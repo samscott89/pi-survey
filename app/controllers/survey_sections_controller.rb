@@ -58,7 +58,6 @@ class SurveySectionsController < ApplicationController
     questions = survey_section.questions
     num_sections = survey.sections.count
 
-    authorize! :answer, survey
 
     if user.nil?
       if session[:guest_user_id].nil?
@@ -92,6 +91,8 @@ class SurveySectionsController < ApplicationController
       end
       pending_answers << a
     end
+    
+    authorize! :answer, survey
     
     if @errors.any? 
       flash.now[:error] = "There were errors with your answers."

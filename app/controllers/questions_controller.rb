@@ -9,12 +9,12 @@ class QuestionsController < ApplicationController
 		@question = Question.new(question_params.merge(survey_section: @survey_section))
 		#puts params
 
-		authorize! :edit, @survey
 
 		if !@question.option_group.question_type.is_multiple?
 			@question.option_group.option_choices.build(choice_name: "Other")
 		end
 
+		authorize! :edit, @survey
 	    if !@question.valid?
 	      # render 'show'
 	      flash[:error] = "Errors with adding question."
@@ -40,10 +40,11 @@ class QuestionsController < ApplicationController
 		@survey = @survey_section.survey
 		
 
-		authorize! :edit, @survey
 		was_multiple = @question.question_type.is_multiple?
 		@question.assign_attributes(question_params)
 
+		authorize! :edit, @survey
+		
 		if !@question.valid?
 		  # render 'show'
 		  flash[:error] = "Errors with updating question."
@@ -58,9 +59,9 @@ class QuestionsController < ApplicationController
 
 	def destroy
 		@question = Question.find(params[:id])
-		@question.destroy
-
+		
 		authorize! :edit, @survey
+		@question.destroy
 
 		redirect_to :back
 	end
