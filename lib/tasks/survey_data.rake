@@ -44,6 +44,6 @@ namespace :db do
       end
       q.save!
   	end
-
+    puts "Created example survey."
   end
 end

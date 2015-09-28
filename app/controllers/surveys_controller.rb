@@ -24,7 +24,7 @@ class SurveysController < ApplicationController
     if user.nil?
       flash.now[:alert] = "No user found"
     end
-    active_survey = ActiveSurvey.where(user_id: user, survey_id: params[:survey_id]).first
+    active_survey = ActiveSurvey.find_by(user_id: user, survey_id: params[:survey_id])
     required_qs = active_survey.survey.questions.where(required: true).pluck("questions.id")
     answered_qs = Answer.where(user_id: user.id, question_id: required_qs).pluck(:question_id)
     # Yup, this does exactly what it looks like
@@ -44,11 +44,11 @@ class SurveysController < ApplicationController
   end
 
   def create
-  	@survey = Survey.new(survey_params.merge( owner_id: current_user.id))
-    authorize! :create, @survey
-    if @survey.save
+  	survey = Survey.new(survey_params.merge( owner_id: current_user.id))
+    authorize! :create, survey
+    if survey.save
       flash[:notice] = "Survey Created"
-       redirect_to edit_survey_path @survey
+       redirect_to edit_survey_path survey
     else
       flash.now[:fail] = "Error creating survey"
       render 'new'
@@ -62,7 +62,9 @@ class SurveysController < ApplicationController
 
     @survey_sections = @survey.sections
 
-    @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @questions = Question.where(survey_section_id: @survey_sections.ids)
+                      .includes(:option_group, :question_type, :option_choices)
+                      .group_by(&:survey_section_id)
 
     authorize! :edit, @survey
 
@@ -117,7 +119,7 @@ class SurveysController < ApplicationController
 
   def stats
     @survey = Survey.find(params[:survey_id])
-    @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @questions = Question.where(survey_section_id: @survey.sections.ids).includes(:question_type, :option_choices, :option_group)
     @ta_type = QuestionType.find_by(name: "text_area").id
     @answers = {}
     @answers_ar = []
@@ -126,13 +128,15 @@ class SurveysController < ApplicationController
     authorize! :stats, @survey
 
     # Return all question ids for survey:
-    qs = @questions.ids
+    qs = @questions.pluck("questions.id")
     # Return all user ids who have answered those questions:
     us = Answer.where(question_id: qs).distinct.pluck(:user_id)
     @users = User.find(us)
 
+    preload_answers = Answer.where(user_id: us, question_id: qs).group_by(&:user_id)
+
     #Get answers for each user
-    us.each {|u| @answers[u] = Answer.where(user_id: u, question_id: qs).index_by(&:question_id)}
+    us.each {|u| @answers[u] = preload_answers[u].index_by(&:question_id)}
     #NOTE: Might be slow, should change to batch query later.
 
     respond_to do |format|

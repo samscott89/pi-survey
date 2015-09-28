@@ -8,12 +8,17 @@ group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'better_errors'
   gem "binding_of_caller" #More error handling stuff
+  gem 'bullet' #detect inefficient querying
 end
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
   gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.1.0'
+  
+  # performance testing
+  gem 'rails-perftest' 
+  gem 'ruby-prof'
 end
 
 gem "chartkick"
@@ -41,7 +46,7 @@ gem "paranoia", "~> 2.0" # soft-delete records
 gem 'devise' # Password authentication stuff
 gem 'kaminari'
 
-gem 'cancancan'
+gem 'cancancan' # authorisation
 
 group :development do
   gem "rails-erd"

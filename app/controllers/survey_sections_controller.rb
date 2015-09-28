@@ -22,7 +22,7 @@ class SurveySectionsController < ApplicationController
     @prev_section_idx = sections.find_by(idx: idx-1).nil? ? nil : idx-1
     @next_section_idx = sections.find_by(idx: idx+1).nil? ? nil : idx+1
 
-    @questions = @survey_section.questions
+    @questions = @survey_section.questions.includes(:question_type, :option_choices, :option_group)
 
     user = current_user
 
@@ -38,7 +38,7 @@ class SurveySectionsController < ApplicationController
     @answers = []
     if !@active_survey.nil?
       flash[:alert] = "This survey has been submitted and cannot be changed." if @active_survey.completed?
-      @answers = Answer.where(question_id: @questions.ids, user_id: user.id).index_by(&:question_id)
+      @answers = Answer.where(question_id: @questions.pluck("questions.id"), user_id: user.id).includes(:answer_options).index_by(&:question_id)
     else 
       @active_survey = ActiveSurvey.create(survey_id: @survey, user_id: user, completed: false)
     end
@@ -54,11 +54,11 @@ class SurveySectionsController < ApplicationController
     @errors = []
     user = current_user
     survey = Survey.find(params[:survey_id])
-    survey_section = @survey.sections.where(idx: params[:index]).first
-    questions = @survey_section.questions
-    num_sections = @survey.sections.count
+    survey_section = survey.sections.where(idx: params[:index]).first
+    questions = survey_section.questions
+    num_sections = survey.sections.count
 
-    authorize! :answer, @survey
+    authorize! :answer, survey
 
     if user.nil?
       if session[:guest_user_id].nil?
@@ -73,19 +73,19 @@ class SurveySectionsController < ApplicationController
     end
 
 
-    @active_survey = ActiveSurvey.find_by(survey_id: @survey, user_id: user)
-    @answers = Answer.where(question_id: @questions.ids, user_id: user.id).index_by(&:question_id)
+    @active_survey = ActiveSurvey.find_by(survey_id: survey, user_id: user)
+    answers = Answer.where(question_id: questions.pluck("questions.id"), user_id: user.id).index_by(&:question_id)
 
     pending_answers = []
 
-    answer_params(@questions, user).each do |ans|
-      if @answers[ans[:question_id].to_i].nil?
+    answer_params(questions, user).each do |ans|
+      if answers[ans[:question_id].to_i].nil?
         a = Answer.new(ans)
-        @answers[ans[:question_id].to_i] = a
+        answers[ans[:question_id].to_i] = a
       else
         a = Answer.find_by(question_id: ans[:question_id], user_id: ans[:user_id])
         a.assign_attributes(ans)
-        @answers[ans[:question_id].to_i] = a
+        answers[ans[:question_id].to_i] = a
       end
       if !a.valid?
         @errors << a.errors
@@ -95,10 +95,20 @@ class SurveySectionsController < ApplicationController
     
     if @errors.any? 
       flash.now[:error] = "There were errors with your answers."
+      @survey = survey
+      @survey_section = survey_section
+      @questions = questions.includes(:question_type, :option_choices, :option_group)
+      @num_sections = survey_section.count
+
+      @prev_section_idx = survey_section.find_by(idx: idx-1).nil? ? nil : idx-1
+      @next_section_idx = survey_section.find_by(idx: idx+1).nil? ? nil : idx+1
+
+      @answers = answers
+
       render 'show'
     else
       if @active_survey.nil?
-        @active_survey = user.active_surveys.create(survey: @survey, completed: false)
+        @active_survey = user.active_surveys.create(survey: survey, completed: false)
       else
         @active_survey.touch # this updates the "updated_at" column.
       end
@@ -107,10 +117,10 @@ class SurveySectionsController < ApplicationController
         pending_answers.each {|a| a.save}
       end
 
-      if @survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
-        redirect_to survey_section_path(@survey, params[:index].to_i + 1)
+      if survey.sections.where(idx: (params[:index].to_i + 1)).count > 0
+        redirect_to survey_section_path(survey, params[:index].to_i + 1)
       else
-        redirect_to survey_completed_path(@survey)
+        redirect_to survey_completed_path(survey)
       end
     end
 
