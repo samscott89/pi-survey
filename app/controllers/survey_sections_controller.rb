@@ -28,8 +28,8 @@ class SurveySectionsController < ApplicationController
 
     if user.nil? and !session[:guest_user_id].nil?
       user = User.find(session[:guest_user_id])
-      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
-      "You are currently logged in as guest #{user.id}"
+      # flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
+      # "You are currently logged in as guest #{user.id}"
     end
 
     # authorize! :read, @survey
@@ -65,8 +65,8 @@ class SurveySectionsController < ApplicationController
       else
         user = User.find(session[:guest_user_id])
       end
-      flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
-      "You are currently logged in as guest #{user.id}"
+      # flash[:info] = "You are not logged in. Answers will be stored temporarily until you log in. \n" +
+      # "You are currently logged in as guest #{user.id}"
     end
 
 
