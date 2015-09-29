@@ -17,7 +17,7 @@ class SurveySectionsController < ApplicationController
   	@survey_section = @survey.sections.where(idx: params[:index]).first
     @num_sections = @survey.sections.count
 
-    @questions = @survey_section.questions
+    @questions = @survey_section.questions.rank(:row_order)
 
     @user = current_user
 

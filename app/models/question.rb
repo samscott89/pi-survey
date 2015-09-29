@@ -1,6 +1,11 @@
 class Question < ActiveRecord::Base
 	acts_as_paranoid
 	
+	#this is needed for the rank model to assign positions of the questions in lists
+	include RankedModel
+	ranks :row_order
+	#-----------------------
+
 	has_many :charts
 	belongs_to :survey_section
 	has_one :option_group, inverse_of: :question

@@ -36,11 +36,17 @@ class QuestionsController < ApplicationController
 
 	def update
 		@question = Question.find(params[:id])
-		@survey_section = SurveySection.find(params[:survey_section])
+		@survey_section = SurveySection.find_by(id: @question.survey_section_id)
 		@survey = @survey_section.survey
 		
 
 		authorize! :edit, @survey
+		
+		#respond_to do |format|
+      	  #format.json {render json: @question}
+      	 # format.html
+    	#end
+
 		was_multiple = @question.question_type.is_multiple?
 		@question.assign_attributes(question_params)
 
@@ -50,10 +56,15 @@ class QuestionsController < ApplicationController
 		  redirect_to :back
 		else
 		  # This gets rid of old answers when switching from multiple=>single answer and vice-versa.
-		 @question.save
+		  @question.save
 		  flash[:success] = "Question updated."
-		  redirect_to survey_edit_section_path(@survey, @survey_section.idx)
+		  respond_to do |format|
+			  	format.html {redirect_to survey_edit_section_path(@survey, @survey_section.idx)}
+			  	format.json {render nothing: true}
+		   end
 		end
+
+
 	end
 
 	def destroy
@@ -67,7 +78,7 @@ class QuestionsController < ApplicationController
 
 	private
 	  	  def question_params
-	  	  	params.require(:question).permit(:name, :subtext, :required, :allow_other,
+	  	  	params.require(:question).permit(:name, :subtext, :required, :allow_other, :row_order, :id,
 	  	  		option_group_attributes: [:type_id, 
 	  	  			option_choices_attributes: [:choice_name, :_destroy]])
 	  	  end

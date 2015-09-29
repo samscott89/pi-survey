@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150918055751) do
+ActiveRecord::Schema.define(version: 20150929093501) do
 
   create_table "active_surveys", force: true do |t|
     t.integer  "campaign_survey_id"
@@ -77,12 +77,12 @@ ActiveRecord::Schema.define(version: 20150918055751) do
   end
 
   create_table "charts", force: true do |t|
-    t.integer  "type_id"
-    t.integer  "question_id"
+    t.integer  "type_id",      limit: 255
+    t.integer  "question_id",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "question_id2"
-    t.integer  "question_id3"
+    t.integer  "question_id2", limit: 255
+    t.integer  "question_id3", limit: 255
   end
 
   create_table "option_choices", force: true do |t|
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20150918055751) do
     t.datetime "deleted_at"
     t.boolean  "allow_other",       default: false
     t.integer  "max_answers",       default: 0
+    t.integer  "row_order"
   end
 
   add_index "questions", ["survey_section_id"], name: "index_questions_on_survey_section_id"

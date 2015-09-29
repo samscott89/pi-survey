@@ -48,21 +48,23 @@
 		</div>
 	</div>
 	<fieldset>
-		<ul class="list-group">
-		<% sec.questions.each do |q| %>
-			<span class="badge pull-right">
-				<!-- Link to modal -->
-				<%= link_to "Edit", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
-				<%= link_to "Delete", q, method: "delete", class: "text-danger" %>
-			</span>
-			<%= render partial: "questions/edit", locals: {q: q} %> 
-				<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
-				<% f.object.answer_options.build %>
-					<%= render partial: "survey_sections/question_types/#{q.question_type.name}", locals: { f: f, q: q, ans_options: f.object.answer_options}, layout: "survey_sections/question_types/question"  %>
+		<ul class="list-group" id="sortable">
+
+				<% sec.questions.rank(:row_order).each do |q| #really not sure about including the .rank here it would probably be better in the controller. %>
+					<div data-item-id=<%= "#{q.id}" %> class="item">
+						<span class="badge pull-right">
+							<!-- Link to modal -->
+							<%= link_to "Edit", "#", "data-toggle" => "modal", "data-target" => "#myModal#{q.id}" %>
+							<%= link_to "Delete", q, method: "delete", class: "text-danger" %>
+						</span>
+						<%= render partial: "questions/edit", locals: {q: q} %> 
+							<%= fields_for "answers[#{q.id}]", Answer.new do |f| %>
+							<% f.object.answer_options.build %>
+								<%= render partial: "survey_sections/question_types/#{q.question_type.name}", locals: { f: f, q: q, ans_options: f.object.answer_options}, layout: "survey_sections/question_types/question"  %>
+							<% end %>
+					</div>
 				<% end %>
-		<% end %>
 		</ul>
-	
 		<div class="form-actions">
 		<%#= submit_tag "Submit answer", name: nil, class: 'btn btn-primary', disabled: true, title: "This is a preview."%>
 		</div>

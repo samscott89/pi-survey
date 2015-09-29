@@ -1,5 +1,29 @@
 $(function() {
 
+	$('#sortable').sortable({
+	  axis: 'y',
+	  items: '.item',
+	  cursor: 'move',
+	  update: function(e, ui) {
+	    var item_id, position;
+	    item_id = ui.item.data('item-id');
+	    console.log(item_id);
+	    position = ui.item.index();
+	    return $.ajax({
+	      type: 'PATCH',
+	      url: '/questions/'+item_id,
+	      dataType: 'json',
+	      data: {
+	        question: {
+	          id: item_id,
+	          row_order: position
+	        }
+	      }
+	    });
+	  }
+	});
+
+
 	// When tab changes, it updates the hidden value to the relevant survey section
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	  $('input[name="survey_section').attr("value", e.target.getAttribute("sec")) 

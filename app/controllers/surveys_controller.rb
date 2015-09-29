@@ -60,7 +60,7 @@ class SurveysController < ApplicationController
     id ||= params[:id]
   	@survey ||= Survey.find(id)
 
-    @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @questions = Question.where(survey_section_id: @survey.sections.ids).rank(:row_order)
 
     authorize! :edit, @survey
 
@@ -101,7 +101,7 @@ class SurveysController < ApplicationController
 
   def stats
     @survey = Survey.find(params[:survey_id])
-    @questions = Question.where(survey_section_id: @survey.sections.ids)
+    @questions = Question.where(survey_section_id: @survey.sections.ids).rank(:row_order)
     @ta_type = QuestionType.find_by(name: "text_area").id
     @answers = {}
     @answers_ar = []

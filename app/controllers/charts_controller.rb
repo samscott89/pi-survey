@@ -8,7 +8,7 @@ class ChartsController < ApplicationController
   def new
 	@chart = Chart.new
 	@survey = Survey.find(params[:survey_id])
-    @questions = Question.where(survey_section_id: @survey.sections.ids)
+  @questions = Question.where(survey_section_id: @survey.sections.ids).rank(:row_order)
   end
 
   def create
@@ -24,7 +24,7 @@ class ChartsController < ApplicationController
 
   def index
     @survey = Survey.find(params[:survey_id])
-    @questions = @survey.questions
+    @questions = @survey.questions.rank(:row_order)
 
     @answers = {}
     @answers_ar = []

@@ -18,6 +18,8 @@ end
 
 gem "chartkick"
 
+gem "ranked-model" # This handles reordering questions when they are dragged and dropped in the edit view. 
+
 gem 'bootstrap-sass', '3.2.0' # pretty CSS
 gem 'sass-rails', '4.0.3' # More CSS trickery
 gem 'bcrypt-ruby', '3.1.2' # security
@@ -32,6 +34,7 @@ gem 'jquery-rails'
 gem 'bootstrap-datepicker-rails'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
+gem 'jquery-ui-rails' # this adds loads of cool Jquery UI stuff including drag and drop html sections.
 
 gem 'best_in_place', '3.0.1'
 gem 'modernizr-rails'
