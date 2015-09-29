@@ -58,6 +58,7 @@ end
 
 group :production do
   gem 'mysql'
+  gem 'puma'
   #gem 'pg', '0.15.1'
   gem 'rails_12factor'
 end

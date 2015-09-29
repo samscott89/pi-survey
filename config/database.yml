@@ -19,11 +19,11 @@ test:
   timeout: 5000
 
 production:
-  adapter: mysql  # Rails 3.x uses the mysql2 adapter
+  adapter: mysql
   encoding: utf8
   database: pi
-  pool: 5
+  pool: 2
   username: root
-  socket: /var/run/mysqld/mysqld.sock
-  password: ENV["DB_PASSWORD"]
-  host: localhost
+  host: <%= ENV["AWS_DB_URL"] %>
+  port: 3306
+  password: <%= ENV["AWS_DB_PASSWORD"] %>
