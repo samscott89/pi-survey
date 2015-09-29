@@ -56,8 +56,6 @@ class SurveySectionsController < ApplicationController
     survey = Survey.find(params[:survey_id])
     survey_section = survey.sections.where(idx: params[:index]).first
     questions = survey_section.questions
-    num_sections = survey.sections.count
-
 
     if user.nil?
       if session[:guest_user_id].nil?
@@ -97,12 +95,13 @@ class SurveySectionsController < ApplicationController
     if @errors.any? 
       flash.now[:error] = "There were errors with your answers."
       @survey = survey
+      sections = @survey.sections
       @survey_section = survey_section
       @questions = questions.includes(:question_type, :option_choices, :option_group)
-      @num_sections = survey_section.count
+      @num_sections = sections.count
 
-      @prev_section_idx = survey_section.find_by(idx: idx-1).nil? ? nil : idx-1
-      @next_section_idx = survey_section.find_by(idx: idx+1).nil? ? nil : idx+1
+      @prev_section_idx = sections.find_by(idx: idx-1).nil? ? nil : idx-1
+      @next_section_idx = sections.find_by(idx: idx+1).nil? ? nil : idx+1
 
       @answers = answers
 
