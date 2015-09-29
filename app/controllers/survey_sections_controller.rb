@@ -99,6 +99,7 @@ class SurveySectionsController < ApplicationController
       @survey_section = survey_section
       @questions = questions.includes(:question_type, :option_choices, :option_group)
       @num_sections = sections.count
+      idx = @survey_section.idx
 
       @prev_section_idx = sections.find_by(idx: idx-1).nil? ? nil : idx-1
       @next_section_idx = sections.find_by(idx: idx+1).nil? ? nil : idx+1
