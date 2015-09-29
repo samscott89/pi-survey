@@ -51,7 +51,7 @@
 		<% end %>
 		</div>
 		<% if @prev_section_idx.nil? %>
-			<p class="small">Back</p>
+			<p class="text-muted">Back</p>
 		<% else %>
 			<%= link_to "Back", survey_section_path(@survey, @prev_section_idx), data: (@active_survey.completed? ? nil : {confirm: "This will lose any unsaved answers. Continue?"}) %>
 		<% end %>
