@@ -66,6 +66,8 @@ class SurveysController < ApplicationController
                       .includes(:option_group, :question_type, :option_choices)
                       .group_by(&:survey_section_id)
 
+    @types_map = QuestionType.all.order(:name).map{|type| [type.name.gsub("_"," ").capitalize, type.id]}
+
     authorize! :edit, @survey
 
     if params[:index].nil?

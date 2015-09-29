@@ -22,7 +22,7 @@ and PATCH => question#update if q exists in DB. Cool! %>
 	<% og ||= OptionGroup.new %>
 	<%= f.fields_for :option_group, og, role: "form" do |f2| %>
 		<%= f2.label "Question Type", class: "control-label" %>
-		<% types = QuestionType.all.order(:name).map{|type| [type.name.gsub("_"," ").capitalize, type.id]} %>
+		<% types = @types_map %>
 
 		<%= f2.select :type_id, options_for_select(types, q.question_type.try(:id)), {}, {class: "form-control"} %>
 		
