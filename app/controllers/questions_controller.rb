@@ -59,8 +59,9 @@ class QuestionsController < ApplicationController
 
 	def destroy
 		@question = Question.find(params[:id])
+		survey = @question.survey
 		
-		authorize! :edit, @survey
+		authorize! :edit, survey
 		@question.destroy
 
 		redirect_to :back

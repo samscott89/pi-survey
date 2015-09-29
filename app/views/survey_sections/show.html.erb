@@ -43,19 +43,18 @@
 </fieldset>
 </div>
 	<div class="form-actions">
-		<%= submit_tag @next_section_idx.nil? ? "Submit" : "Save", class: 'btn btn-success btn-lg', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
 		<div class="pull-right">
-		<% if @prev_section_idx.nil? %>
-			<%= link_to "Back", '#', class: "btn btn-primary btn-lg", disabled: true %>
+		<% if !@active_survey.nil? and @active_survey.completed? %>
+			<%= link_to "Next", survey_section_path(@survey, @next_section_idx), class: "btn btn-primary btn-lg" %>
 		<% else %>
-			<%= link_to "Back", survey_section_path(@survey, @prev_section_idx), class: "btn btn-primary btn-lg", data: (@active_survey.completed? ? nil : {confirm: "This will lose any unsaved answers. Continue?"}) %>
-		<% end %>
-		<% if @next_section_idx.nil? %>
-			<%= link_to "Next", '#', class: "btn btn-primary btn-lg", disabled: true %>
-		<% else %>
-			<%= link_to "Next", survey_section_path(@survey, @next_section_idx), class: "btn btn-primary btn-lg", data: (@active_survey.completed? ? nil : {confirm: "This will lose any unsaved answers. Continue?"}) %>
+			<%= submit_tag @next_section_idx.nil? ? "Submit" : "Next", class: 'btn btn-success btn-lg', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
 		<% end %>
 		</div>
+		<% if @prev_section_idx.nil? %>
+			<p class="small">Back</p>
+		<% else %>
+			<%= link_to "Back", survey_section_path(@survey, @prev_section_idx), data: (@active_survey.completed? ? nil : {confirm: "This will lose any unsaved answers. Continue?"}) %>
+		<% end %>
 	</div>
 <% end %>
 </div>

@@ -49,6 +49,7 @@
 	</div>
 	<fieldset>
 		<ul class="list-group">
+		<% unless @questions[sec.id].nil? %>
 		<% @questions[sec.id].each do |q| %>
 			<span class="badge pull-right">
 				<!-- Link to modal -->
@@ -60,6 +61,7 @@
 				<% f.object.answer_options.build %>
 					<%= render partial: "survey_sections/question_types/#{q.question_type.name}", locals: { f: f, q: q, ans_options: f.object.answer_options}, layout: "survey_sections/question_types/question"  %>
 				<% end %>
+		<% end %>
 		<% end %>
 		</ul>
 	
