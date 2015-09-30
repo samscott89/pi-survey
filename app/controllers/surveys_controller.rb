@@ -125,22 +125,25 @@ class SurveysController < ApplicationController
     @questions = Question.where(survey_section_id: @survey.sections.ids).includes(:question_type, :option_choices, :option_group)
     @ta_type = QuestionType.find_by(name: "text_area").id
     @answers = {}
-    @answers_ar = []
-    @answers_ar_count = 0
+    @answer_options
     
     authorize! :stats, @survey
 
     # Return all question ids for survey:
-    qs = @questions.uniq.pluck("questions.id")
+    qs = @questions.distinct.pluck("questions.id").sort
     # Return all user ids who have answered those questions:
-    us = Answer.where(question_id: qs).distinct.pluck(:user_id)
-    @users = User.find(us)
+    us = Answer.where(question_id: qs).distinct.pluck(:user_id).sort
+    @users = us
 
-    preload_answers = Answer.where(user_id: us, question_id: qs).group_by(&:user_id)
+    preload_answers = Answer.where(user_id: us, question_id: qs)
+    grouped_answers = preload_answers.group_by(&:user_id)
+
+    @answer_options = AnswerOption.where(answer_id: preload_answers.pluck(:id)).group_by(&:answer_id)
 
     #Get answers for each user
-    us.each {|u| @answers[u] = preload_answers[u].index_by(&:question_id)}
-    #NOTE: Might be slow, should change to batch query later.
+    us.each do |u| 
+      @answers[u] = grouped_answers[u].index_by(&:question_id)
+    end
 
     respond_to do |format|
       format.html

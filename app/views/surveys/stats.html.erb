@@ -22,11 +22,12 @@
     </tr
     </thead>
     <tbody>
-    	<% @users.each do |u| %>
+    	<% @users.each do |uid| %>
     	<tr>
-    		<th> <%= u.id %> </th>
+    		<th> <%= uid %> </th>
     		<% @questions.each do |q| %>
-    		<% text =  (@answers[u.id][q.id].answer_options.pluck(:answer_text) << @answers[u.id][q.id].answer_text).join(" ") unless @answers[u.id][q.id].nil? %>
+            <% answer = @answers[uid][q.id] %>
+    		<% text =  (@answer_options[answer.id].collect { |ao| ao.answer_text } << answer.answer_text).join(" ") unless answer.nil? or @answer_options[answer.id].nil? %>
     			<% if q.question_type.id == @ta_type  %>
     				<td><%= link_to "View", "#", tabindex: 0, role: "button", "data-toggle"=>"popover", "data-placement"=>"right",title: "Question answer", "data-content"=>text %></td>
     			<% else %>
