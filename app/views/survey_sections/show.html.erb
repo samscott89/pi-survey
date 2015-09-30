@@ -50,9 +50,7 @@
 			<%= submit_tag @next_section_idx.nil? ? "Submit" : "Next", class: 'btn btn-success btn-lg', disabled: (!@active_survey.nil? and @active_survey.completed?) %>
 		<% end %>
 		</div>
-		<% if @prev_section_idx.nil? %>
-			<p class="text-muted">Back</p>
-		<% else %>
+		<% unless @prev_section_idx.nil? %>
 			<%= link_to "Back", survey_section_path(@survey, @prev_section_idx), data: (@active_survey.completed? ? nil : {confirm: "This will lose any unsaved answers. Continue?"}) %>
 		<% end %>
 	</div>
