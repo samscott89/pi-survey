@@ -131,7 +131,7 @@ class SurveysController < ApplicationController
     authorize! :stats, @survey
 
     # Return all question ids for survey:
-    qs = @questions.pluck("questions.id")
+    qs = @questions.uniq.pluck("questions.id")
     # Return all user ids who have answered those questions:
     us = Answer.where(question_id: qs).distinct.pluck(:user_id)
     @users = User.find(us)
