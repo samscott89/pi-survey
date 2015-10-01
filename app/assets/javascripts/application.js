@@ -16,4 +16,6 @@
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
 //= require best_in_place
 //= require bootstrap
+//= require paloma
 //= require turbolinks
+//= require_tree .

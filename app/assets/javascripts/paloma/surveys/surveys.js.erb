@@ -1,0 +1,71 @@
+var SurveysController = Paloma.controller('Surveys');
+
+
+SurveysController.prototype.edit = function(){
+	/* Activating Best In Place */
+	jQuery(".best_in_place").best_in_place();
+
+	// When tab changes, it updates the hidden value to the relevant survey section
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	  $('input[name="survey_section').attr("value", e.target.getAttribute("sec")) 
+	});
+
+	// Function to change the question type box when value is changed
+	$('[id^=question_option_group_attributes_type_id]').change(function() {
+	  var type = parseInt($(this).val(), 10);
+	  var option_types = <%= QuestionType.multiples.ids %>;
+	  idx = "question_option_group_attributes_question_type".length;
+	  var qid = parseInt($(this).attr('id').substr(idx), 10);
+	  if(!qid) qid = ""
+
+	  if(option_types.indexOf(type) > -1 ){
+	  	$("#question-options" + qid).show();
+	  } else {
+	  	$("#question-options" + qid).hide();
+	  }
+
+	  $("#likert-5").hide();
+	});
+	
+	// Keeps track of the number of question options to dynamically
+	// add more questions later
+	var qc = {};
+	$("[id^=question-options]").each(function(e){
+		idx = "question-options".length;
+		var qid = parseInt($(this).attr('id').substr(idx), 10)
+		if(!qid) qid = ""
+		// This ridiculous expressions counts the current number of question options.
+		q_opts = $(this).find("input[id^=question_option_group_attributes_option_choices_attributes_][id*=choice_name]").length;
+		qc[qid] = q_opts;
+	})
+	
+
+	/*
+	This makes the 'add' link clone a new question, and set the correct values.
+	The hash qc stores the highest index added.
+	*/
+	$("[id^=add-question-option]").click(function(e){
+		console.log(e)
+		e.preventDefault();
+		idx = "add-question-option".length
+		var qid = parseInt($(this).attr('id').substr(idx), 10)
+		if(!qid) qid = ""
+		var opt = $("#question-option" + qid).clone();
+
+		opt.find("input").attr("name",  "question[option_group_attributes][option_choices_attributes][" 
+			+ qc[qid] + "][choice_name]");
+		opt.find("input").attr("id",  "question_option_group_attributes_option_choices_attributes_"
+		 + qc[qid] + "_choice_name");
+		opt.find("label").attr("for",  "question_option_group_attributes_option_choices_attributes_"
+		 + qc[qid] + "_choice_name");
+		opt.find("input").val("");
+
+		// Insert the new html before the add button.
+		$("#add-question-option" + qid).before(opt)
+		qc[qid]++;
+	});
+};
+
+SurveysController.prototype.stats = function() {
+	$('[data-toggle="popover"]').popover({trigger: "hover"});
+};

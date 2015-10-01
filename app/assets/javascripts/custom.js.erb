@@ -1,0 +1,18 @@
+$(document).on('ready page:load', function() {
+    Paloma.executeHook();
+    Paloma.engine.start();
+    
+    /*
+        Detects whether HTML5 datepicker is supported.
+        If not, falls back to jQuery datepicker.
+    */
+    if (!Modernizr.inputtypes.date) {
+        $('input[type=date]').datepicker({
+            // Consistent format with the HTML5 picker
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            orientation: "top"
+        });
+    }
+}
+);

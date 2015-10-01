@@ -4,9 +4,7 @@
   <title><%= full_title(yield(:title)) %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%# This line allows you to add custom javascript includes to the head
-  by using content_for :js_include in a view. %>
-  <%= yield(:js_include) if content_for?(:js_include) %>
+  <%= javascript_include_tag :modernizr %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
@@ -23,6 +21,8 @@
 
       <%# Optionally yield to another wrapper layout first. %>
       <%= content_for?(:content) ? yield(:content) : yield %>
+
+      <%= insert_paloma_hook %>
 
 
 	  <%# Not really used at the moment render 'layouts/footer' %>

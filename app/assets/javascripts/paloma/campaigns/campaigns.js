@@ -1,4 +1,6 @@
-$(function() {
+var CampaignsController = Paloma.controller('Campaigns');
+
+CampaignsController.prototype.new = function(){
 	sname  = $("#campaign-survey").find("input,select").prop('name');
 	var idx = parseInt(sname.substr(sname.indexOf('attributes][') + 12, sname.length - 50));
 	var sc = idx + 1;
@@ -36,5 +38,4 @@ $(function() {
 		console.log($(this).parent());
 		$(this).parent().parent().remove();
 	});
-
-});
+};
