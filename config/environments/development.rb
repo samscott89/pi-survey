@@ -24,6 +24,8 @@ SurveyApp::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  config.assets.digest = true
+
   # Some settings as recommended by devise package:
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :smtp

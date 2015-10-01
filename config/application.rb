@@ -22,8 +22,6 @@ module SurveyApp
     # config.i18n.default_locale = :de
     I18n.enforce_available_locales = true
 
-    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
-
     config.filter_parameters += [:password]
   end
 end
