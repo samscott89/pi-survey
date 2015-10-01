@@ -9,6 +9,8 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
+    @surveys = @user.surveys
+    @active_surveys = @user.active_surveys.includes(:survey)
     if @user.nil?
       if !session[:guest_user_id].nil?
         @user = User.find(session[:guest_user_id])

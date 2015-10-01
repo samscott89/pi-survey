@@ -17,7 +17,7 @@
 <br>
 <% if creator_user? %>
 <h2>Created surveys</h2>
-<% if @user.surveys.empty? %>
+<% if @surveys.empty? %>
 <div class="list-group">
 	<div class="list-group-item center">
 			<div class="list-group-item-header">
@@ -36,7 +36,7 @@
 <% end %>
 
 <div class="list-group">
-	<% @user.surveys.each do |survey| %>
+	<% @surveys.each do |survey| %>
 		<div class="list-group-item">
 		<div class="list-group-item-header">
 			<h3>
@@ -77,7 +77,7 @@
 <br>
 
 <h2>Answered surveys</h2>
-<% if @user.active_surveys.empty? %>
+<% if @active_surveys.empty? %>
 <div class="list-group">
 	<div class="list-group-item center">
 			<div class="list-group-item-header">
@@ -96,7 +96,7 @@
 <% end %>
 
 <div class="list-group">
-	<% @user.active_surveys.order(updated_at: :desc).each do |active_survey| %>
+	<% @active_surveys.order(updated_at: :desc).each do |active_survey| %>
 		<% survey = active_survey.survey %>
 		<%= link_to survey_path(survey), class: "list-group-item list-group-item-#{active_survey.completed ? "success" : "info"}" do %>
 		<div class="list-group-item-header">
